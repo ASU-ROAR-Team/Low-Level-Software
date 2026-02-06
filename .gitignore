@@ -1,0 +1,26 @@
+# Build artifacts
+Debug/
+Release/
+bin/
+obj/
+*.list
+*.map
+*.o
+*.elf
+*.bin
+*.hex
+
+# IDE - STM32CubeIDE
+.settings/
+.project
+.cproject
+.launches/
+*.launch
+
+# Micro-ROS specific
+micro_ros_stm32/build/
+micro_ros_stm32/lib/
+
+# OS generated files
+.DS_Store
+Thumbs.db
