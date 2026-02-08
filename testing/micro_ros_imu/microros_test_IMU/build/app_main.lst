@@ -1,0 +1,157 @@
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc8bb9VS.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"app_main.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "rover/App/Src/app_main.c"
+  20              		.section	.text.App_Init,"ax",%progbits
+  21              		.align	1
+  22              		.global	App_Init
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	App_Init:
+  28              	.LFB134:
+   1:rover/App/Src/app_main.c **** #include "../Inc/app_main.h"
+   2:rover/App/Src/app_main.c **** #include "../../Mission/Inc/blink.h" // Call Layer 3
+   3:rover/App/Src/app_main.c **** #include "../../Mission/Inc/IMU.h" // Call Layer 3
+   4:rover/App/Src/app_main.c **** #include "../../../Core/Inc/main.h"
+   5:rover/App/Src/app_main.c **** #include "../../../Core/Inc/i2c.h"
+   6:rover/App/Src/app_main.c **** // Simulating a changing robot state
+   7:rover/App/Src/app_main.c **** RobotState_t global_state = STATUS_IDLE;
+   8:rover/App/Src/app_main.c **** IMU_INFO imu;
+   9:rover/App/Src/app_main.c **** 
+  10:rover/App/Src/app_main.c **** void App_Init(void) {
+  29              		.loc 1 10 21 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 08B5     		push	{r3, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 3, -8
+  37              		.cfi_offset 14, -4
+  11:rover/App/Src/app_main.c **** 	//Blink_Init();
+  12:rover/App/Src/app_main.c **** 	IMU_Setup(&hi2c1);
+  38              		.loc 1 12 2 view .LVU1
+  39 0002 0248     		ldr	r0, .L3
+  40 0004 FFF7FEFF 		bl	IMU_Setup
+  41              	.LVL0:
+  13:rover/App/Src/app_main.c **** }
+  42              		.loc 1 13 1 is_stmt 0 view .LVU2
+  43 0008 08BD     		pop	{r3, pc}
+  44              	.L4:
+  45 000a 00BF     		.align	2
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc8bb9VS.s 			page 2
+
+
+  46              	.L3:
+  47 000c 00000000 		.word	hi2c1
+  48              		.cfi_endproc
+  49              	.LFE134:
+  51              		.section	.text.App_Run,"ax",%progbits
+  52              		.align	1
+  53              		.global	App_Run
+  54              		.syntax unified
+  55              		.thumb
+  56              		.thumb_func
+  58              	App_Run:
+  59              	.LFB135:
+  14:rover/App/Src/app_main.c **** 
+  15:rover/App/Src/app_main.c **** void App_Run(void) {
+  60              		.loc 1 15 20 is_stmt 1 view -0
+  61              		.cfi_startproc
+  62              		@ args = 0, pretend = 0, frame = 0
+  63              		@ frame_needed = 0, uses_anonymous_args = 0
+  64 0000 08B5     		push	{r3, lr}
+  65              	.LCFI1:
+  66              		.cfi_def_cfa_offset 8
+  67              		.cfi_offset 3, -8
+  68              		.cfi_offset 14, -4
+  16:rover/App/Src/app_main.c ****     // 1. Simulate some logic to change state over time
+  17:rover/App/Src/app_main.c ****     // For test: Change state every 5 seconds
+  18:rover/App/Src/app_main.c **** 	IMU_Operation(&imu);
+  69              		.loc 1 18 2 view .LVU4
+  70 0002 0248     		ldr	r0, .L7
+  71 0004 FFF7FEFF 		bl	IMU_Operation
+  72              	.LVL1:
+  19:rover/App/Src/app_main.c **** //    if (HAL_GetTick() > 10000) {
+  20:rover/App/Src/app_main.c **** //        global_state = STATUS_ERROR;
+  21:rover/App/Src/app_main.c **** //    } else if (HAL_GetTick() > 5000) {
+  22:rover/App/Src/app_main.c **** //        global_state = STATUS_RUNNING;
+  23:rover/App/Src/app_main.c **** //    }
+  24:rover/App/Src/app_main.c **** //
+  25:rover/App/Src/app_main.c **** //    // 2. Run the Service
+  26:rover/App/Src/app_main.c **** //    Blink_Update(global_state);
+  27:rover/App/Src/app_main.c **** }
+  73              		.loc 1 27 1 is_stmt 0 view .LVU5
+  74 0008 08BD     		pop	{r3, pc}
+  75              	.L8:
+  76 000a 00BF     		.align	2
+  77              	.L7:
+  78 000c 00000000 		.word	imu
+  79              		.cfi_endproc
+  80              	.LFE135:
+  82              		.global	imu
+  83              		.section	.bss.imu,"aw",%nobits
+  84              		.align	3
+  87              	imu:
+  88 0000 00000000 		.space	184
+  88      00000000 
+  88      00000000 
+  88      00000000 
+  88      00000000 
+  89              		.global	global_state
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc8bb9VS.s 			page 3
+
+
+  90              		.section	.bss.global_state,"aw",%nobits
+  93              	global_state:
+  94 0000 00       		.space	1
+  95              		.text
+  96              	.Letext0:
+  97              		.file 2 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+  98              		.file 3 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+  99              		.file 4 "rover/App/Src/../../Mission/Inc/blink.h"
+ 100              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f401xc.h"
+ 101              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 102              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 103              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.h"
+ 104              		.file 9 "rover/App/Src/../../Mission/Inc/IMU.h"
+ 105              		.file 10 "rover/App/Src/../../../Core/Inc/i2c.h"
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc8bb9VS.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 app_main.c
+C:\Users\bavly\AppData\Local\Temp\cc8bb9VS.s:21     .text.App_Init:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cc8bb9VS.s:27     .text.App_Init:00000000 App_Init
+C:\Users\bavly\AppData\Local\Temp\cc8bb9VS.s:47     .text.App_Init:0000000c $d
+C:\Users\bavly\AppData\Local\Temp\cc8bb9VS.s:52     .text.App_Run:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cc8bb9VS.s:58     .text.App_Run:00000000 App_Run
+C:\Users\bavly\AppData\Local\Temp\cc8bb9VS.s:78     .text.App_Run:0000000c $d
+C:\Users\bavly\AppData\Local\Temp\cc8bb9VS.s:87     .bss.imu:00000000 imu
+C:\Users\bavly\AppData\Local\Temp\cc8bb9VS.s:84     .bss.imu:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\cc8bb9VS.s:93     .bss.global_state:00000000 global_state
+C:\Users\bavly\AppData\Local\Temp\cc8bb9VS.s:94     .bss.global_state:00000000 $d
+
+UNDEFINED SYMBOLS
+IMU_Setup
+hi2c1
+IMU_Operation

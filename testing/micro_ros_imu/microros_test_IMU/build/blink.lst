@@ -1,0 +1,201 @@
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccsiy3xa.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"blink.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "rover/Mission/Src/blink.c"
+  20              		.section	.text.Blink_Init,"ax",%progbits
+  21              		.align	1
+  22              		.global	Blink_Init
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	Blink_Init:
+  28              	.LFB134:
+   1:rover/Mission/Src/blink.c **** #include "../Inc/blink.h"
+   2:rover/Mission/Src/blink.c **** #include "../../ECAL/Inc/led_driver.h"
+   3:rover/Mission/Src/blink.c **** 
+   4:rover/Mission/Src/blink.c **** void Blink_Init(void) {
+  29              		.loc 1 4 23 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 08B5     		push	{r3, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 3, -8
+  37              		.cfi_offset 14, -4
+   5:rover/Mission/Src/blink.c ****     LED_Init();
+  38              		.loc 1 5 5 view .LVU1
+  39 0002 FFF7FEFF 		bl	LED_Init
+  40              	.LVL0:
+   6:rover/Mission/Src/blink.c **** }
+  41              		.loc 1 6 1 is_stmt 0 view .LVU2
+  42 0006 08BD     		pop	{r3, pc}
+  43              		.cfi_endproc
+  44              	.LFE134:
+  46              		.section	.text.Blink_Update,"ax",%progbits
+  47              		.align	1
+  48              		.global	Blink_Update
+  49              		.syntax unified
+  50              		.thumb
+  51              		.thumb_func
+  53              	Blink_Update:
+  54              	.LVL1:
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccsiy3xa.s 			page 2
+
+
+  55              	.LFB135:
+   7:rover/Mission/Src/blink.c **** 
+   8:rover/Mission/Src/blink.c **** // Simple non-blocking delay logic for demonstration
+   9:rover/Mission/Src/blink.c **** void Blink_Update(RobotState_t current_state) {
+  56              		.loc 1 9 47 is_stmt 1 view -0
+  57              		.cfi_startproc
+  58              		@ args = 0, pretend = 0, frame = 0
+  59              		@ frame_needed = 0, uses_anonymous_args = 0
+  60              		.loc 1 9 47 is_stmt 0 view .LVU4
+  61 0000 10B5     		push	{r4, lr}
+  62              	.LCFI1:
+  63              		.cfi_def_cfa_offset 8
+  64              		.cfi_offset 4, -8
+  65              		.cfi_offset 14, -4
+  10:rover/Mission/Src/blink.c ****     static uint32_t last_tick = 0;
+  66              		.loc 1 10 5 is_stmt 1 view .LVU5
+  11:rover/Mission/Src/blink.c ****     uint32_t interval = 0;
+  67              		.loc 1 11 5 view .LVU6
+  68              	.LVL2:
+  12:rover/Mission/Src/blink.c **** 
+  13:rover/Mission/Src/blink.c ****     switch (current_state) {
+  69              		.loc 1 13 5 view .LVU7
+  70 0002 0128     		cmp	r0, #1
+  71 0004 09D0     		beq	.L7
+  72 0006 0228     		cmp	r0, #2
+  73 0008 03D0     		beq	.L5
+  74 000a 78B9     		cbnz	r0, .L8
+  14:rover/Mission/Src/blink.c ****         case STATUS_IDLE:    interval = 1000; break; // 1 second
+  75              		.loc 1 14 39 is_stmt 0 view .LVU8
+  76 000c 4FF47A74 		mov	r4, #1000
+  77 0010 04E0     		b	.L4
+  78              	.L5:
+  15:rover/Mission/Src/blink.c ****         case STATUS_RUNNING: interval = 100;  break; // 100 ms
+  16:rover/Mission/Src/blink.c ****         case STATUS_ERROR:   
+  17:rover/Mission/Src/blink.c ****             LED_SetState(1); // Force ON
+  79              		.loc 1 17 13 is_stmt 1 view .LVU9
+  80 0012 0120     		movs	r0, #1
+  81              	.LVL3:
+  82              		.loc 1 17 13 is_stmt 0 view .LVU10
+  83 0014 FFF7FEFF 		bl	LED_SetState
+  84              	.LVL4:
+  18:rover/Mission/Src/blink.c ****             return; 
+  85              		.loc 1 18 13 is_stmt 1 view .LVU11
+  86 0018 07E0     		b	.L3
+  87              	.LVL5:
+  88              	.L7:
+  15:rover/Mission/Src/blink.c ****         case STATUS_RUNNING: interval = 100;  break; // 100 ms
+  89              		.loc 1 15 39 is_stmt 0 view .LVU12
+  90 001a 6424     		movs	r4, #100
+  91              	.L4:
+  92              	.LVL6:
+  19:rover/Mission/Src/blink.c ****     }
+  20:rover/Mission/Src/blink.c **** 
+  21:rover/Mission/Src/blink.c ****     // Standard Non-blocking logic
+  22:rover/Mission/Src/blink.c ****     if (HAL_GetTick() - last_tick >= interval) {
+  93              		.loc 1 22 5 is_stmt 1 view .LVU13
+  94              		.loc 1 22 9 is_stmt 0 view .LVU14
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccsiy3xa.s 			page 3
+
+
+  95 001c FFF7FEFF 		bl	HAL_GetTick
+  96              	.LVL7:
+  97              		.loc 1 22 23 discriminator 1 view .LVU15
+  98 0020 074B     		ldr	r3, .L11
+  99 0022 1B68     		ldr	r3, [r3]
+ 100 0024 C01A     		subs	r0, r0, r3
+ 101              		.loc 1 22 8 discriminator 1 view .LVU16
+ 102 0026 A042     		cmp	r0, r4
+ 103 0028 02D2     		bcs	.L10
+ 104              	.LVL8:
+ 105              	.L3:
+  23:rover/Mission/Src/blink.c ****         LED_Toggle();
+  24:rover/Mission/Src/blink.c ****         last_tick = HAL_GetTick();
+  25:rover/Mission/Src/blink.c ****     }
+  26:rover/Mission/Src/blink.c **** }
+ 106              		.loc 1 26 1 view .LVU17
+ 107 002a 10BD     		pop	{r4, pc}
+ 108              	.LVL9:
+ 109              	.L8:
+  13:rover/Mission/Src/blink.c ****         case STATUS_IDLE:    interval = 1000; break; // 1 second
+ 110              		.loc 1 13 5 view .LVU18
+ 111 002c 0024     		movs	r4, #0
+ 112 002e F5E7     		b	.L4
+ 113              	.LVL10:
+ 114              	.L10:
+  23:rover/Mission/Src/blink.c ****         LED_Toggle();
+ 115              		.loc 1 23 9 is_stmt 1 view .LVU19
+ 116 0030 FFF7FEFF 		bl	LED_Toggle
+ 117              	.LVL11:
+  24:rover/Mission/Src/blink.c ****     }
+ 118              		.loc 1 24 9 view .LVU20
+  24:rover/Mission/Src/blink.c ****     }
+ 119              		.loc 1 24 21 is_stmt 0 view .LVU21
+ 120 0034 FFF7FEFF 		bl	HAL_GetTick
+ 121              	.LVL12:
+  24:rover/Mission/Src/blink.c ****     }
+ 122              		.loc 1 24 19 discriminator 1 view .LVU22
+ 123 0038 014B     		ldr	r3, .L11
+ 124 003a 1860     		str	r0, [r3]
+ 125 003c F5E7     		b	.L3
+ 126              	.L12:
+ 127 003e 00BF     		.align	2
+ 128              	.L11:
+ 129 0040 00000000 		.word	last_tick.0
+ 130              		.cfi_endproc
+ 131              	.LFE135:
+ 133              		.section	.bss.last_tick.0,"aw",%nobits
+ 134              		.align	2
+ 137              	last_tick.0:
+ 138 0000 00000000 		.space	4
+ 139              		.text
+ 140              	.Letext0:
+ 141              		.file 2 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 142              		.file 3 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 143              		.file 4 "rover/Mission/Src/../Inc/blink.h"
+ 144              		.file 5 "rover/Mission/Src/../../ECAL/Inc/led_driver.h"
+ 145              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccsiy3xa.s 			page 4
+
+
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccsiy3xa.s 			page 5
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 blink.c
+C:\Users\bavly\AppData\Local\Temp\ccsiy3xa.s:21     .text.Blink_Init:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccsiy3xa.s:27     .text.Blink_Init:00000000 Blink_Init
+C:\Users\bavly\AppData\Local\Temp\ccsiy3xa.s:47     .text.Blink_Update:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccsiy3xa.s:53     .text.Blink_Update:00000000 Blink_Update
+C:\Users\bavly\AppData\Local\Temp\ccsiy3xa.s:129    .text.Blink_Update:00000040 $d
+C:\Users\bavly\AppData\Local\Temp\ccsiy3xa.s:137    .bss.last_tick.0:00000000 last_tick.0
+C:\Users\bavly\AppData\Local\Temp\ccsiy3xa.s:134    .bss.last_tick.0:00000000 $d
+
+UNDEFINED SYMBOLS
+LED_Init
+LED_SetState
+HAL_GetTick
+LED_Toggle

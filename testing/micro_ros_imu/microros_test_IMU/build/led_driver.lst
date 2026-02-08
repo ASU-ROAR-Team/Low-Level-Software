@@ -1,0 +1,186 @@
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccvk1ItW.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"led_driver.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "rover/ECAL/Src/led_driver.c"
+  20              		.section	.text.LED_Init,"ax",%progbits
+  21              		.align	1
+  22              		.global	LED_Init
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	LED_Init:
+  28              	.LFB134:
+   1:rover/ECAL/Src/led_driver.c **** #include "../Inc/led_driver.h"
+   2:rover/ECAL/Src/led_driver.c **** 
+   3:rover/ECAL/Src/led_driver.c **** void LED_Init(void) {
+  29              		.loc 1 3 21 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 08B5     		push	{r3, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 3, -8
+  37              		.cfi_offset 14, -4
+   4:rover/ECAL/Src/led_driver.c ****     // Note: Clock enable is usually done in main.c (MX_GPIO_Init)
+   5:rover/ECAL/Src/led_driver.c ****     // But you can ensure state here
+   6:rover/ECAL/Src/led_driver.c ****     HAL_GPIO_WritePin(LED_PORT, LED_PIN, GPIO_PIN_SET); // Start OFF (for Active Low)
+  38              		.loc 1 6 5 view .LVU1
+  39 0002 0122     		movs	r2, #1
+  40 0004 4FF40051 		mov	r1, #8192
+  41 0008 0148     		ldr	r0, .L3
+  42 000a FFF7FEFF 		bl	HAL_GPIO_WritePin
+  43              	.LVL0:
+   7:rover/ECAL/Src/led_driver.c **** }
+  44              		.loc 1 7 1 is_stmt 0 view .LVU2
+  45 000e 08BD     		pop	{r3, pc}
+  46              	.L4:
+  47              		.align	2
+  48              	.L3:
+  49 0010 00080240 		.word	1073874944
+  50              		.cfi_endproc
+  51              	.LFE134:
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccvk1ItW.s 			page 2
+
+
+  53              		.section	.text.LED_SetState,"ax",%progbits
+  54              		.align	1
+  55              		.global	LED_SetState
+  56              		.syntax unified
+  57              		.thumb
+  58              		.thumb_func
+  60              	LED_SetState:
+  61              	.LVL1:
+  62              	.LFB135:
+   8:rover/ECAL/Src/led_driver.c **** 
+   9:rover/ECAL/Src/led_driver.c **** void LED_SetState(uint8_t state) {
+  63              		.loc 1 9 34 is_stmt 1 view -0
+  64              		.cfi_startproc
+  65              		@ args = 0, pretend = 0, frame = 0
+  66              		@ frame_needed = 0, uses_anonymous_args = 0
+  67              		.loc 1 9 34 is_stmt 0 view .LVU4
+  68 0000 08B5     		push	{r3, lr}
+  69              	.LCFI1:
+  70              		.cfi_def_cfa_offset 8
+  71              		.cfi_offset 3, -8
+  72              		.cfi_offset 14, -4
+  10:rover/ECAL/Src/led_driver.c ****     // Handle Active Low logic here (0 sets pin high/off, 1 sets pin low/on)
+  11:rover/ECAL/Src/led_driver.c ****     if (state) {
+  73              		.loc 1 11 5 is_stmt 1 view .LVU5
+  74              		.loc 1 11 8 is_stmt 0 view .LVU6
+  75 0002 30B1     		cbz	r0, .L6
+  12:rover/ECAL/Src/led_driver.c ****         HAL_GPIO_WritePin(LED_PORT, LED_PIN, GPIO_PIN_RESET); // ON
+  76              		.loc 1 12 9 is_stmt 1 view .LVU7
+  77 0004 0022     		movs	r2, #0
+  78 0006 4FF40051 		mov	r1, #8192
+  79 000a 0548     		ldr	r0, .L9
+  80              	.LVL2:
+  81              		.loc 1 12 9 is_stmt 0 view .LVU8
+  82 000c FFF7FEFF 		bl	HAL_GPIO_WritePin
+  83              	.LVL3:
+  84              	.L5:
+  13:rover/ECAL/Src/led_driver.c ****     } else {
+  14:rover/ECAL/Src/led_driver.c ****         HAL_GPIO_WritePin(LED_PORT, LED_PIN, GPIO_PIN_SET);   // OFF
+  15:rover/ECAL/Src/led_driver.c ****     }
+  16:rover/ECAL/Src/led_driver.c **** }
+  85              		.loc 1 16 1 view .LVU9
+  86 0010 08BD     		pop	{r3, pc}
+  87              	.LVL4:
+  88              	.L6:
+  14:rover/ECAL/Src/led_driver.c ****     }
+  89              		.loc 1 14 9 is_stmt 1 view .LVU10
+  90 0012 0122     		movs	r2, #1
+  91 0014 4FF40051 		mov	r1, #8192
+  92 0018 0148     		ldr	r0, .L9
+  93              	.LVL5:
+  14:rover/ECAL/Src/led_driver.c ****     }
+  94              		.loc 1 14 9 is_stmt 0 view .LVU11
+  95 001a FFF7FEFF 		bl	HAL_GPIO_WritePin
+  96              	.LVL6:
+  97              		.loc 1 16 1 view .LVU12
+  98 001e F7E7     		b	.L5
+  99              	.L10:
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccvk1ItW.s 			page 3
+
+
+ 100              		.align	2
+ 101              	.L9:
+ 102 0020 00080240 		.word	1073874944
+ 103              		.cfi_endproc
+ 104              	.LFE135:
+ 106              		.section	.text.LED_Toggle,"ax",%progbits
+ 107              		.align	1
+ 108              		.global	LED_Toggle
+ 109              		.syntax unified
+ 110              		.thumb
+ 111              		.thumb_func
+ 113              	LED_Toggle:
+ 114              	.LFB136:
+  17:rover/ECAL/Src/led_driver.c **** 
+  18:rover/ECAL/Src/led_driver.c **** void LED_Toggle(void) {
+ 115              		.loc 1 18 23 is_stmt 1 view -0
+ 116              		.cfi_startproc
+ 117              		@ args = 0, pretend = 0, frame = 0
+ 118              		@ frame_needed = 0, uses_anonymous_args = 0
+ 119 0000 08B5     		push	{r3, lr}
+ 120              	.LCFI2:
+ 121              		.cfi_def_cfa_offset 8
+ 122              		.cfi_offset 3, -8
+ 123              		.cfi_offset 14, -4
+  19:rover/ECAL/Src/led_driver.c ****     HAL_GPIO_TogglePin(LED_PORT, LED_PIN);
+ 124              		.loc 1 19 5 view .LVU14
+ 125 0002 4FF40051 		mov	r1, #8192
+ 126 0006 0248     		ldr	r0, .L13
+ 127 0008 FFF7FEFF 		bl	HAL_GPIO_TogglePin
+ 128              	.LVL7:
+  20:rover/ECAL/Src/led_driver.c **** }
+ 129              		.loc 1 20 1 is_stmt 0 view .LVU15
+ 130 000c 08BD     		pop	{r3, pc}
+ 131              	.L14:
+ 132 000e 00BF     		.align	2
+ 133              	.L13:
+ 134 0010 00080240 		.word	1073874944
+ 135              		.cfi_endproc
+ 136              	.LFE136:
+ 138              		.text
+ 139              	.Letext0:
+ 140              		.file 2 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 141              		.file 3 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 142              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f401xc.h"
+ 143              		.file 5 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccvk1ItW.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 led_driver.c
+C:\Users\bavly\AppData\Local\Temp\ccvk1ItW.s:21     .text.LED_Init:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccvk1ItW.s:27     .text.LED_Init:00000000 LED_Init
+C:\Users\bavly\AppData\Local\Temp\ccvk1ItW.s:49     .text.LED_Init:00000010 $d
+C:\Users\bavly\AppData\Local\Temp\ccvk1ItW.s:54     .text.LED_SetState:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccvk1ItW.s:60     .text.LED_SetState:00000000 LED_SetState
+C:\Users\bavly\AppData\Local\Temp\ccvk1ItW.s:102    .text.LED_SetState:00000020 $d
+C:\Users\bavly\AppData\Local\Temp\ccvk1ItW.s:107    .text.LED_Toggle:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccvk1ItW.s:113    .text.LED_Toggle:00000000 LED_Toggle
+C:\Users\bavly\AppData\Local\Temp\ccvk1ItW.s:134    .text.LED_Toggle:00000010 $d
+
+UNDEFINED SYMBOLS
+HAL_GPIO_WritePin
+HAL_GPIO_TogglePin

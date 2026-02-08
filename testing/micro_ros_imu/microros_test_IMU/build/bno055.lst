@@ -1,0 +1,2160 @@
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"bno055.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "rover/ECAL/Src/bno055.c"
+  20              		.section	.text.bno055_setPage,"ax",%progbits
+  21              		.align	1
+  22              		.global	bno055_setPage
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	bno055_setPage:
+  28              	.LVL0:
+  29              	.LFB3:
+   1:rover/ECAL/Src/bno055.c **** #include "../Inc/bno055.h"
+   2:rover/ECAL/Src/bno055.c **** #include <string.h>
+   3:rover/ECAL/Src/bno055.c **** 
+   4:rover/ECAL/Src/bno055.c **** uint16_t accelScale = 100;
+   5:rover/ECAL/Src/bno055.c **** uint16_t tempScale = 1;
+   6:rover/ECAL/Src/bno055.c **** uint16_t angularRateScale = 16;
+   7:rover/ECAL/Src/bno055.c **** uint16_t eulerScale = 16;
+   8:rover/ECAL/Src/bno055.c **** uint16_t magScale = 16;
+   9:rover/ECAL/Src/bno055.c **** uint16_t quaScale = (1<<14);    // 2^14
+  10:rover/ECAL/Src/bno055.c **** 
+  11:rover/ECAL/Src/bno055.c **** void bno055_setPage(uint8_t page) { bno055_writeData(BNO055_PAGE_ID, page); }
+  30              		.loc 1 11 35 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		.loc 1 11 35 is_stmt 0 view .LVU1
+  35 0000 08B5     		push	{r3, lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 8
+  38              		.cfi_offset 3, -8
+  39              		.cfi_offset 14, -4
+  40 0002 0146     		mov	r1, r0
+  41              		.loc 1 11 37 is_stmt 1 view .LVU2
+  42 0004 0720     		movs	r0, #7
+  43              	.LVL1:
+  44              		.loc 1 11 37 is_stmt 0 view .LVU3
+  45 0006 FFF7FEFF 		bl	bno055_writeData
+  46              	.LVL2:
+  47              		.loc 1 11 77 view .LVU4
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 2
+
+
+  48 000a 08BD     		pop	{r3, pc}
+  49              		.cfi_endproc
+  50              	.LFE3:
+  52              		.section	.text.bno055_getOperationMode,"ax",%progbits
+  53              		.align	1
+  54              		.global	bno055_getOperationMode
+  55              		.syntax unified
+  56              		.thumb
+  57              		.thumb_func
+  59              	bno055_getOperationMode:
+  60              	.LFB4:
+  12:rover/ECAL/Src/bno055.c **** 
+  13:rover/ECAL/Src/bno055.c **** bno055_opmode_t bno055_getOperationMode() {
+  61              		.loc 1 13 43 is_stmt 1 view -0
+  62              		.cfi_startproc
+  63              		@ args = 0, pretend = 0, frame = 8
+  64              		@ frame_needed = 0, uses_anonymous_args = 0
+  65 0000 00B5     		push	{lr}
+  66              	.LCFI1:
+  67              		.cfi_def_cfa_offset 4
+  68              		.cfi_offset 14, -4
+  69 0002 83B0     		sub	sp, sp, #12
+  70              	.LCFI2:
+  71              		.cfi_def_cfa_offset 16
+  14:rover/ECAL/Src/bno055.c ****   bno055_opmode_t mode;
+  72              		.loc 1 14 3 view .LVU6
+  15:rover/ECAL/Src/bno055.c ****   bno055_readData(BNO055_OPR_MODE, &mode, 1);
+  73              		.loc 1 15 3 view .LVU7
+  74 0004 0122     		movs	r2, #1
+  75 0006 0DF10701 		add	r1, sp, #7
+  76 000a 3D20     		movs	r0, #61
+  77 000c FFF7FEFF 		bl	bno055_readData
+  78              	.LVL3:
+  16:rover/ECAL/Src/bno055.c ****   return mode;
+  79              		.loc 1 16 3 view .LVU8
+  17:rover/ECAL/Src/bno055.c **** }
+  80              		.loc 1 17 1 is_stmt 0 view .LVU9
+  81 0010 9DF80700 		ldrb	r0, [sp, #7]	@ zero_extendqisi2
+  82 0014 03B0     		add	sp, sp, #12
+  83              	.LCFI3:
+  84              		.cfi_def_cfa_offset 4
+  85              		@ sp needed
+  86 0016 5DF804FB 		ldr	pc, [sp], #4
+  87              		.cfi_endproc
+  88              	.LFE4:
+  90              		.section	.text.bno055_setOperationMode,"ax",%progbits
+  91              		.align	1
+  92              		.global	bno055_setOperationMode
+  93              		.syntax unified
+  94              		.thumb
+  95              		.thumb_func
+  97              	bno055_setOperationMode:
+  98              	.LVL4:
+  99              	.LFB5:
+  18:rover/ECAL/Src/bno055.c **** 
+  19:rover/ECAL/Src/bno055.c **** void bno055_setOperationMode(bno055_opmode_t mode) {
+ 100              		.loc 1 19 52 is_stmt 1 view -0
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 3
+
+
+ 101              		.cfi_startproc
+ 102              		@ args = 0, pretend = 0, frame = 0
+ 103              		@ frame_needed = 0, uses_anonymous_args = 0
+ 104              		.loc 1 19 52 is_stmt 0 view .LVU11
+ 105 0000 10B5     		push	{r4, lr}
+ 106              	.LCFI4:
+ 107              		.cfi_def_cfa_offset 8
+ 108              		.cfi_offset 4, -8
+ 109              		.cfi_offset 14, -4
+ 110 0002 0446     		mov	r4, r0
+  20:rover/ECAL/Src/bno055.c ****   bno055_writeData(BNO055_OPR_MODE, mode);
+ 111              		.loc 1 20 3 is_stmt 1 view .LVU12
+ 112 0004 0146     		mov	r1, r0
+ 113 0006 3D20     		movs	r0, #61
+ 114              	.LVL5:
+ 115              		.loc 1 20 3 is_stmt 0 view .LVU13
+ 116 0008 FFF7FEFF 		bl	bno055_writeData
+ 117              	.LVL6:
+  21:rover/ECAL/Src/bno055.c ****   if (mode == BNO055_OPERATION_MODE_CONFIG) {
+ 118              		.loc 1 21 3 is_stmt 1 view .LVU14
+ 119              		.loc 1 21 6 is_stmt 0 view .LVU15
+ 120 000c 1CB9     		cbnz	r4, .L6
+  22:rover/ECAL/Src/bno055.c ****     bno055_delay(19);
+ 121              		.loc 1 22 5 is_stmt 1 view .LVU16
+ 122 000e 1320     		movs	r0, #19
+ 123 0010 FFF7FEFF 		bl	bno055_delay
+ 124              	.LVL7:
+ 125              	.L5:
+  23:rover/ECAL/Src/bno055.c ****   } else {
+  24:rover/ECAL/Src/bno055.c ****     bno055_delay(7);
+  25:rover/ECAL/Src/bno055.c ****   }
+  26:rover/ECAL/Src/bno055.c **** }
+ 126              		.loc 1 26 1 is_stmt 0 view .LVU17
+ 127 0014 10BD     		pop	{r4, pc}
+ 128              	.LVL8:
+ 129              	.L6:
+  24:rover/ECAL/Src/bno055.c ****   }
+ 130              		.loc 1 24 5 is_stmt 1 view .LVU18
+ 131 0016 0720     		movs	r0, #7
+ 132 0018 FFF7FEFF 		bl	bno055_delay
+ 133              	.LVL9:
+ 134              		.loc 1 26 1 is_stmt 0 view .LVU19
+ 135 001c FAE7     		b	.L5
+ 136              		.cfi_endproc
+ 137              	.LFE5:
+ 139              		.section	.text.bno055_setOperationModeConfig,"ax",%progbits
+ 140              		.align	1
+ 141              		.global	bno055_setOperationModeConfig
+ 142              		.syntax unified
+ 143              		.thumb
+ 144              		.thumb_func
+ 146              	bno055_setOperationModeConfig:
+ 147              	.LFB6:
+  27:rover/ECAL/Src/bno055.c **** 
+  28:rover/ECAL/Src/bno055.c **** void bno055_setOperationModeConfig() {
+ 148              		.loc 1 28 38 is_stmt 1 view -0
+ 149              		.cfi_startproc
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 4
+
+
+ 150              		@ args = 0, pretend = 0, frame = 0
+ 151              		@ frame_needed = 0, uses_anonymous_args = 0
+ 152 0000 08B5     		push	{r3, lr}
+ 153              	.LCFI5:
+ 154              		.cfi_def_cfa_offset 8
+ 155              		.cfi_offset 3, -8
+ 156              		.cfi_offset 14, -4
+  29:rover/ECAL/Src/bno055.c ****   bno055_setOperationMode(BNO055_OPERATION_MODE_CONFIG);
+ 157              		.loc 1 29 3 view .LVU21
+ 158 0002 0020     		movs	r0, #0
+ 159 0004 FFF7FEFF 		bl	bno055_setOperationMode
+ 160              	.LVL10:
+  30:rover/ECAL/Src/bno055.c **** }
+ 161              		.loc 1 30 1 is_stmt 0 view .LVU22
+ 162 0008 08BD     		pop	{r3, pc}
+ 163              		.cfi_endproc
+ 164              	.LFE6:
+ 166              		.section	.text.bno055_setOperationModeNDOF,"ax",%progbits
+ 167              		.align	1
+ 168              		.global	bno055_setOperationModeNDOF
+ 169              		.syntax unified
+ 170              		.thumb
+ 171              		.thumb_func
+ 173              	bno055_setOperationModeNDOF:
+ 174              	.LFB7:
+  31:rover/ECAL/Src/bno055.c **** 
+  32:rover/ECAL/Src/bno055.c **** void bno055_setOperationModeNDOF() {
+ 175              		.loc 1 32 36 is_stmt 1 view -0
+ 176              		.cfi_startproc
+ 177              		@ args = 0, pretend = 0, frame = 0
+ 178              		@ frame_needed = 0, uses_anonymous_args = 0
+ 179 0000 08B5     		push	{r3, lr}
+ 180              	.LCFI6:
+ 181              		.cfi_def_cfa_offset 8
+ 182              		.cfi_offset 3, -8
+ 183              		.cfi_offset 14, -4
+  33:rover/ECAL/Src/bno055.c ****   bno055_setOperationMode(BNO055_OPERATION_MODE_NDOF);
+ 184              		.loc 1 33 3 view .LVU24
+ 185 0002 0C20     		movs	r0, #12
+ 186 0004 FFF7FEFF 		bl	bno055_setOperationMode
+ 187              	.LVL11:
+  34:rover/ECAL/Src/bno055.c **** }
+ 188              		.loc 1 34 1 is_stmt 0 view .LVU25
+ 189 0008 08BD     		pop	{r3, pc}
+ 190              		.cfi_endproc
+ 191              	.LFE7:
+ 193              		.section	.text.bno055_setExternalCrystalUse,"ax",%progbits
+ 194              		.align	1
+ 195              		.global	bno055_setExternalCrystalUse
+ 196              		.syntax unified
+ 197              		.thumb
+ 198              		.thumb_func
+ 200              	bno055_setExternalCrystalUse:
+ 201              	.LVL12:
+ 202              	.LFB8:
+  35:rover/ECAL/Src/bno055.c **** 
+  36:rover/ECAL/Src/bno055.c **** void bno055_setExternalCrystalUse(bool state) {
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 5
+
+
+ 203              		.loc 1 36 47 is_stmt 1 view -0
+ 204              		.cfi_startproc
+ 205              		@ args = 0, pretend = 0, frame = 8
+ 206              		@ frame_needed = 0, uses_anonymous_args = 0
+ 207              		.loc 1 36 47 is_stmt 0 view .LVU27
+ 208 0000 10B5     		push	{r4, lr}
+ 209              	.LCFI7:
+ 210              		.cfi_def_cfa_offset 8
+ 211              		.cfi_offset 4, -8
+ 212              		.cfi_offset 14, -4
+ 213 0002 82B0     		sub	sp, sp, #8
+ 214              	.LCFI8:
+ 215              		.cfi_def_cfa_offset 16
+ 216 0004 0446     		mov	r4, r0
+  37:rover/ECAL/Src/bno055.c ****   bno055_setPage(0);
+ 217              		.loc 1 37 3 is_stmt 1 view .LVU28
+ 218 0006 0020     		movs	r0, #0
+ 219              	.LVL13:
+ 220              		.loc 1 37 3 is_stmt 0 view .LVU29
+ 221 0008 FFF7FEFF 		bl	bno055_setPage
+ 222              	.LVL14:
+  38:rover/ECAL/Src/bno055.c ****   uint8_t tmp = 0;
+ 223              		.loc 1 38 3 is_stmt 1 view .LVU30
+ 224              		.loc 1 38 11 is_stmt 0 view .LVU31
+ 225 000c 0023     		movs	r3, #0
+ 226 000e 8DF80730 		strb	r3, [sp, #7]
+  39:rover/ECAL/Src/bno055.c ****   bno055_readData(BNO055_SYS_TRIGGER, &tmp, 1);
+ 227              		.loc 1 39 3 is_stmt 1 view .LVU32
+ 228 0012 0122     		movs	r2, #1
+ 229 0014 0DF10701 		add	r1, sp, #7
+ 230 0018 3F20     		movs	r0, #63
+ 231 001a FFF7FEFF 		bl	bno055_readData
+ 232              	.LVL15:
+  40:rover/ECAL/Src/bno055.c ****   tmp |= (state == true) ? 0x80 : 0x0;
+ 233              		.loc 1 40 3 view .LVU33
+ 234              		.loc 1 40 7 is_stmt 0 view .LVU34
+ 235 001e 84B1     		cbz	r4, .L15
+ 236              		.loc 1 40 7 discriminator 1 view .LVU35
+ 237 0020 6FF07F03 		mvn	r3, #127
+ 238              	.L14:
+ 239              		.loc 1 40 7 discriminator 4 view .LVU36
+ 240 0024 9DF80710 		ldrb	r1, [sp, #7]	@ zero_extendqisi2
+ 241 0028 1943     		orrs	r1, r1, r3
+ 242 002a C9B2     		uxtb	r1, r1
+ 243 002c 8DF80710 		strb	r1, [sp, #7]
+  41:rover/ECAL/Src/bno055.c ****   bno055_writeData(BNO055_SYS_TRIGGER, tmp);
+ 244              		.loc 1 41 3 is_stmt 1 view .LVU37
+ 245 0030 3F20     		movs	r0, #63
+ 246 0032 FFF7FEFF 		bl	bno055_writeData
+ 247              	.LVL16:
+  42:rover/ECAL/Src/bno055.c ****   bno055_delay(700);
+ 248              		.loc 1 42 3 view .LVU38
+ 249 0036 4FF42F70 		mov	r0, #700
+ 250 003a FFF7FEFF 		bl	bno055_delay
+ 251              	.LVL17:
+  43:rover/ECAL/Src/bno055.c **** }
+ 252              		.loc 1 43 1 is_stmt 0 view .LVU39
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 6
+
+
+ 253 003e 02B0     		add	sp, sp, #8
+ 254              	.LCFI9:
+ 255              		.cfi_remember_state
+ 256              		.cfi_def_cfa_offset 8
+ 257              		@ sp needed
+ 258 0040 10BD     		pop	{r4, pc}
+ 259              	.LVL18:
+ 260              	.L15:
+ 261              	.LCFI10:
+ 262              		.cfi_restore_state
+  40:rover/ECAL/Src/bno055.c ****   bno055_writeData(BNO055_SYS_TRIGGER, tmp);
+ 263              		.loc 1 40 7 discriminator 2 view .LVU40
+ 264 0042 0023     		movs	r3, #0
+ 265 0044 EEE7     		b	.L14
+ 266              		.cfi_endproc
+ 267              	.LFE8:
+ 269              		.section	.text.bno055_enableExternalCrystal,"ax",%progbits
+ 270              		.align	1
+ 271              		.global	bno055_enableExternalCrystal
+ 272              		.syntax unified
+ 273              		.thumb
+ 274              		.thumb_func
+ 276              	bno055_enableExternalCrystal:
+ 277              	.LFB9:
+  44:rover/ECAL/Src/bno055.c **** 
+  45:rover/ECAL/Src/bno055.c **** void bno055_enableExternalCrystal() { bno055_setExternalCrystalUse(true); }
+ 278              		.loc 1 45 37 is_stmt 1 view -0
+ 279              		.cfi_startproc
+ 280              		@ args = 0, pretend = 0, frame = 0
+ 281              		@ frame_needed = 0, uses_anonymous_args = 0
+ 282 0000 08B5     		push	{r3, lr}
+ 283              	.LCFI11:
+ 284              		.cfi_def_cfa_offset 8
+ 285              		.cfi_offset 3, -8
+ 286              		.cfi_offset 14, -4
+ 287              		.loc 1 45 39 view .LVU42
+ 288 0002 0120     		movs	r0, #1
+ 289 0004 FFF7FEFF 		bl	bno055_setExternalCrystalUse
+ 290              	.LVL19:
+ 291              		.loc 1 45 75 is_stmt 0 view .LVU43
+ 292 0008 08BD     		pop	{r3, pc}
+ 293              		.cfi_endproc
+ 294              	.LFE9:
+ 296              		.section	.text.bno055_disableExternalCrystal,"ax",%progbits
+ 297              		.align	1
+ 298              		.global	bno055_disableExternalCrystal
+ 299              		.syntax unified
+ 300              		.thumb
+ 301              		.thumb_func
+ 303              	bno055_disableExternalCrystal:
+ 304              	.LFB10:
+  46:rover/ECAL/Src/bno055.c **** void bno055_disableExternalCrystal() { bno055_setExternalCrystalUse(false); }
+ 305              		.loc 1 46 38 is_stmt 1 view -0
+ 306              		.cfi_startproc
+ 307              		@ args = 0, pretend = 0, frame = 0
+ 308              		@ frame_needed = 0, uses_anonymous_args = 0
+ 309 0000 08B5     		push	{r3, lr}
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 7
+
+
+ 310              	.LCFI12:
+ 311              		.cfi_def_cfa_offset 8
+ 312              		.cfi_offset 3, -8
+ 313              		.cfi_offset 14, -4
+ 314              		.loc 1 46 40 view .LVU45
+ 315 0002 0020     		movs	r0, #0
+ 316 0004 FFF7FEFF 		bl	bno055_setExternalCrystalUse
+ 317              	.LVL20:
+ 318              		.loc 1 46 77 is_stmt 0 view .LVU46
+ 319 0008 08BD     		pop	{r3, pc}
+ 320              		.cfi_endproc
+ 321              	.LFE10:
+ 323              		.section	.text.bno055_reset,"ax",%progbits
+ 324              		.align	1
+ 325              		.global	bno055_reset
+ 326              		.syntax unified
+ 327              		.thumb
+ 328              		.thumb_func
+ 330              	bno055_reset:
+ 331              	.LFB11:
+  47:rover/ECAL/Src/bno055.c **** 
+  48:rover/ECAL/Src/bno055.c **** void bno055_reset() {
+ 332              		.loc 1 48 21 is_stmt 1 view -0
+ 333              		.cfi_startproc
+ 334              		@ args = 0, pretend = 0, frame = 0
+ 335              		@ frame_needed = 0, uses_anonymous_args = 0
+ 336 0000 08B5     		push	{r3, lr}
+ 337              	.LCFI13:
+ 338              		.cfi_def_cfa_offset 8
+ 339              		.cfi_offset 3, -8
+ 340              		.cfi_offset 14, -4
+  49:rover/ECAL/Src/bno055.c ****   bno055_writeData(BNO055_SYS_TRIGGER, 0x20);
+ 341              		.loc 1 49 3 view .LVU48
+ 342 0002 2021     		movs	r1, #32
+ 343 0004 3F20     		movs	r0, #63
+ 344 0006 FFF7FEFF 		bl	bno055_writeData
+ 345              	.LVL21:
+  50:rover/ECAL/Src/bno055.c ****   bno055_delay(700);
+ 346              		.loc 1 50 3 view .LVU49
+ 347 000a 4FF42F70 		mov	r0, #700
+ 348 000e FFF7FEFF 		bl	bno055_delay
+ 349              	.LVL22:
+  51:rover/ECAL/Src/bno055.c **** }
+ 350              		.loc 1 51 1 is_stmt 0 view .LVU50
+ 351 0012 08BD     		pop	{r3, pc}
+ 352              		.cfi_endproc
+ 353              	.LFE11:
+ 355              		.section	.text.bno055_getTemp,"ax",%progbits
+ 356              		.align	1
+ 357              		.global	bno055_getTemp
+ 358              		.syntax unified
+ 359              		.thumb
+ 360              		.thumb_func
+ 362              	bno055_getTemp:
+ 363              	.LFB12:
+  52:rover/ECAL/Src/bno055.c **** 
+  53:rover/ECAL/Src/bno055.c **** int8_t bno055_getTemp() {
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 8
+
+
+ 364              		.loc 1 53 25 is_stmt 1 view -0
+ 365              		.cfi_startproc
+ 366              		@ args = 0, pretend = 0, frame = 8
+ 367              		@ frame_needed = 0, uses_anonymous_args = 0
+ 368 0000 00B5     		push	{lr}
+ 369              	.LCFI14:
+ 370              		.cfi_def_cfa_offset 4
+ 371              		.cfi_offset 14, -4
+ 372 0002 83B0     		sub	sp, sp, #12
+ 373              	.LCFI15:
+ 374              		.cfi_def_cfa_offset 16
+  54:rover/ECAL/Src/bno055.c ****   bno055_setPage(0);
+ 375              		.loc 1 54 3 view .LVU52
+ 376 0004 0020     		movs	r0, #0
+ 377 0006 FFF7FEFF 		bl	bno055_setPage
+ 378              	.LVL23:
+  55:rover/ECAL/Src/bno055.c ****   uint8_t t;
+ 379              		.loc 1 55 3 view .LVU53
+  56:rover/ECAL/Src/bno055.c ****   bno055_readData(BNO055_TEMP, &t, 1);
+ 380              		.loc 1 56 3 view .LVU54
+ 381 000a 0122     		movs	r2, #1
+ 382 000c 0DF10701 		add	r1, sp, #7
+ 383 0010 3420     		movs	r0, #52
+ 384 0012 FFF7FEFF 		bl	bno055_readData
+ 385              	.LVL24:
+  57:rover/ECAL/Src/bno055.c ****   return t;
+ 386              		.loc 1 57 3 view .LVU55
+  58:rover/ECAL/Src/bno055.c **** }
+ 387              		.loc 1 58 1 is_stmt 0 view .LVU56
+ 388 0016 9DF90700 		ldrsb	r0, [sp, #7]
+ 389 001a 03B0     		add	sp, sp, #12
+ 390              	.LCFI16:
+ 391              		.cfi_def_cfa_offset 4
+ 392              		@ sp needed
+ 393 001c 5DF804FB 		ldr	pc, [sp], #4
+ 394              		.cfi_endproc
+ 395              	.LFE12:
+ 397              		.section	.rodata.bno055_setup.str1.4,"aMS",%progbits,1
+ 398              		.align	2
+ 399              	.LC0:
+ 400 0000 43616E27 		.ascii	"Can't find BNO055, id: 0x%02x. Please check your wi"
+ 400      74206669 
+ 400      6E642042 
+ 400      4E4F3035 
+ 400      352C2069 
+ 401 0033 72696E67 		.ascii	"ring.\015\012\000"
+ 401      2E0D0A00 
+ 402              		.section	.text.bno055_setup,"ax",%progbits
+ 403              		.align	1
+ 404              		.global	bno055_setup
+ 405              		.syntax unified
+ 406              		.thumb
+ 407              		.thumb_func
+ 409              	bno055_setup:
+ 410              	.LFB13:
+  59:rover/ECAL/Src/bno055.c **** 
+  60:rover/ECAL/Src/bno055.c **** void bno055_setup() {
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 9
+
+
+ 411              		.loc 1 60 21 is_stmt 1 view -0
+ 412              		.cfi_startproc
+ 413              		@ args = 0, pretend = 0, frame = 8
+ 414              		@ frame_needed = 0, uses_anonymous_args = 0
+ 415 0000 00B5     		push	{lr}
+ 416              	.LCFI17:
+ 417              		.cfi_def_cfa_offset 4
+ 418              		.cfi_offset 14, -4
+ 419 0002 83B0     		sub	sp, sp, #12
+ 420              	.LCFI18:
+ 421              		.cfi_def_cfa_offset 16
+  61:rover/ECAL/Src/bno055.c ****   bno055_reset();
+ 422              		.loc 1 61 3 view .LVU58
+ 423 0004 FFF7FEFF 		bl	bno055_reset
+ 424              	.LVL25:
+  62:rover/ECAL/Src/bno055.c **** 
+  63:rover/ECAL/Src/bno055.c ****   uint8_t id = 0;
+ 425              		.loc 1 63 3 view .LVU59
+ 426              		.loc 1 63 11 is_stmt 0 view .LVU60
+ 427 0008 0020     		movs	r0, #0
+ 428 000a 8DF80700 		strb	r0, [sp, #7]
+  64:rover/ECAL/Src/bno055.c ****   bno055_readData(BNO055_CHIP_ID, &id, 1);
+ 429              		.loc 1 64 3 is_stmt 1 view .LVU61
+ 430 000e 0122     		movs	r2, #1
+ 431 0010 0DF10701 		add	r1, sp, #7
+ 432 0014 FFF7FEFF 		bl	bno055_readData
+ 433              	.LVL26:
+  65:rover/ECAL/Src/bno055.c ****   if (id != BNO055_ID) {
+ 434              		.loc 1 65 3 view .LVU62
+ 435              		.loc 1 65 10 is_stmt 0 view .LVU63
+ 436 0018 9DF80710 		ldrb	r1, [sp, #7]	@ zero_extendqisi2
+ 437              		.loc 1 65 6 view .LVU64
+ 438 001c A029     		cmp	r1, #160
+ 439 001e 0ED1     		bne	.L28
+ 440              	.L26:
+  66:rover/ECAL/Src/bno055.c ****     printf("Can't find BNO055, id: 0x%02x. Please check your wiring.\r\n", id);
+  67:rover/ECAL/Src/bno055.c ****   }
+  68:rover/ECAL/Src/bno055.c ****   bno055_setPage(0);
+ 441              		.loc 1 68 3 is_stmt 1 view .LVU65
+ 442 0020 0020     		movs	r0, #0
+ 443 0022 FFF7FEFF 		bl	bno055_setPage
+ 444              	.LVL27:
+  69:rover/ECAL/Src/bno055.c ****   bno055_writeData(BNO055_SYS_TRIGGER, 0x0);
+ 445              		.loc 1 69 3 view .LVU66
+ 446 0026 0021     		movs	r1, #0
+ 447 0028 3F20     		movs	r0, #63
+ 448 002a FFF7FEFF 		bl	bno055_writeData
+ 449              	.LVL28:
+  70:rover/ECAL/Src/bno055.c **** 
+  71:rover/ECAL/Src/bno055.c ****   // Select BNO055 config mode
+  72:rover/ECAL/Src/bno055.c ****   bno055_setOperationModeConfig();
+ 450              		.loc 1 72 3 view .LVU67
+ 451 002e FFF7FEFF 		bl	bno055_setOperationModeConfig
+ 452              	.LVL29:
+  73:rover/ECAL/Src/bno055.c ****   bno055_delay(10);
+ 453              		.loc 1 73 3 view .LVU68
+ 454 0032 0A20     		movs	r0, #10
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 10
+
+
+ 455 0034 FFF7FEFF 		bl	bno055_delay
+ 456              	.LVL30:
+  74:rover/ECAL/Src/bno055.c **** }
+ 457              		.loc 1 74 1 is_stmt 0 view .LVU69
+ 458 0038 03B0     		add	sp, sp, #12
+ 459              	.LCFI19:
+ 460              		.cfi_remember_state
+ 461              		.cfi_def_cfa_offset 4
+ 462              		@ sp needed
+ 463 003a 5DF804FB 		ldr	pc, [sp], #4
+ 464              	.L28:
+ 465              	.LCFI20:
+ 466              		.cfi_restore_state
+  66:rover/ECAL/Src/bno055.c ****   }
+ 467              		.loc 1 66 5 is_stmt 1 view .LVU70
+ 468 003e 0248     		ldr	r0, .L29
+ 469 0040 FFF7FEFF 		bl	printf
+ 470              	.LVL31:
+ 471 0044 ECE7     		b	.L26
+ 472              	.L30:
+ 473 0046 00BF     		.align	2
+ 474              	.L29:
+ 475 0048 00000000 		.word	.LC0
+ 476              		.cfi_endproc
+ 477              	.LFE13:
+ 479              		.section	.text.bno055_getSWRevision,"ax",%progbits
+ 480              		.align	1
+ 481              		.global	bno055_getSWRevision
+ 482              		.syntax unified
+ 483              		.thumb
+ 484              		.thumb_func
+ 486              	bno055_getSWRevision:
+ 487              	.LFB14:
+  75:rover/ECAL/Src/bno055.c **** 
+  76:rover/ECAL/Src/bno055.c **** int16_t bno055_getSWRevision() {
+ 488              		.loc 1 76 32 view -0
+ 489              		.cfi_startproc
+ 490              		@ args = 0, pretend = 0, frame = 8
+ 491              		@ frame_needed = 0, uses_anonymous_args = 0
+ 492 0000 00B5     		push	{lr}
+ 493              	.LCFI21:
+ 494              		.cfi_def_cfa_offset 4
+ 495              		.cfi_offset 14, -4
+ 496 0002 83B0     		sub	sp, sp, #12
+ 497              	.LCFI22:
+ 498              		.cfi_def_cfa_offset 16
+  77:rover/ECAL/Src/bno055.c ****   bno055_setPage(0);
+ 499              		.loc 1 77 3 view .LVU72
+ 500 0004 0020     		movs	r0, #0
+ 501 0006 FFF7FEFF 		bl	bno055_setPage
+ 502              	.LVL32:
+  78:rover/ECAL/Src/bno055.c ****   uint8_t buffer[2];
+ 503              		.loc 1 78 3 view .LVU73
+  79:rover/ECAL/Src/bno055.c ****   bno055_readData(BNO055_SW_REV_ID_LSB, buffer, 2);
+ 504              		.loc 1 79 3 view .LVU74
+ 505 000a 0222     		movs	r2, #2
+ 506 000c 01A9     		add	r1, sp, #4
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 11
+
+
+ 507 000e 0420     		movs	r0, #4
+ 508 0010 FFF7FEFF 		bl	bno055_readData
+ 509              	.LVL33:
+  80:rover/ECAL/Src/bno055.c ****   return (int16_t)((buffer[1] << 8) | buffer[0]);
+ 510              		.loc 1 80 3 view .LVU75
+ 511              		.loc 1 80 27 is_stmt 0 view .LVU76
+ 512 0014 9DF80530 		ldrb	r3, [sp, #5]	@ zero_extendqisi2
+ 513              		.loc 1 80 45 view .LVU77
+ 514 0018 9DF80400 		ldrb	r0, [sp, #4]	@ zero_extendqisi2
+ 515              		.loc 1 80 10 view .LVU78
+ 516 001c 40EA0320 		orr	r0, r0, r3, lsl #8
+  81:rover/ECAL/Src/bno055.c **** }
+ 517              		.loc 1 81 1 view .LVU79
+ 518 0020 00B2     		sxth	r0, r0
+ 519 0022 03B0     		add	sp, sp, #12
+ 520              	.LCFI23:
+ 521              		.cfi_def_cfa_offset 4
+ 522              		@ sp needed
+ 523 0024 5DF804FB 		ldr	pc, [sp], #4
+ 524              		.cfi_endproc
+ 525              	.LFE14:
+ 527              		.section	.text.bno055_getBootloaderRevision,"ax",%progbits
+ 528              		.align	1
+ 529              		.global	bno055_getBootloaderRevision
+ 530              		.syntax unified
+ 531              		.thumb
+ 532              		.thumb_func
+ 534              	bno055_getBootloaderRevision:
+ 535              	.LFB15:
+  82:rover/ECAL/Src/bno055.c **** 
+  83:rover/ECAL/Src/bno055.c **** uint8_t bno055_getBootloaderRevision() {
+ 536              		.loc 1 83 40 is_stmt 1 view -0
+ 537              		.cfi_startproc
+ 538              		@ args = 0, pretend = 0, frame = 8
+ 539              		@ frame_needed = 0, uses_anonymous_args = 0
+ 540 0000 00B5     		push	{lr}
+ 541              	.LCFI24:
+ 542              		.cfi_def_cfa_offset 4
+ 543              		.cfi_offset 14, -4
+ 544 0002 83B0     		sub	sp, sp, #12
+ 545              	.LCFI25:
+ 546              		.cfi_def_cfa_offset 16
+  84:rover/ECAL/Src/bno055.c ****   bno055_setPage(0);
+ 547              		.loc 1 84 3 view .LVU81
+ 548 0004 0020     		movs	r0, #0
+ 549 0006 FFF7FEFF 		bl	bno055_setPage
+ 550              	.LVL34:
+  85:rover/ECAL/Src/bno055.c ****   uint8_t tmp;
+ 551              		.loc 1 85 3 view .LVU82
+  86:rover/ECAL/Src/bno055.c ****   bno055_readData(BNO055_BL_REV_ID, &tmp, 1);
+ 552              		.loc 1 86 3 view .LVU83
+ 553 000a 0122     		movs	r2, #1
+ 554 000c 0DF10701 		add	r1, sp, #7
+ 555 0010 0620     		movs	r0, #6
+ 556 0012 FFF7FEFF 		bl	bno055_readData
+ 557              	.LVL35:
+  87:rover/ECAL/Src/bno055.c ****   return tmp;
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 12
+
+
+ 558              		.loc 1 87 3 view .LVU84
+  88:rover/ECAL/Src/bno055.c **** }
+ 559              		.loc 1 88 1 is_stmt 0 view .LVU85
+ 560 0016 9DF80700 		ldrb	r0, [sp, #7]	@ zero_extendqisi2
+ 561 001a 03B0     		add	sp, sp, #12
+ 562              	.LCFI26:
+ 563              		.cfi_def_cfa_offset 4
+ 564              		@ sp needed
+ 565 001c 5DF804FB 		ldr	pc, [sp], #4
+ 566              		.cfi_endproc
+ 567              	.LFE15:
+ 569              		.section	.text.bno055_getSystemStatus,"ax",%progbits
+ 570              		.align	1
+ 571              		.global	bno055_getSystemStatus
+ 572              		.syntax unified
+ 573              		.thumb
+ 574              		.thumb_func
+ 576              	bno055_getSystemStatus:
+ 577              	.LFB16:
+  89:rover/ECAL/Src/bno055.c **** 
+  90:rover/ECAL/Src/bno055.c **** uint8_t bno055_getSystemStatus() {
+ 578              		.loc 1 90 34 is_stmt 1 view -0
+ 579              		.cfi_startproc
+ 580              		@ args = 0, pretend = 0, frame = 8
+ 581              		@ frame_needed = 0, uses_anonymous_args = 0
+ 582 0000 00B5     		push	{lr}
+ 583              	.LCFI27:
+ 584              		.cfi_def_cfa_offset 4
+ 585              		.cfi_offset 14, -4
+ 586 0002 83B0     		sub	sp, sp, #12
+ 587              	.LCFI28:
+ 588              		.cfi_def_cfa_offset 16
+  91:rover/ECAL/Src/bno055.c ****   bno055_setPage(0);
+ 589              		.loc 1 91 3 view .LVU87
+ 590 0004 0020     		movs	r0, #0
+ 591 0006 FFF7FEFF 		bl	bno055_setPage
+ 592              	.LVL36:
+  92:rover/ECAL/Src/bno055.c ****   uint8_t tmp;
+ 593              		.loc 1 92 3 view .LVU88
+  93:rover/ECAL/Src/bno055.c ****   bno055_readData(BNO055_SYS_STATUS, &tmp, 1);
+ 594              		.loc 1 93 3 view .LVU89
+ 595 000a 0122     		movs	r2, #1
+ 596 000c 0DF10701 		add	r1, sp, #7
+ 597 0010 3920     		movs	r0, #57
+ 598 0012 FFF7FEFF 		bl	bno055_readData
+ 599              	.LVL37:
+  94:rover/ECAL/Src/bno055.c ****   return tmp;
+ 600              		.loc 1 94 3 view .LVU90
+  95:rover/ECAL/Src/bno055.c **** }
+ 601              		.loc 1 95 1 is_stmt 0 view .LVU91
+ 602 0016 9DF80700 		ldrb	r0, [sp, #7]	@ zero_extendqisi2
+ 603 001a 03B0     		add	sp, sp, #12
+ 604              	.LCFI29:
+ 605              		.cfi_def_cfa_offset 4
+ 606              		@ sp needed
+ 607 001c 5DF804FB 		ldr	pc, [sp], #4
+ 608              		.cfi_endproc
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 13
+
+
+ 609              	.LFE16:
+ 611              		.section	.text.bno055_getSelfTestResult,"ax",%progbits
+ 612              		.align	1
+ 613              		.global	bno055_getSelfTestResult
+ 614              		.syntax unified
+ 615              		.thumb
+ 616              		.thumb_func
+ 618              	bno055_getSelfTestResult:
+ 619              	.LFB17:
+  96:rover/ECAL/Src/bno055.c **** 
+  97:rover/ECAL/Src/bno055.c **** bno055_self_test_result_t bno055_getSelfTestResult() {
+ 620              		.loc 1 97 54 is_stmt 1 view -0
+ 621              		.cfi_startproc
+ 622              		@ args = 0, pretend = 0, frame = 16
+ 623              		@ frame_needed = 0, uses_anonymous_args = 0
+ 624 0000 10B5     		push	{r4, lr}
+ 625              	.LCFI30:
+ 626              		.cfi_def_cfa_offset 8
+ 627              		.cfi_offset 4, -8
+ 628              		.cfi_offset 14, -4
+ 629 0002 84B0     		sub	sp, sp, #16
+ 630              	.LCFI31:
+ 631              		.cfi_def_cfa_offset 24
+  98:rover/ECAL/Src/bno055.c ****   bno055_setPage(0);
+ 632              		.loc 1 98 3 view .LVU93
+ 633 0004 0020     		movs	r0, #0
+ 634 0006 FFF7FEFF 		bl	bno055_setPage
+ 635              	.LVL38:
+  99:rover/ECAL/Src/bno055.c ****   uint8_t tmp;
+ 636              		.loc 1 99 3 view .LVU94
+ 100:rover/ECAL/Src/bno055.c ****   bno055_self_test_result_t res = {
+ 637              		.loc 1 100 3 view .LVU95
+ 638              		.loc 1 100 29 is_stmt 0 view .LVU96
+ 639 000a 0024     		movs	r4, #0
+ 640 000c 0194     		str	r4, [sp, #4]
+ 101:rover/ECAL/Src/bno055.c ****       .mcuState = 0, .gyrState = 0, .magState = 0, .accState = 0};
+ 102:rover/ECAL/Src/bno055.c ****   bno055_readData(BNO055_ST_RESULT, &tmp, 1);
+ 641              		.loc 1 102 3 is_stmt 1 view .LVU97
+ 642 000e 0122     		movs	r2, #1
+ 643 0010 0DF10B01 		add	r1, sp, #11
+ 644 0014 3620     		movs	r0, #54
+ 645 0016 FFF7FEFF 		bl	bno055_readData
+ 646              	.LVL39:
+ 103:rover/ECAL/Src/bno055.c ****   res.mcuState = (tmp >> 3) & 0x01;
+ 647              		.loc 1 103 3 view .LVU98
+ 648              		.loc 1 103 29 is_stmt 0 view .LVU99
+ 649 001a 9DF80B30 		ldrb	r3, [sp, #11]	@ zero_extendqisi2
+ 650 001e C3F3C002 		ubfx	r2, r3, #3, #1
+ 651              		.loc 1 103 16 view .LVU100
+ 652 0022 8DF80420 		strb	r2, [sp, #4]
+ 104:rover/ECAL/Src/bno055.c ****   res.gyrState = (tmp >> 2) & 0x01;
+ 653              		.loc 1 104 3 is_stmt 1 view .LVU101
+ 654              		.loc 1 104 29 is_stmt 0 view .LVU102
+ 655 0026 C3F38002 		ubfx	r2, r3, #2, #1
+ 656              		.loc 1 104 16 view .LVU103
+ 657 002a 8DF80520 		strb	r2, [sp, #5]
+ 105:rover/ECAL/Src/bno055.c ****   res.magState = (tmp >> 1) & 0x01;
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 14
+
+
+ 658              		.loc 1 105 3 is_stmt 1 view .LVU104
+ 659              		.loc 1 105 29 is_stmt 0 view .LVU105
+ 660 002e C3F34002 		ubfx	r2, r3, #1, #1
+ 661              		.loc 1 105 16 view .LVU106
+ 662 0032 8DF80620 		strb	r2, [sp, #6]
+ 106:rover/ECAL/Src/bno055.c ****   res.accState = (tmp >> 0) & 0x01;
+ 663              		.loc 1 106 3 is_stmt 1 view .LVU107
+ 664              		.loc 1 106 29 is_stmt 0 view .LVU108
+ 665 0036 03F00103 		and	r3, r3, #1
+ 666              		.loc 1 106 16 view .LVU109
+ 667 003a 8DF80730 		strb	r3, [sp, #7]
+ 107:rover/ECAL/Src/bno055.c ****   return res;
+ 668              		.loc 1 107 3 is_stmt 1 view .LVU110
+ 669              		.loc 1 107 10 is_stmt 0 view .LVU111
+ 670 003e 019B     		ldr	r3, [sp, #4]
+ 671 0040 0393     		str	r3, [sp, #12]
+ 672 0042 2046     		mov	r0, r4
+ 673 0044 9DF80C30 		ldrb	r3, [sp, #12]	@ zero_extendqisi2
+ 674 0048 63F30700 		bfi	r0, r3, #0, #8
+ 675 004c 9DF80D30 		ldrb	r3, [sp, #13]	@ zero_extendqisi2
+ 676 0050 63F30F20 		bfi	r0, r3, #8, #8
+ 677 0054 9DF80E30 		ldrb	r3, [sp, #14]	@ zero_extendqisi2
+ 678 0058 63F31740 		bfi	r0, r3, #16, #8
+ 679 005c 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 680 0060 63F31F60 		bfi	r0, r3, #24, #8
+ 108:rover/ECAL/Src/bno055.c **** }
+ 681              		.loc 1 108 1 view .LVU112
+ 682 0064 04B0     		add	sp, sp, #16
+ 683              	.LCFI32:
+ 684              		.cfi_def_cfa_offset 8
+ 685              		@ sp needed
+ 686 0066 10BD     		pop	{r4, pc}
+ 687              		.cfi_endproc
+ 688              	.LFE17:
+ 690              		.section	.text.bno055_getSystemError,"ax",%progbits
+ 691              		.align	1
+ 692              		.global	bno055_getSystemError
+ 693              		.syntax unified
+ 694              		.thumb
+ 695              		.thumb_func
+ 697              	bno055_getSystemError:
+ 698              	.LFB18:
+ 109:rover/ECAL/Src/bno055.c **** 
+ 110:rover/ECAL/Src/bno055.c **** uint8_t bno055_getSystemError() {
+ 699              		.loc 1 110 33 is_stmt 1 view -0
+ 700              		.cfi_startproc
+ 701              		@ args = 0, pretend = 0, frame = 8
+ 702              		@ frame_needed = 0, uses_anonymous_args = 0
+ 703 0000 00B5     		push	{lr}
+ 704              	.LCFI33:
+ 705              		.cfi_def_cfa_offset 4
+ 706              		.cfi_offset 14, -4
+ 707 0002 83B0     		sub	sp, sp, #12
+ 708              	.LCFI34:
+ 709              		.cfi_def_cfa_offset 16
+ 111:rover/ECAL/Src/bno055.c ****   bno055_setPage(0);
+ 710              		.loc 1 111 3 view .LVU114
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 15
+
+
+ 711 0004 0020     		movs	r0, #0
+ 712 0006 FFF7FEFF 		bl	bno055_setPage
+ 713              	.LVL40:
+ 112:rover/ECAL/Src/bno055.c ****   uint8_t tmp;
+ 714              		.loc 1 112 3 view .LVU115
+ 113:rover/ECAL/Src/bno055.c ****   bno055_readData(BNO055_SYS_ERR, &tmp, 1);
+ 715              		.loc 1 113 3 view .LVU116
+ 716 000a 0122     		movs	r2, #1
+ 717 000c 0DF10701 		add	r1, sp, #7
+ 718 0010 3A20     		movs	r0, #58
+ 719 0012 FFF7FEFF 		bl	bno055_readData
+ 720              	.LVL41:
+ 114:rover/ECAL/Src/bno055.c ****   return tmp;
+ 721              		.loc 1 114 3 view .LVU117
+ 115:rover/ECAL/Src/bno055.c **** }
+ 722              		.loc 1 115 1 is_stmt 0 view .LVU118
+ 723 0016 9DF80700 		ldrb	r0, [sp, #7]	@ zero_extendqisi2
+ 724 001a 03B0     		add	sp, sp, #12
+ 725              	.LCFI35:
+ 726              		.cfi_def_cfa_offset 4
+ 727              		@ sp needed
+ 728 001c 5DF804FB 		ldr	pc, [sp], #4
+ 729              		.cfi_endproc
+ 730              	.LFE18:
+ 732              		.section	.text.bno055_getCalibrationState,"ax",%progbits
+ 733              		.align	1
+ 734              		.global	bno055_getCalibrationState
+ 735              		.syntax unified
+ 736              		.thumb
+ 737              		.thumb_func
+ 739              	bno055_getCalibrationState:
+ 740              	.LFB19:
+ 116:rover/ECAL/Src/bno055.c **** 
+ 117:rover/ECAL/Src/bno055.c **** bno055_calibration_state_t bno055_getCalibrationState() {
+ 741              		.loc 1 117 57 is_stmt 1 view -0
+ 742              		.cfi_startproc
+ 743              		@ args = 0, pretend = 0, frame = 16
+ 744              		@ frame_needed = 0, uses_anonymous_args = 0
+ 745 0000 10B5     		push	{r4, lr}
+ 746              	.LCFI36:
+ 747              		.cfi_def_cfa_offset 8
+ 748              		.cfi_offset 4, -8
+ 749              		.cfi_offset 14, -4
+ 750 0002 84B0     		sub	sp, sp, #16
+ 751              	.LCFI37:
+ 752              		.cfi_def_cfa_offset 24
+ 118:rover/ECAL/Src/bno055.c ****   bno055_setPage(0);
+ 753              		.loc 1 118 3 view .LVU120
+ 754 0004 0020     		movs	r0, #0
+ 755 0006 FFF7FEFF 		bl	bno055_setPage
+ 756              	.LVL42:
+ 119:rover/ECAL/Src/bno055.c ****   bno055_calibration_state_t cal = {.sys = 0, .gyro = 0, .mag = 0, .accel = 0};
+ 757              		.loc 1 119 3 view .LVU121
+ 758              		.loc 1 119 30 is_stmt 0 view .LVU122
+ 759 000a 0024     		movs	r4, #0
+ 760 000c 0294     		str	r4, [sp, #8]
+ 120:rover/ECAL/Src/bno055.c ****   uint8_t calState = 0;
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 16
+
+
+ 761              		.loc 1 120 3 is_stmt 1 view .LVU123
+ 762              		.loc 1 120 11 is_stmt 0 view .LVU124
+ 763 000e 8DF80740 		strb	r4, [sp, #7]
+ 121:rover/ECAL/Src/bno055.c ****   bno055_readData(BNO055_CALIB_STAT, &calState, 1);
+ 764              		.loc 1 121 3 is_stmt 1 view .LVU125
+ 765 0012 0122     		movs	r2, #1
+ 766 0014 0DF10701 		add	r1, sp, #7
+ 767 0018 3520     		movs	r0, #53
+ 768 001a FFF7FEFF 		bl	bno055_readData
+ 769              	.LVL43:
+ 122:rover/ECAL/Src/bno055.c ****   cal.sys = (calState >> 6) & 0x03;
+ 770              		.loc 1 122 3 view .LVU126
+ 771              		.loc 1 122 11 is_stmt 0 view .LVU127
+ 772 001e 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 773 0022 9A09     		lsrs	r2, r3, #6
+ 774 0024 8DF80820 		strb	r2, [sp, #8]
+ 123:rover/ECAL/Src/bno055.c ****   cal.gyro = (calState >> 4) & 0x03;
+ 775              		.loc 1 123 3 is_stmt 1 view .LVU128
+ 776              		.loc 1 123 30 is_stmt 0 view .LVU129
+ 777 0028 C3F30112 		ubfx	r2, r3, #4, #2
+ 778              		.loc 1 123 12 view .LVU130
+ 779 002c 8DF80920 		strb	r2, [sp, #9]
+ 124:rover/ECAL/Src/bno055.c ****   cal.accel = (calState >> 2) & 0x03;
+ 780              		.loc 1 124 3 is_stmt 1 view .LVU131
+ 781              		.loc 1 124 31 is_stmt 0 view .LVU132
+ 782 0030 C3F38102 		ubfx	r2, r3, #2, #2
+ 783              		.loc 1 124 13 view .LVU133
+ 784 0034 8DF80B20 		strb	r2, [sp, #11]
+ 125:rover/ECAL/Src/bno055.c ****   cal.mag = calState & 0x03;
+ 785              		.loc 1 125 3 is_stmt 1 view .LVU134
+ 786              		.loc 1 125 22 is_stmt 0 view .LVU135
+ 787 0038 03F00303 		and	r3, r3, #3
+ 788              		.loc 1 125 11 view .LVU136
+ 789 003c 8DF80A30 		strb	r3, [sp, #10]
+ 126:rover/ECAL/Src/bno055.c ****   return cal;
+ 790              		.loc 1 126 3 is_stmt 1 view .LVU137
+ 791              		.loc 1 126 10 is_stmt 0 view .LVU138
+ 792 0040 029B     		ldr	r3, [sp, #8]
+ 793 0042 0393     		str	r3, [sp, #12]
+ 794 0044 2046     		mov	r0, r4
+ 795 0046 9DF80C30 		ldrb	r3, [sp, #12]	@ zero_extendqisi2
+ 796 004a 63F30700 		bfi	r0, r3, #0, #8
+ 797 004e 9DF80D30 		ldrb	r3, [sp, #13]	@ zero_extendqisi2
+ 798 0052 63F30F20 		bfi	r0, r3, #8, #8
+ 799 0056 9DF80E30 		ldrb	r3, [sp, #14]	@ zero_extendqisi2
+ 800 005a 63F31740 		bfi	r0, r3, #16, #8
+ 801 005e 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 802 0062 63F31F60 		bfi	r0, r3, #24, #8
+ 127:rover/ECAL/Src/bno055.c **** }
+ 803              		.loc 1 127 1 view .LVU139
+ 804 0066 04B0     		add	sp, sp, #16
+ 805              	.LCFI38:
+ 806              		.cfi_def_cfa_offset 8
+ 807              		@ sp needed
+ 808 0068 10BD     		pop	{r4, pc}
+ 809              		.cfi_endproc
+ 810              	.LFE19:
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 17
+
+
+ 812              		.section	.text.bno055_getCalibrationData,"ax",%progbits
+ 813              		.align	1
+ 814              		.global	bno055_getCalibrationData
+ 815              		.syntax unified
+ 816              		.thumb
+ 817              		.thumb_func
+ 819              	bno055_getCalibrationData:
+ 820              	.LVL44:
+ 821              	.LFB20:
+ 128:rover/ECAL/Src/bno055.c **** 
+ 129:rover/ECAL/Src/bno055.c **** 
+ 130:rover/ECAL/Src/bno055.c **** bno055_calibration_data_t bno055_getCalibrationData() {
+ 822              		.loc 1 130 55 is_stmt 1 view -0
+ 823              		.cfi_startproc
+ 824              		@ args = 0, pretend = 0, frame = 48
+ 825              		@ frame_needed = 0, uses_anonymous_args = 0
+ 826              		.loc 1 130 55 is_stmt 0 view .LVU141
+ 827 0000 70B5     		push	{r4, r5, r6, lr}
+ 828              	.LCFI39:
+ 829              		.cfi_def_cfa_offset 16
+ 830              		.cfi_offset 4, -16
+ 831              		.cfi_offset 5, -12
+ 832              		.cfi_offset 6, -8
+ 833              		.cfi_offset 14, -4
+ 834 0002 8CB0     		sub	sp, sp, #48
+ 835              	.LCFI40:
+ 836              		.cfi_def_cfa_offset 64
+ 837 0004 0446     		mov	r4, r0
+ 131:rover/ECAL/Src/bno055.c ****   bno055_calibration_data_t calData;
+ 838              		.loc 1 131 3 is_stmt 1 view .LVU142
+ 132:rover/ECAL/Src/bno055.c ****   uint8_t buffer[22];
+ 839              		.loc 1 132 3 view .LVU143
+ 133:rover/ECAL/Src/bno055.c ****   bno055_opmode_t operationMode = bno055_getOperationMode();
+ 840              		.loc 1 133 3 view .LVU144
+ 841              		.loc 1 133 35 is_stmt 0 view .LVU145
+ 842 0006 FFF7FEFF 		bl	bno055_getOperationMode
+ 843              	.LVL45:
+ 844              		.loc 1 133 35 view .LVU146
+ 845 000a 0546     		mov	r5, r0
+ 846              	.LVL46:
+ 134:rover/ECAL/Src/bno055.c ****   bno055_setOperationModeConfig();
+ 847              		.loc 1 134 3 is_stmt 1 view .LVU147
+ 848 000c FFF7FEFF 		bl	bno055_setOperationModeConfig
+ 849              	.LVL47:
+ 135:rover/ECAL/Src/bno055.c ****   bno055_setPage(0);
+ 850              		.loc 1 135 3 view .LVU148
+ 851 0010 0020     		movs	r0, #0
+ 852 0012 FFF7FEFF 		bl	bno055_setPage
+ 853              	.LVL48:
+ 136:rover/ECAL/Src/bno055.c **** 
+ 137:rover/ECAL/Src/bno055.c ****   bno055_readData(BNO055_ACC_OFFSET_X_LSB, buffer, 22);
+ 854              		.loc 1 137 3 view .LVU149
+ 855 0016 6E46     		mov	r6, sp
+ 856 0018 1622     		movs	r2, #22
+ 857 001a 3146     		mov	r1, r6
+ 858 001c 5520     		movs	r0, #85
+ 859 001e FFF7FEFF 		bl	bno055_readData
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 18
+
+
+ 860              	.LVL49:
+ 138:rover/ECAL/Src/bno055.c **** 
+ 139:rover/ECAL/Src/bno055.c ****   // Assumes little endian processor
+ 140:rover/ECAL/Src/bno055.c ****   memcpy(&calData.offset.accel, buffer, 6);
+ 861              		.loc 1 140 3 view .LVU150
+ 862 0022 96E80300 		ldm	r6, {r0, r1}
+ 863 0026 0990     		str	r0, [sp, #36]
+ 864 0028 ADF82810 		strh	r1, [sp, #40]	@ movhi
+ 141:rover/ECAL/Src/bno055.c ****   memcpy(&calData.offset.mag, buffer + 6, 6);
+ 865              		.loc 1 141 3 view .LVU151
+ 866 002c DDF80630 		ldr	r3, [sp, #6]	@ unaligned
+ 867 0030 CDF81E30 		str	r3, [sp, #30]	@ unaligned
+ 868 0034 BDF80A30 		ldrh	r3, [sp, #10]	@ unaligned
+ 869 0038 ADF82230 		strh	r3, [sp, #34]	@ unaligned
+ 142:rover/ECAL/Src/bno055.c ****   memcpy(&calData.offset.gyro, buffer + 12, 6);
+ 870              		.loc 1 142 3 view .LVU152
+ 871 003c 03AB     		add	r3, sp, #12
+ 872 003e 93E80300 		ldm	r3, {r0, r1}
+ 873 0042 0690     		str	r0, [sp, #24]
+ 874 0044 ADF81C10 		strh	r1, [sp, #28]	@ movhi
+ 143:rover/ECAL/Src/bno055.c ****   memcpy(&calData.radius.accel, buffer + 18, 2);
+ 875              		.loc 1 143 3 view .LVU153
+ 876 0048 BDF81230 		ldrh	r3, [sp, #18]
+ 877 004c ADF82C30 		strh	r3, [sp, #44]	@ movhi
+ 144:rover/ECAL/Src/bno055.c ****   memcpy(&calData.radius.mag, buffer + 20, 2);
+ 878              		.loc 1 144 3 view .LVU154
+ 879 0050 BDF81430 		ldrh	r3, [sp, #20]
+ 880 0054 ADF82A30 		strh	r3, [sp, #42]	@ movhi
+ 145:rover/ECAL/Src/bno055.c **** 
+ 146:rover/ECAL/Src/bno055.c ****   bno055_setOperationMode(operationMode);
+ 881              		.loc 1 146 3 view .LVU155
+ 882 0058 2846     		mov	r0, r5
+ 883 005a FFF7FEFF 		bl	bno055_setOperationMode
+ 884              	.LVL50:
+ 147:rover/ECAL/Src/bno055.c **** 
+ 148:rover/ECAL/Src/bno055.c ****   return calData;
+ 885              		.loc 1 148 3 view .LVU156
+ 886              		.loc 1 148 10 is_stmt 0 view .LVU157
+ 887 005e 0DF1180C 		add	ip, sp, #24
+ 888 0062 BCE80F00 		ldmia	ip!, {r0, r1, r2, r3}
+ 889 0066 2060     		str	r0, [r4]	@ unaligned
+ 890 0068 6160     		str	r1, [r4, #4]	@ unaligned
+ 891 006a A260     		str	r2, [r4, #8]	@ unaligned
+ 892 006c E360     		str	r3, [r4, #12]	@ unaligned
+ 893 006e DCF80000 		ldr	r0, [ip]
+ 894 0072 2061     		str	r0, [r4, #16]	@ unaligned
+ 895 0074 BCF80430 		ldrh	r3, [ip, #4]	@ unaligned
+ 896 0078 A382     		strh	r3, [r4, #20]	@ unaligned
+ 149:rover/ECAL/Src/bno055.c **** }
+ 897              		.loc 1 149 1 view .LVU158
+ 898 007a 2046     		mov	r0, r4
+ 899 007c 0CB0     		add	sp, sp, #48
+ 900              	.LCFI41:
+ 901              		.cfi_def_cfa_offset 16
+ 902              		@ sp needed
+ 903 007e 70BD     		pop	{r4, r5, r6, pc}
+ 904              		.loc 1 149 1 view .LVU159
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 19
+
+
+ 905              		.cfi_endproc
+ 906              	.LFE20:
+ 908              		.section	.text.bno055_setCalibrationData,"ax",%progbits
+ 909              		.align	1
+ 910              		.global	bno055_setCalibrationData
+ 911              		.syntax unified
+ 912              		.thumb
+ 913              		.thumb_func
+ 915              	bno055_setCalibrationData:
+ 916              	.LFB21:
+ 150:rover/ECAL/Src/bno055.c **** 
+ 151:rover/ECAL/Src/bno055.c **** void bno055_setCalibrationData(bno055_calibration_data_t calData) {
+ 917              		.loc 1 151 67 is_stmt 1 view -0
+ 918              		.cfi_startproc
+ 919              		@ args = 24, pretend = 16, frame = 24
+ 920              		@ frame_needed = 0, uses_anonymous_args = 0
+ 921 0000 84B0     		sub	sp, sp, #16
+ 922              	.LCFI42:
+ 923              		.cfi_def_cfa_offset 16
+ 924 0002 30B5     		push	{r4, r5, lr}
+ 925              	.LCFI43:
+ 926              		.cfi_def_cfa_offset 28
+ 927              		.cfi_offset 4, -28
+ 928              		.cfi_offset 5, -24
+ 929              		.cfi_offset 14, -20
+ 930 0004 87B0     		sub	sp, sp, #28
+ 931              	.LCFI44:
+ 932              		.cfi_def_cfa_offset 56
+ 933 0006 0AAC     		add	r4, sp, #40
+ 934 0008 84E80F00 		stm	r4, {r0, r1, r2, r3}
+ 152:rover/ECAL/Src/bno055.c ****   uint8_t buffer[22];
+ 935              		.loc 1 152 3 view .LVU161
+ 153:rover/ECAL/Src/bno055.c ****   bno055_opmode_t operationMode = bno055_getOperationMode();
+ 936              		.loc 1 153 3 view .LVU162
+ 937              		.loc 1 153 35 is_stmt 0 view .LVU163
+ 938 000c FFF7FEFF 		bl	bno055_getOperationMode
+ 939              	.LVL51:
+ 940 0010 0546     		mov	r5, r0
+ 941              	.LVL52:
+ 154:rover/ECAL/Src/bno055.c ****   bno055_setOperationModeConfig();
+ 942              		.loc 1 154 3 is_stmt 1 view .LVU164
+ 943 0012 FFF7FEFF 		bl	bno055_setOperationModeConfig
+ 944              	.LVL53:
+ 155:rover/ECAL/Src/bno055.c ****   bno055_setPage(0);
+ 945              		.loc 1 155 3 view .LVU165
+ 946 0016 0020     		movs	r0, #0
+ 947 0018 FFF7FEFF 		bl	bno055_setPage
+ 948              	.LVL54:
+ 156:rover/ECAL/Src/bno055.c **** 
+ 157:rover/ECAL/Src/bno055.c ****   // Assumes litle endian processor
+ 158:rover/ECAL/Src/bno055.c ****   memcpy(buffer, &calData.offset.accel, 6);
+ 949              		.loc 1 158 3 view .LVU166
+ 950 001c 0D98     		ldr	r0, [sp, #52]	@ unaligned
+ 951 001e 0090     		str	r0, [sp]
+ 952 0020 BDF83830 		ldrh	r3, [sp, #56]	@ unaligned
+ 953 0024 ADF80430 		strh	r3, [sp, #4]	@ unaligned
+ 159:rover/ECAL/Src/bno055.c ****   memcpy(buffer + 6, &calData.offset.mag, 6);
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 20
+
+
+ 954              		.loc 1 159 3 view .LVU167
+ 955 0028 DDF82E30 		ldr	r3, [sp, #46]	@ unaligned
+ 956 002c CDF80630 		str	r3, [sp, #6]	@ unaligned
+ 957 0030 BDF83230 		ldrh	r3, [sp, #50]	@ unaligned
+ 958 0034 ADF80A30 		strh	r3, [sp, #10]	@ unaligned
+ 160:rover/ECAL/Src/bno055.c ****   memcpy(buffer + 12, &calData.offset.gyro, 6);
+ 959              		.loc 1 160 3 view .LVU168
+ 960 0038 0A98     		ldr	r0, [sp, #40]	@ unaligned
+ 961 003a 0390     		str	r0, [sp, #12]
+ 962 003c BDF82C30 		ldrh	r3, [sp, #44]	@ unaligned
+ 963 0040 ADF81030 		strh	r3, [sp, #16]	@ unaligned
+ 161:rover/ECAL/Src/bno055.c ****   memcpy(buffer + 18, &calData.radius.accel, 2);
+ 964              		.loc 1 161 3 view .LVU169
+ 965 0044 BDF83C30 		ldrh	r3, [sp, #60]
+ 966 0048 ADF81230 		strh	r3, [sp, #18]	@ movhi
+ 162:rover/ECAL/Src/bno055.c ****   memcpy(buffer + 20, &calData.radius.mag, 2);
+ 967              		.loc 1 162 3 view .LVU170
+ 968 004c BDF83A30 		ldrh	r3, [sp, #58]
+ 969 0050 ADF81430 		strh	r3, [sp, #20]	@ movhi
+ 163:rover/ECAL/Src/bno055.c **** 
+ 164:rover/ECAL/Src/bno055.c ****   for (uint8_t i=0; i < 22; i++) {
+ 970              		.loc 1 164 3 view .LVU171
+ 971              	.LBB2:
+ 972              		.loc 1 164 8 view .LVU172
+ 973              	.LVL55:
+ 974              		.loc 1 164 16 is_stmt 0 view .LVU173
+ 975 0054 0024     		movs	r4, #0
+ 976              		.loc 1 164 3 view .LVU174
+ 977 0056 0BE0     		b	.L46
+ 978              	.LVL56:
+ 979              	.L47:
+ 165:rover/ECAL/Src/bno055.c ****     // TODO(oliv4945): create multibytes write
+ 166:rover/ECAL/Src/bno055.c ****     bno055_writeData(BNO055_ACC_OFFSET_X_LSB+i, buffer[i]);
+ 980              		.loc 1 166 5 is_stmt 1 view .LVU175
+ 981 0058 04F11803 		add	r3, r4, #24
+ 982 005c 6B44     		add	r3, sp, r3
+ 983 005e 04F15500 		add	r0, r4, #85
+ 984 0062 13F8181C 		ldrb	r1, [r3, #-24]	@ zero_extendqisi2
+ 985 0066 C0B2     		uxtb	r0, r0
+ 986 0068 FFF7FEFF 		bl	bno055_writeData
+ 987              	.LVL57:
+ 164:rover/ECAL/Src/bno055.c ****     // TODO(oliv4945): create multibytes write
+ 988              		.loc 1 164 30 discriminator 3 view .LVU176
+ 989 006c 0134     		adds	r4, r4, #1
+ 990              	.LVL58:
+ 164:rover/ECAL/Src/bno055.c ****     // TODO(oliv4945): create multibytes write
+ 991              		.loc 1 164 30 is_stmt 0 discriminator 3 view .LVU177
+ 992 006e E4B2     		uxtb	r4, r4
+ 993              	.LVL59:
+ 994              	.L46:
+ 164:rover/ECAL/Src/bno055.c ****     // TODO(oliv4945): create multibytes write
+ 995              		.loc 1 164 23 is_stmt 1 discriminator 1 view .LVU178
+ 996 0070 152C     		cmp	r4, #21
+ 997 0072 F1D9     		bls	.L47
+ 998              	.LBE2:
+ 167:rover/ECAL/Src/bno055.c ****   }
+ 168:rover/ECAL/Src/bno055.c **** 
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 21
+
+
+ 169:rover/ECAL/Src/bno055.c ****   bno055_setOperationMode(operationMode);
+ 999              		.loc 1 169 3 view .LVU179
+ 1000 0074 2846     		mov	r0, r5
+ 1001 0076 FFF7FEFF 		bl	bno055_setOperationMode
+ 1002              	.LVL60:
+ 170:rover/ECAL/Src/bno055.c **** }
+ 1003              		.loc 1 170 1 is_stmt 0 view .LVU180
+ 1004 007a 07B0     		add	sp, sp, #28
+ 1005              	.LCFI45:
+ 1006              		.cfi_def_cfa_offset 28
+ 1007              		@ sp needed
+ 1008 007c BDE83040 		pop	{r4, r5, lr}
+ 1009              	.LCFI46:
+ 1010              		.cfi_restore 14
+ 1011              		.cfi_restore 5
+ 1012              		.cfi_restore 4
+ 1013              		.cfi_def_cfa_offset 16
+ 1014              	.LVL61:
+ 1015              		.loc 1 170 1 view .LVU181
+ 1016 0080 04B0     		add	sp, sp, #16
+ 1017              	.LCFI47:
+ 1018              		.cfi_def_cfa_offset 0
+ 1019 0082 7047     		bx	lr
+ 1020              		.cfi_endproc
+ 1021              	.LFE21:
+ 1023              		.global	__aeabi_ui2d
+ 1024              		.global	__aeabi_i2d
+ 1025              		.global	__aeabi_ddiv
+ 1026              		.section	.text.bno055_getVector,"ax",%progbits
+ 1027              		.align	1
+ 1028              		.global	bno055_getVector
+ 1029              		.syntax unified
+ 1030              		.thumb
+ 1031              		.thumb_func
+ 1033              	bno055_getVector:
+ 1034              	.LVL62:
+ 1035              	.LFB22:
+ 171:rover/ECAL/Src/bno055.c **** 
+ 172:rover/ECAL/Src/bno055.c **** bno055_vector_t bno055_getVector(uint8_t vec) {
+ 1036              		.loc 1 172 47 is_stmt 1 view -0
+ 1037              		.cfi_startproc
+ 1038              		@ args = 0, pretend = 0, frame = 104
+ 1039              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1040              		.loc 1 172 47 is_stmt 0 view .LVU183
+ 1041 0000 D0B5     		push	{r4, r6, r7, lr}
+ 1042              	.LCFI48:
+ 1043              		.cfi_def_cfa_offset 16
+ 1044              		.cfi_offset 4, -16
+ 1045              		.cfi_offset 6, -12
+ 1046              		.cfi_offset 7, -8
+ 1047              		.cfi_offset 14, -4
+ 1048 0002 9AB0     		sub	sp, sp, #104
+ 1049              	.LCFI49:
+ 1050              		.cfi_def_cfa_offset 120
+ 1051 0004 0446     		mov	r4, r0
+ 173:rover/ECAL/Src/bno055.c ****   bno055_setPage(0);
+ 1052              		.loc 1 173 3 is_stmt 1 view .LVU184
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 22
+
+
+ 1053 0006 0020     		movs	r0, #0
+ 1054              	.LVL63:
+ 1055              		.loc 1 173 3 is_stmt 0 view .LVU185
+ 1056 0008 FFF7FEFF 		bl	bno055_setPage
+ 1057              	.LVL64:
+ 174:rover/ECAL/Src/bno055.c ****   uint8_t buffer[8];    // Quaternion need 8 bytes
+ 1058              		.loc 1 174 3 is_stmt 1 view .LVU186
+ 175:rover/ECAL/Src/bno055.c **** 
+ 176:rover/ECAL/Src/bno055.c ****   if (vec == BNO055_VECTOR_QUATERNION)
+ 1059              		.loc 1 176 3 view .LVU187
+ 1060              		.loc 1 176 6 is_stmt 0 view .LVU188
+ 1061 000c 202C     		cmp	r4, #32
+ 1062 000e 1ED0     		beq	.L63
+ 177:rover/ECAL/Src/bno055.c ****     bno055_readData(vec, buffer, 8);
+ 178:rover/ECAL/Src/bno055.c ****   else
+ 179:rover/ECAL/Src/bno055.c ****     bno055_readData(vec, buffer, 6);
+ 1063              		.loc 1 179 5 is_stmt 1 view .LVU189
+ 1064 0010 0622     		movs	r2, #6
+ 1065 0012 18A9     		add	r1, sp, #96
+ 1066 0014 2046     		mov	r0, r4
+ 1067 0016 FFF7FEFF 		bl	bno055_readData
+ 1068              	.LVL65:
+ 1069              	.L51:
+ 180:rover/ECAL/Src/bno055.c **** 
+ 181:rover/ECAL/Src/bno055.c ****   double scale = 1;
+ 1070              		.loc 1 181 3 view .LVU190
+ 182:rover/ECAL/Src/bno055.c **** 
+ 183:rover/ECAL/Src/bno055.c ****   if (vec == BNO055_VECTOR_MAGNETOMETER) {
+ 1071              		.loc 1 183 3 view .LVU191
+ 1072 001a A4F10803 		sub	r3, r4, #8
+ 1073 001e 262B     		cmp	r3, #38
+ 1074 0020 3ED8     		bhi	.L61
+ 1075 0022 DFE803F0 		tbb	[pc, r3]
+ 1076              	.L54:
+ 1077 0026 21       		.byte	(.L53-.L54)/2
+ 1078 0027 3D       		.byte	(.L61-.L54)/2
+ 1079 0028 3D       		.byte	(.L61-.L54)/2
+ 1080 0029 3D       		.byte	(.L61-.L54)/2
+ 1081 002a 3D       		.byte	(.L61-.L54)/2
+ 1082 002b 3D       		.byte	(.L61-.L54)/2
+ 1083 002c 1A       		.byte	(.L58-.L54)/2
+ 1084 002d 3D       		.byte	(.L61-.L54)/2
+ 1085 002e 3D       		.byte	(.L61-.L54)/2
+ 1086 002f 3D       		.byte	(.L61-.L54)/2
+ 1087 0030 3D       		.byte	(.L61-.L54)/2
+ 1088 0031 3D       		.byte	(.L61-.L54)/2
+ 1089 0032 28       		.byte	(.L57-.L54)/2
+ 1090 0033 3D       		.byte	(.L61-.L54)/2
+ 1091 0034 3D       		.byte	(.L61-.L54)/2
+ 1092 0035 3D       		.byte	(.L61-.L54)/2
+ 1093 0036 3D       		.byte	(.L61-.L54)/2
+ 1094 0037 3D       		.byte	(.L61-.L54)/2
+ 1095 0038 2F       		.byte	(.L56-.L54)/2
+ 1096 0039 3D       		.byte	(.L61-.L54)/2
+ 1097 003a 3D       		.byte	(.L61-.L54)/2
+ 1098 003b 3D       		.byte	(.L61-.L54)/2
+ 1099 003c 3D       		.byte	(.L61-.L54)/2
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 23
+
+
+ 1100 003d 3D       		.byte	(.L61-.L54)/2
+ 1101 003e 36       		.byte	(.L55-.L54)/2
+ 1102 003f 3D       		.byte	(.L61-.L54)/2
+ 1103 0040 3D       		.byte	(.L61-.L54)/2
+ 1104 0041 3D       		.byte	(.L61-.L54)/2
+ 1105 0042 3D       		.byte	(.L61-.L54)/2
+ 1106 0043 3D       		.byte	(.L61-.L54)/2
+ 1107 0044 3D       		.byte	(.L61-.L54)/2
+ 1108 0045 3D       		.byte	(.L61-.L54)/2
+ 1109 0046 21       		.byte	(.L53-.L54)/2
+ 1110 0047 3D       		.byte	(.L61-.L54)/2
+ 1111 0048 3D       		.byte	(.L61-.L54)/2
+ 1112 0049 3D       		.byte	(.L61-.L54)/2
+ 1113 004a 3D       		.byte	(.L61-.L54)/2
+ 1114 004b 3D       		.byte	(.L61-.L54)/2
+ 1115 004c 21       		.byte	(.L53-.L54)/2
+ 1116              	.LVL66:
+ 1117 004d 00       		.p2align 1
+ 1118              	.L63:
+ 177:rover/ECAL/Src/bno055.c ****   else
+ 1119              		.loc 1 177 5 view .LVU192
+ 1120 004e 0822     		movs	r2, #8
+ 1121 0050 18A9     		add	r1, sp, #96
+ 1122 0052 2046     		mov	r0, r4
+ 1123 0054 FFF7FEFF 		bl	bno055_readData
+ 1124              	.LVL67:
+ 1125 0058 DFE7     		b	.L51
+ 1126              	.LVL68:
+ 1127              	.L58:
+ 184:rover/ECAL/Src/bno055.c ****     scale = magScale;
+ 1128              		.loc 1 184 5 view .LVU193
+ 1129              		.loc 1 184 11 is_stmt 0 view .LVU194
+ 1130 005a 564B     		ldr	r3, .L65
+ 1131 005c 1888     		ldrh	r0, [r3]
+ 1132 005e FFF7FEFF 		bl	__aeabi_ui2d
+ 1133              	.LVL69:
+ 1134 0062 0646     		mov	r6, r0
+ 1135 0064 0F46     		mov	r7, r1
+ 1136              	.LVL70:
+ 1137              		.loc 1 184 11 view .LVU195
+ 1138 0066 1DE0     		b	.L52
+ 1139              	.LVL71:
+ 1140              	.L53:
+ 185:rover/ECAL/Src/bno055.c ****   } else if (vec == BNO055_VECTOR_ACCELEROMETER ||
+ 186:rover/ECAL/Src/bno055.c ****            vec == BNO055_VECTOR_LINEARACCEL || vec == BNO055_VECTOR_GRAVITY) {
+ 187:rover/ECAL/Src/bno055.c ****     scale = accelScale;
+ 1141              		.loc 1 187 5 is_stmt 1 view .LVU196
+ 1142              		.loc 1 187 11 is_stmt 0 view .LVU197
+ 1143 0068 534B     		ldr	r3, .L65+4
+ 1144 006a 1888     		ldrh	r0, [r3]
+ 1145 006c FFF7FEFF 		bl	__aeabi_ui2d
+ 1146              	.LVL72:
+ 1147 0070 0646     		mov	r6, r0
+ 1148 0072 0F46     		mov	r7, r1
+ 1149              	.LVL73:
+ 1150              		.loc 1 187 11 view .LVU198
+ 1151 0074 16E0     		b	.L52
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 24
+
+
+ 1152              	.LVL74:
+ 1153              	.L57:
+ 188:rover/ECAL/Src/bno055.c ****   } else if (vec == BNO055_VECTOR_GYROSCOPE) {
+ 189:rover/ECAL/Src/bno055.c ****     scale = angularRateScale;
+ 1154              		.loc 1 189 5 is_stmt 1 view .LVU199
+ 1155              		.loc 1 189 11 is_stmt 0 view .LVU200
+ 1156 0076 514B     		ldr	r3, .L65+8
+ 1157 0078 1888     		ldrh	r0, [r3]
+ 1158 007a FFF7FEFF 		bl	__aeabi_ui2d
+ 1159              	.LVL75:
+ 1160 007e 0646     		mov	r6, r0
+ 1161 0080 0F46     		mov	r7, r1
+ 1162              	.LVL76:
+ 1163              		.loc 1 189 11 view .LVU201
+ 1164 0082 0FE0     		b	.L52
+ 1165              	.LVL77:
+ 1166              	.L56:
+ 190:rover/ECAL/Src/bno055.c ****   } else if (vec == BNO055_VECTOR_EULER) {
+ 191:rover/ECAL/Src/bno055.c ****     scale = eulerScale;
+ 1167              		.loc 1 191 5 is_stmt 1 view .LVU202
+ 1168              		.loc 1 191 11 is_stmt 0 view .LVU203
+ 1169 0084 4E4B     		ldr	r3, .L65+12
+ 1170 0086 1888     		ldrh	r0, [r3]
+ 1171 0088 FFF7FEFF 		bl	__aeabi_ui2d
+ 1172              	.LVL78:
+ 1173 008c 0646     		mov	r6, r0
+ 1174 008e 0F46     		mov	r7, r1
+ 1175              	.LVL79:
+ 1176              		.loc 1 191 11 view .LVU204
+ 1177 0090 08E0     		b	.L52
+ 1178              	.LVL80:
+ 1179              	.L55:
+ 192:rover/ECAL/Src/bno055.c ****   } else if (vec == BNO055_VECTOR_QUATERNION) {
+ 193:rover/ECAL/Src/bno055.c ****     scale = quaScale;
+ 1180              		.loc 1 193 5 is_stmt 1 view .LVU205
+ 1181              		.loc 1 193 11 is_stmt 0 view .LVU206
+ 1182 0092 4C4B     		ldr	r3, .L65+16
+ 1183 0094 1888     		ldrh	r0, [r3]
+ 1184 0096 FFF7FEFF 		bl	__aeabi_ui2d
+ 1185              	.LVL81:
+ 1186 009a 0646     		mov	r6, r0
+ 1187 009c 0F46     		mov	r7, r1
+ 1188              	.LVL82:
+ 1189              		.loc 1 193 11 view .LVU207
+ 1190 009e 01E0     		b	.L52
+ 1191              	.LVL83:
+ 1192              	.L61:
+ 172:rover/ECAL/Src/bno055.c ****   bno055_setPage(0);
+ 1193              		.loc 1 172 47 view .LVU208
+ 1194 00a0 0026     		movs	r6, #0
+ 1195 00a2 494F     		ldr	r7, .L65+20
+ 1196              	.LVL84:
+ 1197              	.L52:
+ 194:rover/ECAL/Src/bno055.c ****   }
+ 195:rover/ECAL/Src/bno055.c **** 
+ 196:rover/ECAL/Src/bno055.c ****   bno055_vector_t xyz = {.w = 0, .x = 0, .y = 0, .z = 0};
+ 1198              		.loc 1 196 3 is_stmt 1 view .LVU209
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 25
+
+
+ 1199              		.loc 1 196 19 is_stmt 0 view .LVU210
+ 1200 00a4 2022     		movs	r2, #32
+ 1201 00a6 0021     		movs	r1, #0
+ 1202 00a8 10A8     		add	r0, sp, #64
+ 1203 00aa FFF7FEFF 		bl	memset
+ 1204              	.LVL85:
+ 197:rover/ECAL/Src/bno055.c ****   if (vec == BNO055_VECTOR_QUATERNION) {
+ 1205              		.loc 1 197 3 is_stmt 1 view .LVU211
+ 1206              		.loc 1 197 6 is_stmt 0 view .LVU212
+ 1207 00ae 202C     		cmp	r4, #32
+ 1208 00b0 42D0     		beq	.L64
+ 198:rover/ECAL/Src/bno055.c ****     xyz.w = (int16_t)((buffer[1] << 8) | buffer[0]) / scale;
+ 199:rover/ECAL/Src/bno055.c ****     xyz.x = (int16_t)((buffer[3] << 8) | buffer[2]) / scale;
+ 200:rover/ECAL/Src/bno055.c ****     xyz.y = (int16_t)((buffer[5] << 8) | buffer[4]) / scale;
+ 201:rover/ECAL/Src/bno055.c ****     xyz.z = (int16_t)((buffer[7] << 8) | buffer[6]) / scale;
+ 202:rover/ECAL/Src/bno055.c ****   } else {
+ 203:rover/ECAL/Src/bno055.c ****     xyz.x = (int16_t)((buffer[1] << 8) | buffer[0]) / scale;
+ 1209              		.loc 1 203 5 is_stmt 1 view .LVU213
+ 1210              		.loc 1 203 30 is_stmt 0 view .LVU214
+ 1211 00b2 9DF86130 		ldrb	r3, [sp, #97]	@ zero_extendqisi2
+ 1212              		.loc 1 203 48 view .LVU215
+ 1213 00b6 9DF86000 		ldrb	r0, [sp, #96]	@ zero_extendqisi2
+ 1214              		.loc 1 203 13 view .LVU216
+ 1215 00ba 40EA0320 		orr	r0, r0, r3, lsl #8
+ 1216              		.loc 1 203 53 view .LVU217
+ 1217 00be 00B2     		sxth	r0, r0
+ 1218 00c0 FFF7FEFF 		bl	__aeabi_i2d
+ 1219              	.LVL86:
+ 1220 00c4 3246     		mov	r2, r6
+ 1221 00c6 3B46     		mov	r3, r7
+ 1222 00c8 FFF7FEFF 		bl	__aeabi_ddiv
+ 1223              	.LVL87:
+ 1224              		.loc 1 203 11 view .LVU218
+ 1225 00cc CDE91201 		strd	r0, [sp, #72]
+ 204:rover/ECAL/Src/bno055.c ****     xyz.y = (int16_t)((buffer[3] << 8) | buffer[2]) / scale;
+ 1226              		.loc 1 204 5 is_stmt 1 view .LVU219
+ 1227              		.loc 1 204 30 is_stmt 0 view .LVU220
+ 1228 00d0 9DF86330 		ldrb	r3, [sp, #99]	@ zero_extendqisi2
+ 1229              		.loc 1 204 48 view .LVU221
+ 1230 00d4 9DF86200 		ldrb	r0, [sp, #98]	@ zero_extendqisi2
+ 1231              		.loc 1 204 13 view .LVU222
+ 1232 00d8 40EA0320 		orr	r0, r0, r3, lsl #8
+ 1233              		.loc 1 204 53 view .LVU223
+ 1234 00dc 00B2     		sxth	r0, r0
+ 1235 00de FFF7FEFF 		bl	__aeabi_i2d
+ 1236              	.LVL88:
+ 1237 00e2 3246     		mov	r2, r6
+ 1238 00e4 3B46     		mov	r3, r7
+ 1239 00e6 FFF7FEFF 		bl	__aeabi_ddiv
+ 1240              	.LVL89:
+ 1241              		.loc 1 204 11 view .LVU224
+ 1242 00ea CDE91401 		strd	r0, [sp, #80]
+ 205:rover/ECAL/Src/bno055.c ****     xyz.z = (int16_t)((buffer[5] << 8) | buffer[4]) / scale;
+ 1243              		.loc 1 205 5 is_stmt 1 view .LVU225
+ 1244              		.loc 1 205 30 is_stmt 0 view .LVU226
+ 1245 00ee 9DF86530 		ldrb	r3, [sp, #101]	@ zero_extendqisi2
+ 1246              		.loc 1 205 48 view .LVU227
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 26
+
+
+ 1247 00f2 9DF86400 		ldrb	r0, [sp, #100]	@ zero_extendqisi2
+ 1248              		.loc 1 205 13 view .LVU228
+ 1249 00f6 40EA0320 		orr	r0, r0, r3, lsl #8
+ 1250              		.loc 1 205 53 view .LVU229
+ 1251 00fa 00B2     		sxth	r0, r0
+ 1252 00fc FFF7FEFF 		bl	__aeabi_i2d
+ 1253              	.LVL90:
+ 1254 0100 3246     		mov	r2, r6
+ 1255 0102 3B46     		mov	r3, r7
+ 1256 0104 FFF7FEFF 		bl	__aeabi_ddiv
+ 1257              	.LVL91:
+ 1258              		.loc 1 205 11 view .LVU230
+ 1259 0108 CDE91601 		strd	r0, [sp, #88]
+ 1260              	.L60:
+ 206:rover/ECAL/Src/bno055.c ****   }
+ 207:rover/ECAL/Src/bno055.c **** 
+ 208:rover/ECAL/Src/bno055.c ****   return xyz;
+ 1261              		.loc 1 208 3 is_stmt 1 view .LVU231
+ 1262              		.loc 1 208 10 is_stmt 0 view .LVU232
+ 1263 010c 0DF1200C 		add	ip, sp, #32
+ 1264 0110 0DF1400E 		add	lr, sp, #64
+ 1265 0114 BEE80F00 		ldmia	lr!, {r0, r1, r2, r3}
+ 1266 0118 ACE80F00 		stmia	ip!, {r0, r1, r2, r3}
+ 1267 011c 9EE80F00 		ldm	lr, {r0, r1, r2, r3}
+ 1268 0120 8CE80F00 		stm	ip, {r0, r1, r2, r3}
+ 209:rover/ECAL/Src/bno055.c **** }
+ 1269              		.loc 1 209 1 view .LVU233
+ 1270 0124 9DED080B 		vldr.64	d0, [sp, #32]
+ 1271 0128 9DED0A1B 		vldr.64	d1, [sp, #40]
+ 1272 012c 9DED0C2B 		vldr.64	d2, [sp, #48]
+ 1273 0130 9DED0E3B 		vldr.64	d3, [sp, #56]
+ 1274 0134 1AB0     		add	sp, sp, #104
+ 1275              	.LCFI50:
+ 1276              		.cfi_remember_state
+ 1277              		.cfi_def_cfa_offset 16
+ 1278              		@ sp needed
+ 1279 0136 D0BD     		pop	{r4, r6, r7, pc}
+ 1280              	.LVL92:
+ 1281              	.L64:
+ 1282              	.LCFI51:
+ 1283              		.cfi_restore_state
+ 198:rover/ECAL/Src/bno055.c ****     xyz.x = (int16_t)((buffer[3] << 8) | buffer[2]) / scale;
+ 1284              		.loc 1 198 5 is_stmt 1 view .LVU234
+ 198:rover/ECAL/Src/bno055.c ****     xyz.x = (int16_t)((buffer[3] << 8) | buffer[2]) / scale;
+ 1285              		.loc 1 198 30 is_stmt 0 view .LVU235
+ 1286 0138 9DF86130 		ldrb	r3, [sp, #97]	@ zero_extendqisi2
+ 198:rover/ECAL/Src/bno055.c ****     xyz.x = (int16_t)((buffer[3] << 8) | buffer[2]) / scale;
+ 1287              		.loc 1 198 48 view .LVU236
+ 1288 013c 9DF86000 		ldrb	r0, [sp, #96]	@ zero_extendqisi2
+ 198:rover/ECAL/Src/bno055.c ****     xyz.x = (int16_t)((buffer[3] << 8) | buffer[2]) / scale;
+ 1289              		.loc 1 198 13 view .LVU237
+ 1290 0140 40EA0320 		orr	r0, r0, r3, lsl #8
+ 198:rover/ECAL/Src/bno055.c ****     xyz.x = (int16_t)((buffer[3] << 8) | buffer[2]) / scale;
+ 1291              		.loc 1 198 53 view .LVU238
+ 1292 0144 00B2     		sxth	r0, r0
+ 1293 0146 FFF7FEFF 		bl	__aeabi_i2d
+ 1294              	.LVL93:
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 27
+
+
+ 1295 014a 3246     		mov	r2, r6
+ 1296 014c 3B46     		mov	r3, r7
+ 1297 014e FFF7FEFF 		bl	__aeabi_ddiv
+ 1298              	.LVL94:
+ 198:rover/ECAL/Src/bno055.c ****     xyz.x = (int16_t)((buffer[3] << 8) | buffer[2]) / scale;
+ 1299              		.loc 1 198 11 view .LVU239
+ 1300 0152 CDE91001 		strd	r0, [sp, #64]
+ 199:rover/ECAL/Src/bno055.c ****     xyz.y = (int16_t)((buffer[5] << 8) | buffer[4]) / scale;
+ 1301              		.loc 1 199 5 is_stmt 1 view .LVU240
+ 199:rover/ECAL/Src/bno055.c ****     xyz.y = (int16_t)((buffer[5] << 8) | buffer[4]) / scale;
+ 1302              		.loc 1 199 30 is_stmt 0 view .LVU241
+ 1303 0156 9DF86330 		ldrb	r3, [sp, #99]	@ zero_extendqisi2
+ 199:rover/ECAL/Src/bno055.c ****     xyz.y = (int16_t)((buffer[5] << 8) | buffer[4]) / scale;
+ 1304              		.loc 1 199 48 view .LVU242
+ 1305 015a 9DF86200 		ldrb	r0, [sp, #98]	@ zero_extendqisi2
+ 199:rover/ECAL/Src/bno055.c ****     xyz.y = (int16_t)((buffer[5] << 8) | buffer[4]) / scale;
+ 1306              		.loc 1 199 13 view .LVU243
+ 1307 015e 40EA0320 		orr	r0, r0, r3, lsl #8
+ 199:rover/ECAL/Src/bno055.c ****     xyz.y = (int16_t)((buffer[5] << 8) | buffer[4]) / scale;
+ 1308              		.loc 1 199 53 view .LVU244
+ 1309 0162 00B2     		sxth	r0, r0
+ 1310 0164 FFF7FEFF 		bl	__aeabi_i2d
+ 1311              	.LVL95:
+ 1312 0168 3246     		mov	r2, r6
+ 1313 016a 3B46     		mov	r3, r7
+ 1314 016c FFF7FEFF 		bl	__aeabi_ddiv
+ 1315              	.LVL96:
+ 199:rover/ECAL/Src/bno055.c ****     xyz.y = (int16_t)((buffer[5] << 8) | buffer[4]) / scale;
+ 1316              		.loc 1 199 11 view .LVU245
+ 1317 0170 CDE91201 		strd	r0, [sp, #72]
+ 200:rover/ECAL/Src/bno055.c ****     xyz.z = (int16_t)((buffer[7] << 8) | buffer[6]) / scale;
+ 1318              		.loc 1 200 5 is_stmt 1 view .LVU246
+ 200:rover/ECAL/Src/bno055.c ****     xyz.z = (int16_t)((buffer[7] << 8) | buffer[6]) / scale;
+ 1319              		.loc 1 200 30 is_stmt 0 view .LVU247
+ 1320 0174 9DF86530 		ldrb	r3, [sp, #101]	@ zero_extendqisi2
+ 200:rover/ECAL/Src/bno055.c ****     xyz.z = (int16_t)((buffer[7] << 8) | buffer[6]) / scale;
+ 1321              		.loc 1 200 48 view .LVU248
+ 1322 0178 9DF86400 		ldrb	r0, [sp, #100]	@ zero_extendqisi2
+ 200:rover/ECAL/Src/bno055.c ****     xyz.z = (int16_t)((buffer[7] << 8) | buffer[6]) / scale;
+ 1323              		.loc 1 200 13 view .LVU249
+ 1324 017c 40EA0320 		orr	r0, r0, r3, lsl #8
+ 200:rover/ECAL/Src/bno055.c ****     xyz.z = (int16_t)((buffer[7] << 8) | buffer[6]) / scale;
+ 1325              		.loc 1 200 53 view .LVU250
+ 1326 0180 00B2     		sxth	r0, r0
+ 1327 0182 FFF7FEFF 		bl	__aeabi_i2d
+ 1328              	.LVL97:
+ 1329 0186 3246     		mov	r2, r6
+ 1330 0188 3B46     		mov	r3, r7
+ 1331 018a FFF7FEFF 		bl	__aeabi_ddiv
+ 1332              	.LVL98:
+ 200:rover/ECAL/Src/bno055.c ****     xyz.z = (int16_t)((buffer[7] << 8) | buffer[6]) / scale;
+ 1333              		.loc 1 200 11 view .LVU251
+ 1334 018e CDE91401 		strd	r0, [sp, #80]
+ 201:rover/ECAL/Src/bno055.c ****   } else {
+ 1335              		.loc 1 201 5 is_stmt 1 view .LVU252
+ 201:rover/ECAL/Src/bno055.c ****   } else {
+ 1336              		.loc 1 201 30 is_stmt 0 view .LVU253
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 28
+
+
+ 1337 0192 9DF86730 		ldrb	r3, [sp, #103]	@ zero_extendqisi2
+ 201:rover/ECAL/Src/bno055.c ****   } else {
+ 1338              		.loc 1 201 48 view .LVU254
+ 1339 0196 9DF86600 		ldrb	r0, [sp, #102]	@ zero_extendqisi2
+ 201:rover/ECAL/Src/bno055.c ****   } else {
+ 1340              		.loc 1 201 13 view .LVU255
+ 1341 019a 40EA0320 		orr	r0, r0, r3, lsl #8
+ 201:rover/ECAL/Src/bno055.c ****   } else {
+ 1342              		.loc 1 201 53 view .LVU256
+ 1343 019e 00B2     		sxth	r0, r0
+ 1344 01a0 FFF7FEFF 		bl	__aeabi_i2d
+ 1345              	.LVL99:
+ 1346 01a4 3246     		mov	r2, r6
+ 1347 01a6 3B46     		mov	r3, r7
+ 1348 01a8 FFF7FEFF 		bl	__aeabi_ddiv
+ 1349              	.LVL100:
+ 201:rover/ECAL/Src/bno055.c ****   } else {
+ 1350              		.loc 1 201 11 view .LVU257
+ 1351 01ac CDE91601 		strd	r0, [sp, #88]
+ 1352 01b0 ACE7     		b	.L60
+ 1353              	.L66:
+ 1354 01b2 00BF     		.align	2
+ 1355              	.L65:
+ 1356 01b4 00000000 		.word	magScale
+ 1357 01b8 00000000 		.word	accelScale
+ 1358 01bc 00000000 		.word	angularRateScale
+ 1359 01c0 00000000 		.word	eulerScale
+ 1360 01c4 00000000 		.word	quaScale
+ 1361 01c8 0000F03F 		.word	1072693248
+ 1362              		.cfi_endproc
+ 1363              	.LFE22:
+ 1365              		.section	.text.bno055_getVectorAccelerometer,"ax",%progbits
+ 1366              		.align	1
+ 1367              		.global	bno055_getVectorAccelerometer
+ 1368              		.syntax unified
+ 1369              		.thumb
+ 1370              		.thumb_func
+ 1372              	bno055_getVectorAccelerometer:
+ 1373              	.LFB23:
+ 210:rover/ECAL/Src/bno055.c **** 
+ 211:rover/ECAL/Src/bno055.c **** bno055_vector_t bno055_getVectorAccelerometer() {
+ 1374              		.loc 1 211 49 is_stmt 1 view -0
+ 1375              		.cfi_startproc
+ 1376              		@ args = 0, pretend = 0, frame = 64
+ 1377              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1378 0000 00B5     		push	{lr}
+ 1379              	.LCFI52:
+ 1380              		.cfi_def_cfa_offset 4
+ 1381              		.cfi_offset 14, -4
+ 1382 0002 91B0     		sub	sp, sp, #68
+ 1383              	.LCFI53:
+ 1384              		.cfi_def_cfa_offset 72
+ 212:rover/ECAL/Src/bno055.c ****   return bno055_getVector(BNO055_VECTOR_ACCELEROMETER);
+ 1385              		.loc 1 212 3 view .LVU259
+ 1386              		.loc 1 212 10 is_stmt 0 view .LVU260
+ 1387 0004 0820     		movs	r0, #8
+ 1388 0006 FFF7FEFF 		bl	bno055_getVector
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 29
+
+
+ 1389              	.LVL101:
+ 1390 000a 8DED080B 		vstr.64	d0, [sp, #32]
+ 1391 000e 8DED0A1B 		vstr.64	d1, [sp, #40]
+ 1392 0012 8DED0C2B 		vstr.64	d2, [sp, #48]
+ 1393 0016 8DED0E3B 		vstr.64	d3, [sp, #56]
+ 213:rover/ECAL/Src/bno055.c **** }
+ 1394              		.loc 1 213 1 view .LVU261
+ 1395 001a 11B0     		add	sp, sp, #68
+ 1396              	.LCFI54:
+ 1397              		.cfi_def_cfa_offset 4
+ 1398              		@ sp needed
+ 1399 001c 5DF804FB 		ldr	pc, [sp], #4
+ 1400              		.cfi_endproc
+ 1401              	.LFE23:
+ 1403              		.section	.text.bno055_getVectorMagnetometer,"ax",%progbits
+ 1404              		.align	1
+ 1405              		.global	bno055_getVectorMagnetometer
+ 1406              		.syntax unified
+ 1407              		.thumb
+ 1408              		.thumb_func
+ 1410              	bno055_getVectorMagnetometer:
+ 1411              	.LFB24:
+ 214:rover/ECAL/Src/bno055.c **** bno055_vector_t bno055_getVectorMagnetometer() {
+ 1412              		.loc 1 214 48 is_stmt 1 view -0
+ 1413              		.cfi_startproc
+ 1414              		@ args = 0, pretend = 0, frame = 64
+ 1415              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1416 0000 00B5     		push	{lr}
+ 1417              	.LCFI55:
+ 1418              		.cfi_def_cfa_offset 4
+ 1419              		.cfi_offset 14, -4
+ 1420 0002 91B0     		sub	sp, sp, #68
+ 1421              	.LCFI56:
+ 1422              		.cfi_def_cfa_offset 72
+ 215:rover/ECAL/Src/bno055.c ****   return bno055_getVector(BNO055_VECTOR_MAGNETOMETER);
+ 1423              		.loc 1 215 3 view .LVU263
+ 1424              		.loc 1 215 10 is_stmt 0 view .LVU264
+ 1425 0004 0E20     		movs	r0, #14
+ 1426 0006 FFF7FEFF 		bl	bno055_getVector
+ 1427              	.LVL102:
+ 1428 000a 8DED080B 		vstr.64	d0, [sp, #32]
+ 1429 000e 8DED0A1B 		vstr.64	d1, [sp, #40]
+ 1430 0012 8DED0C2B 		vstr.64	d2, [sp, #48]
+ 1431 0016 8DED0E3B 		vstr.64	d3, [sp, #56]
+ 216:rover/ECAL/Src/bno055.c **** }
+ 1432              		.loc 1 216 1 view .LVU265
+ 1433 001a 11B0     		add	sp, sp, #68
+ 1434              	.LCFI57:
+ 1435              		.cfi_def_cfa_offset 4
+ 1436              		@ sp needed
+ 1437 001c 5DF804FB 		ldr	pc, [sp], #4
+ 1438              		.cfi_endproc
+ 1439              	.LFE24:
+ 1441              		.section	.text.bno055_getVectorGyroscope,"ax",%progbits
+ 1442              		.align	1
+ 1443              		.global	bno055_getVectorGyroscope
+ 1444              		.syntax unified
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 30
+
+
+ 1445              		.thumb
+ 1446              		.thumb_func
+ 1448              	bno055_getVectorGyroscope:
+ 1449              	.LFB25:
+ 217:rover/ECAL/Src/bno055.c **** bno055_vector_t bno055_getVectorGyroscope() {
+ 1450              		.loc 1 217 45 is_stmt 1 view -0
+ 1451              		.cfi_startproc
+ 1452              		@ args = 0, pretend = 0, frame = 64
+ 1453              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1454 0000 00B5     		push	{lr}
+ 1455              	.LCFI58:
+ 1456              		.cfi_def_cfa_offset 4
+ 1457              		.cfi_offset 14, -4
+ 1458 0002 91B0     		sub	sp, sp, #68
+ 1459              	.LCFI59:
+ 1460              		.cfi_def_cfa_offset 72
+ 218:rover/ECAL/Src/bno055.c ****   return bno055_getVector(BNO055_VECTOR_GYROSCOPE);
+ 1461              		.loc 1 218 3 view .LVU267
+ 1462              		.loc 1 218 10 is_stmt 0 view .LVU268
+ 1463 0004 1420     		movs	r0, #20
+ 1464 0006 FFF7FEFF 		bl	bno055_getVector
+ 1465              	.LVL103:
+ 1466 000a 8DED080B 		vstr.64	d0, [sp, #32]
+ 1467 000e 8DED0A1B 		vstr.64	d1, [sp, #40]
+ 1468 0012 8DED0C2B 		vstr.64	d2, [sp, #48]
+ 1469 0016 8DED0E3B 		vstr.64	d3, [sp, #56]
+ 219:rover/ECAL/Src/bno055.c **** }
+ 1470              		.loc 1 219 1 view .LVU269
+ 1471 001a 11B0     		add	sp, sp, #68
+ 1472              	.LCFI60:
+ 1473              		.cfi_def_cfa_offset 4
+ 1474              		@ sp needed
+ 1475 001c 5DF804FB 		ldr	pc, [sp], #4
+ 1476              		.cfi_endproc
+ 1477              	.LFE25:
+ 1479              		.section	.text.bno055_getVectorEuler,"ax",%progbits
+ 1480              		.align	1
+ 1481              		.global	bno055_getVectorEuler
+ 1482              		.syntax unified
+ 1483              		.thumb
+ 1484              		.thumb_func
+ 1486              	bno055_getVectorEuler:
+ 1487              	.LFB26:
+ 220:rover/ECAL/Src/bno055.c **** bno055_vector_t bno055_getVectorEuler() {
+ 1488              		.loc 1 220 41 is_stmt 1 view -0
+ 1489              		.cfi_startproc
+ 1490              		@ args = 0, pretend = 0, frame = 64
+ 1491              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1492 0000 00B5     		push	{lr}
+ 1493              	.LCFI61:
+ 1494              		.cfi_def_cfa_offset 4
+ 1495              		.cfi_offset 14, -4
+ 1496 0002 91B0     		sub	sp, sp, #68
+ 1497              	.LCFI62:
+ 1498              		.cfi_def_cfa_offset 72
+ 221:rover/ECAL/Src/bno055.c ****   return bno055_getVector(BNO055_VECTOR_EULER);
+ 1499              		.loc 1 221 3 view .LVU271
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 31
+
+
+ 1500              		.loc 1 221 10 is_stmt 0 view .LVU272
+ 1501 0004 1A20     		movs	r0, #26
+ 1502 0006 FFF7FEFF 		bl	bno055_getVector
+ 1503              	.LVL104:
+ 1504 000a 8DED080B 		vstr.64	d0, [sp, #32]
+ 1505 000e 8DED0A1B 		vstr.64	d1, [sp, #40]
+ 1506 0012 8DED0C2B 		vstr.64	d2, [sp, #48]
+ 1507 0016 8DED0E3B 		vstr.64	d3, [sp, #56]
+ 222:rover/ECAL/Src/bno055.c **** }
+ 1508              		.loc 1 222 1 view .LVU273
+ 1509 001a 11B0     		add	sp, sp, #68
+ 1510              	.LCFI63:
+ 1511              		.cfi_def_cfa_offset 4
+ 1512              		@ sp needed
+ 1513 001c 5DF804FB 		ldr	pc, [sp], #4
+ 1514              		.cfi_endproc
+ 1515              	.LFE26:
+ 1517              		.section	.text.bno055_getVectorLinearAccel,"ax",%progbits
+ 1518              		.align	1
+ 1519              		.global	bno055_getVectorLinearAccel
+ 1520              		.syntax unified
+ 1521              		.thumb
+ 1522              		.thumb_func
+ 1524              	bno055_getVectorLinearAccel:
+ 1525              	.LFB27:
+ 223:rover/ECAL/Src/bno055.c **** bno055_vector_t bno055_getVectorLinearAccel() {
+ 1526              		.loc 1 223 47 is_stmt 1 view -0
+ 1527              		.cfi_startproc
+ 1528              		@ args = 0, pretend = 0, frame = 64
+ 1529              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1530 0000 00B5     		push	{lr}
+ 1531              	.LCFI64:
+ 1532              		.cfi_def_cfa_offset 4
+ 1533              		.cfi_offset 14, -4
+ 1534 0002 91B0     		sub	sp, sp, #68
+ 1535              	.LCFI65:
+ 1536              		.cfi_def_cfa_offset 72
+ 224:rover/ECAL/Src/bno055.c ****   return bno055_getVector(BNO055_VECTOR_LINEARACCEL);
+ 1537              		.loc 1 224 3 view .LVU275
+ 1538              		.loc 1 224 10 is_stmt 0 view .LVU276
+ 1539 0004 2820     		movs	r0, #40
+ 1540 0006 FFF7FEFF 		bl	bno055_getVector
+ 1541              	.LVL105:
+ 1542 000a 8DED080B 		vstr.64	d0, [sp, #32]
+ 1543 000e 8DED0A1B 		vstr.64	d1, [sp, #40]
+ 1544 0012 8DED0C2B 		vstr.64	d2, [sp, #48]
+ 1545 0016 8DED0E3B 		vstr.64	d3, [sp, #56]
+ 225:rover/ECAL/Src/bno055.c **** }
+ 1546              		.loc 1 225 1 view .LVU277
+ 1547 001a 11B0     		add	sp, sp, #68
+ 1548              	.LCFI66:
+ 1549              		.cfi_def_cfa_offset 4
+ 1550              		@ sp needed
+ 1551 001c 5DF804FB 		ldr	pc, [sp], #4
+ 1552              		.cfi_endproc
+ 1553              	.LFE27:
+ 1555              		.section	.text.bno055_getVectorGravity,"ax",%progbits
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 32
+
+
+ 1556              		.align	1
+ 1557              		.global	bno055_getVectorGravity
+ 1558              		.syntax unified
+ 1559              		.thumb
+ 1560              		.thumb_func
+ 1562              	bno055_getVectorGravity:
+ 1563              	.LFB28:
+ 226:rover/ECAL/Src/bno055.c **** bno055_vector_t bno055_getVectorGravity() {
+ 1564              		.loc 1 226 43 is_stmt 1 view -0
+ 1565              		.cfi_startproc
+ 1566              		@ args = 0, pretend = 0, frame = 64
+ 1567              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1568 0000 00B5     		push	{lr}
+ 1569              	.LCFI67:
+ 1570              		.cfi_def_cfa_offset 4
+ 1571              		.cfi_offset 14, -4
+ 1572 0002 91B0     		sub	sp, sp, #68
+ 1573              	.LCFI68:
+ 1574              		.cfi_def_cfa_offset 72
+ 227:rover/ECAL/Src/bno055.c ****   return bno055_getVector(BNO055_VECTOR_GRAVITY);
+ 1575              		.loc 1 227 3 view .LVU279
+ 1576              		.loc 1 227 10 is_stmt 0 view .LVU280
+ 1577 0004 2E20     		movs	r0, #46
+ 1578 0006 FFF7FEFF 		bl	bno055_getVector
+ 1579              	.LVL106:
+ 1580 000a 8DED080B 		vstr.64	d0, [sp, #32]
+ 1581 000e 8DED0A1B 		vstr.64	d1, [sp, #40]
+ 1582 0012 8DED0C2B 		vstr.64	d2, [sp, #48]
+ 1583 0016 8DED0E3B 		vstr.64	d3, [sp, #56]
+ 228:rover/ECAL/Src/bno055.c **** }
+ 1584              		.loc 1 228 1 view .LVU281
+ 1585 001a 11B0     		add	sp, sp, #68
+ 1586              	.LCFI69:
+ 1587              		.cfi_def_cfa_offset 4
+ 1588              		@ sp needed
+ 1589 001c 5DF804FB 		ldr	pc, [sp], #4
+ 1590              		.cfi_endproc
+ 1591              	.LFE28:
+ 1593              		.section	.text.bno055_getVectorQuaternion,"ax",%progbits
+ 1594              		.align	1
+ 1595              		.global	bno055_getVectorQuaternion
+ 1596              		.syntax unified
+ 1597              		.thumb
+ 1598              		.thumb_func
+ 1600              	bno055_getVectorQuaternion:
+ 1601              	.LFB29:
+ 229:rover/ECAL/Src/bno055.c **** bno055_vector_t bno055_getVectorQuaternion() {
+ 1602              		.loc 1 229 46 is_stmt 1 view -0
+ 1603              		.cfi_startproc
+ 1604              		@ args = 0, pretend = 0, frame = 64
+ 1605              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1606 0000 00B5     		push	{lr}
+ 1607              	.LCFI70:
+ 1608              		.cfi_def_cfa_offset 4
+ 1609              		.cfi_offset 14, -4
+ 1610 0002 91B0     		sub	sp, sp, #68
+ 1611              	.LCFI71:
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 33
+
+
+ 1612              		.cfi_def_cfa_offset 72
+ 230:rover/ECAL/Src/bno055.c ****   return bno055_getVector(BNO055_VECTOR_QUATERNION);
+ 1613              		.loc 1 230 3 view .LVU283
+ 1614              		.loc 1 230 10 is_stmt 0 view .LVU284
+ 1615 0004 2020     		movs	r0, #32
+ 1616 0006 FFF7FEFF 		bl	bno055_getVector
+ 1617              	.LVL107:
+ 1618 000a 8DED080B 		vstr.64	d0, [sp, #32]
+ 1619 000e 8DED0A1B 		vstr.64	d1, [sp, #40]
+ 1620 0012 8DED0C2B 		vstr.64	d2, [sp, #48]
+ 1621 0016 8DED0E3B 		vstr.64	d3, [sp, #56]
+ 231:rover/ECAL/Src/bno055.c **** }
+ 1622              		.loc 1 231 1 view .LVU285
+ 1623 001a 11B0     		add	sp, sp, #68
+ 1624              	.LCFI72:
+ 1625              		.cfi_def_cfa_offset 4
+ 1626              		@ sp needed
+ 1627 001c 5DF804FB 		ldr	pc, [sp], #4
+ 1628              		.cfi_endproc
+ 1629              	.LFE29:
+ 1631              		.section	.text.bno055_setAxisMap,"ax",%progbits
+ 1632              		.align	1
+ 1633              		.global	bno055_setAxisMap
+ 1634              		.syntax unified
+ 1635              		.thumb
+ 1636              		.thumb_func
+ 1638              	bno055_setAxisMap:
+ 1639              	.LFB30:
+ 232:rover/ECAL/Src/bno055.c **** 
+ 233:rover/ECAL/Src/bno055.c **** void bno055_setAxisMap(bno055_axis_map_t axis) {
+ 1640              		.loc 1 233 48 is_stmt 1 view -0
+ 1641              		.cfi_startproc
+ 1642              		@ args = 0, pretend = 0, frame = 8
+ 1643              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1644 0000 10B5     		push	{r4, lr}
+ 1645              	.LCFI73:
+ 1646              		.cfi_def_cfa_offset 8
+ 1647              		.cfi_offset 4, -8
+ 1648              		.cfi_offset 14, -4
+ 1649 0002 82B0     		sub	sp, sp, #8
+ 1650              	.LCFI74:
+ 1651              		.cfi_def_cfa_offset 16
+ 1652 0004 02AB     		add	r3, sp, #8
+ 1653 0006 03E90300 		stmdb	r3, {r0, r1}
+ 234:rover/ECAL/Src/bno055.c ****   uint8_t axisRemap = (axis.z << 4) | (axis.y << 2) | (axis.x);
+ 1654              		.loc 1 234 3 view .LVU287
+ 1655              		.loc 1 234 28 is_stmt 0 view .LVU288
+ 1656 000a 9DF80420 		ldrb	r2, [sp, #4]	@ zero_extendqisi2
+ 1657              		.loc 1 234 44 view .LVU289
+ 1658 000e 9DF80230 		ldrb	r3, [sp, #2]	@ zero_extendqisi2
+ 1659              		.loc 1 234 37 view .LVU290
+ 1660 0012 9B00     		lsls	r3, r3, #2
+ 1661 0014 43EA0213 		orr	r3, r3, r2, lsl #4
+ 1662 0018 5BB2     		sxtb	r3, r3
+ 1663              		.loc 1 234 60 view .LVU291
+ 1664 001a 9DF80010 		ldrb	r1, [sp]	@ zero_extendqisi2
+ 1665              		.loc 1 234 11 view .LVU292
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 34
+
+
+ 1666 001e 1943     		orrs	r1, r1, r3
+ 1667              	.LVL108:
+ 235:rover/ECAL/Src/bno055.c ****   uint8_t axisMapSign = (axis.x_sign << 2) | (axis.y_sign << 1) | (axis.z_sign);
+ 1668              		.loc 1 235 3 is_stmt 1 view .LVU293
+ 1669              		.loc 1 235 30 is_stmt 0 view .LVU294
+ 1670 0020 9DF80120 		ldrb	r2, [sp, #1]	@ zero_extendqisi2
+ 1671              		.loc 1 235 51 view .LVU295
+ 1672 0024 9DF80330 		ldrb	r3, [sp, #3]	@ zero_extendqisi2
+ 1673              		.loc 1 235 44 view .LVU296
+ 1674 0028 5B00     		lsls	r3, r3, #1
+ 1675 002a 43EA8203 		orr	r3, r3, r2, lsl #2
+ 1676 002e 5BB2     		sxtb	r3, r3
+ 1677              		.loc 1 235 72 view .LVU297
+ 1678 0030 9DF80540 		ldrb	r4, [sp, #5]	@ zero_extendqisi2
+ 1679              		.loc 1 235 11 view .LVU298
+ 1680 0034 1C43     		orrs	r4, r4, r3
+ 1681 0036 E4B2     		uxtb	r4, r4
+ 1682              	.LVL109:
+ 236:rover/ECAL/Src/bno055.c ****   bno055_writeData(BNO055_AXIS_MAP_CONFIG, axisRemap);
+ 1683              		.loc 1 236 3 is_stmt 1 view .LVU299
+ 1684 0038 C9B2     		uxtb	r1, r1
+ 1685              		.loc 1 236 3 is_stmt 0 view .LVU300
+ 1686 003a 4120     		movs	r0, #65
+ 1687 003c FFF7FEFF 		bl	bno055_writeData
+ 1688              	.LVL110:
+ 237:rover/ECAL/Src/bno055.c ****   bno055_writeData(BNO055_AXIS_MAP_SIGN, axisMapSign);
+ 1689              		.loc 1 237 3 is_stmt 1 view .LVU301
+ 1690 0040 2146     		mov	r1, r4
+ 1691 0042 4220     		movs	r0, #66
+ 1692 0044 FFF7FEFF 		bl	bno055_writeData
+ 1693              	.LVL111:
+ 238:rover/ECAL/Src/bno055.c **** }
+ 1694              		.loc 1 238 1 is_stmt 0 view .LVU302
+ 1695 0048 02B0     		add	sp, sp, #8
+ 1696              	.LCFI75:
+ 1697              		.cfi_def_cfa_offset 8
+ 1698              	.LVL112:
+ 1699              		.loc 1 238 1 view .LVU303
+ 1700              		@ sp needed
+ 1701 004a 10BD     		pop	{r4, pc}
+ 1702              		.loc 1 238 1 view .LVU304
+ 1703              		.cfi_endproc
+ 1704              	.LFE30:
+ 1706              		.global	quaScale
+ 1707              		.section	.data.quaScale,"aw"
+ 1708              		.align	1
+ 1711              	quaScale:
+ 1712 0000 0040     		.short	16384
+ 1713              		.global	magScale
+ 1714              		.section	.data.magScale,"aw"
+ 1715              		.align	1
+ 1718              	magScale:
+ 1719 0000 1000     		.short	16
+ 1720              		.global	eulerScale
+ 1721              		.section	.data.eulerScale,"aw"
+ 1722              		.align	1
+ 1725              	eulerScale:
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 35
+
+
+ 1726 0000 1000     		.short	16
+ 1727              		.global	angularRateScale
+ 1728              		.section	.data.angularRateScale,"aw"
+ 1729              		.align	1
+ 1732              	angularRateScale:
+ 1733 0000 1000     		.short	16
+ 1734              		.global	tempScale
+ 1735              		.section	.data.tempScale,"aw"
+ 1736              		.align	1
+ 1739              	tempScale:
+ 1740 0000 0100     		.short	1
+ 1741              		.global	accelScale
+ 1742              		.section	.data.accelScale,"aw"
+ 1743              		.align	1
+ 1746              	accelScale:
+ 1747 0000 6400     		.short	100
+ 1748              		.text
+ 1749              	.Letext0:
+ 1750              		.file 2 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 1751              		.file 3 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 1752              		.file 4 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 1753              		.file 5 "rover/ECAL/Src/../Inc/bno055.h"
+ 1754              		.file 6 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 1755              		.file 7 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 1756              		.file 8 "<built-in>"
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 36
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 bno055.c
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:21     .text.bno055_setPage:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:27     .text.bno055_setPage:00000000 bno055_setPage
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:53     .text.bno055_getOperationMode:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:59     .text.bno055_getOperationMode:00000000 bno055_getOperationMode
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:91     .text.bno055_setOperationMode:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:97     .text.bno055_setOperationMode:00000000 bno055_setOperationMode
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:140    .text.bno055_setOperationModeConfig:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:146    .text.bno055_setOperationModeConfig:00000000 bno055_setOperationModeConfig
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:167    .text.bno055_setOperationModeNDOF:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:173    .text.bno055_setOperationModeNDOF:00000000 bno055_setOperationModeNDOF
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:194    .text.bno055_setExternalCrystalUse:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:200    .text.bno055_setExternalCrystalUse:00000000 bno055_setExternalCrystalUse
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:270    .text.bno055_enableExternalCrystal:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:276    .text.bno055_enableExternalCrystal:00000000 bno055_enableExternalCrystal
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:297    .text.bno055_disableExternalCrystal:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:303    .text.bno055_disableExternalCrystal:00000000 bno055_disableExternalCrystal
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:324    .text.bno055_reset:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:330    .text.bno055_reset:00000000 bno055_reset
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:356    .text.bno055_getTemp:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:362    .text.bno055_getTemp:00000000 bno055_getTemp
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:398    .rodata.bno055_setup.str1.4:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:403    .text.bno055_setup:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:409    .text.bno055_setup:00000000 bno055_setup
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:475    .text.bno055_setup:00000048 $d
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:480    .text.bno055_getSWRevision:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:486    .text.bno055_getSWRevision:00000000 bno055_getSWRevision
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:528    .text.bno055_getBootloaderRevision:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:534    .text.bno055_getBootloaderRevision:00000000 bno055_getBootloaderRevision
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:570    .text.bno055_getSystemStatus:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:576    .text.bno055_getSystemStatus:00000000 bno055_getSystemStatus
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:612    .text.bno055_getSelfTestResult:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:618    .text.bno055_getSelfTestResult:00000000 bno055_getSelfTestResult
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:691    .text.bno055_getSystemError:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:697    .text.bno055_getSystemError:00000000 bno055_getSystemError
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:733    .text.bno055_getCalibrationState:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:739    .text.bno055_getCalibrationState:00000000 bno055_getCalibrationState
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:813    .text.bno055_getCalibrationData:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:819    .text.bno055_getCalibrationData:00000000 bno055_getCalibrationData
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:909    .text.bno055_setCalibrationData:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:915    .text.bno055_setCalibrationData:00000000 bno055_setCalibrationData
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1027   .text.bno055_getVector:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1033   .text.bno055_getVector:00000000 bno055_getVector
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1077   .text.bno055_getVector:00000026 $d
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1356   .text.bno055_getVector:000001b4 $d
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1718   .data.magScale:00000000 magScale
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1746   .data.accelScale:00000000 accelScale
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1732   .data.angularRateScale:00000000 angularRateScale
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1725   .data.eulerScale:00000000 eulerScale
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1711   .data.quaScale:00000000 quaScale
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1366   .text.bno055_getVectorAccelerometer:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1372   .text.bno055_getVectorAccelerometer:00000000 bno055_getVectorAccelerometer
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1404   .text.bno055_getVectorMagnetometer:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1410   .text.bno055_getVectorMagnetometer:00000000 bno055_getVectorMagnetometer
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1442   .text.bno055_getVectorGyroscope:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1448   .text.bno055_getVectorGyroscope:00000000 bno055_getVectorGyroscope
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s 			page 37
+
+
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1480   .text.bno055_getVectorEuler:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1486   .text.bno055_getVectorEuler:00000000 bno055_getVectorEuler
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1518   .text.bno055_getVectorLinearAccel:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1524   .text.bno055_getVectorLinearAccel:00000000 bno055_getVectorLinearAccel
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1556   .text.bno055_getVectorGravity:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1562   .text.bno055_getVectorGravity:00000000 bno055_getVectorGravity
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1594   .text.bno055_getVectorQuaternion:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1600   .text.bno055_getVectorQuaternion:00000000 bno055_getVectorQuaternion
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1632   .text.bno055_setAxisMap:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1638   .text.bno055_setAxisMap:00000000 bno055_setAxisMap
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1708   .data.quaScale:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1715   .data.magScale:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1722   .data.eulerScale:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1729   .data.angularRateScale:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1739   .data.tempScale:00000000 tempScale
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1736   .data.tempScale:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1743   .data.accelScale:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1117   .text.bno055_getVector:0000004d $d
+C:\Users\bavly\AppData\Local\Temp\ccfQ2n4q.s:1117   .text.bno055_getVector:0000004e $t
+
+UNDEFINED SYMBOLS
+bno055_writeData
+bno055_readData
+bno055_delay
+printf
+__aeabi_ui2d
+__aeabi_i2d
+__aeabi_ddiv
+memset
