@@ -1,0 +1,1455 @@
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"IMU.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "rover/Mission/Src/IMU.c"
+  20              		.section	.text.bno055_assignI2C,"ax",%progbits
+  21              		.align	1
+  22              		.global	bno055_assignI2C
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	bno055_assignI2C:
+  28              	.LVL0:
+  29              	.LFB137:
+  30              		.file 2 "rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h"
+   1:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** #ifndef BNO055_STM32_H_
+   2:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** #define BNO055_STM32_H_
+   3:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** 
+   4:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** #ifdef __cplusplus
+   5:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   extern "C" {
+   6:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** #endif
+   7:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** 
+   8:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** #include "stm32f4xx_hal_i2c.h"
+   9:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** 
+  10:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** #ifdef FREERTOS_ENABLED
+  11:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** #include "FreeRTOS.h"
+  12:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** #include "task.h"
+  13:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** #include "cmsis_os.h"
+  14:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** #endif
+  15:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** 
+  16:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** #include "bno055.h"
+  17:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** 
+  18:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** I2C_HandleTypeDef *_bno055_i2c_port;
+  19:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** 
+  20:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** void bno055_assignI2C(I2C_HandleTypeDef *hi2c_device) {
+  31              		.loc 2 20 55 view -0
+  32              		.cfi_startproc
+  33              		@ args = 0, pretend = 0, frame = 0
+  34              		@ frame_needed = 0, uses_anonymous_args = 0
+  35              		@ link register save eliminated.
+  21:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   _bno055_i2c_port = hi2c_device;
+  36              		.loc 2 21 3 view .LVU1
+  37              		.loc 2 21 20 is_stmt 0 view .LVU2
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s 			page 2
+
+
+  38 0000 014B     		ldr	r3, .L2
+  39 0002 1860     		str	r0, [r3]
+  22:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** }
+  40              		.loc 2 22 1 view .LVU3
+  41 0004 7047     		bx	lr
+  42              	.L3:
+  43 0006 00BF     		.align	2
+  44              	.L2:
+  45 0008 00000000 		.word	_bno055_i2c_port
+  46              		.cfi_endproc
+  47              	.LFE137:
+  49              		.section	.text.bno055_delay,"ax",%progbits
+  50              		.align	1
+  51              		.global	bno055_delay
+  52              		.syntax unified
+  53              		.thumb
+  54              		.thumb_func
+  56              	bno055_delay:
+  57              	.LVL1:
+  58              	.LFB138:
+  23:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** 
+  24:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** void bno055_delay(int time) {
+  59              		.loc 2 24 29 is_stmt 1 view -0
+  60              		.cfi_startproc
+  61              		@ args = 0, pretend = 0, frame = 0
+  62              		@ frame_needed = 0, uses_anonymous_args = 0
+  63              		.loc 2 24 29 is_stmt 0 view .LVU5
+  64 0000 08B5     		push	{r3, lr}
+  65              	.LCFI0:
+  66              		.cfi_def_cfa_offset 8
+  67              		.cfi_offset 3, -8
+  68              		.cfi_offset 14, -4
+  25:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** #ifdef FREERTOS_ENABLED
+  26:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   osDelay(time);
+  27:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** #else
+  28:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   HAL_Delay(time);
+  69              		.loc 2 28 3 is_stmt 1 view .LVU6
+  70 0002 FFF7FEFF 		bl	HAL_Delay
+  71              	.LVL2:
+  29:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** #endif
+  30:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** }
+  72              		.loc 2 30 1 is_stmt 0 view .LVU7
+  73 0006 08BD     		pop	{r3, pc}
+  74              		.cfi_endproc
+  75              	.LFE138:
+  77              		.section	.rodata.bno055_writeData.str1.4,"aMS",%progbits,1
+  78              		.align	2
+  79              	.LC0:
+  80 0000 48414C5F 		.ascii	"HAL_I2C_Master_Transmit HAL_ERROR\015\000"
+  80      4932435F 
+  80      4D617374 
+  80      65725F54 
+  80      72616E73 
+  81 0023 00       		.align	2
+  82              	.LC1:
+  83 0024 48414C5F 		.ascii	"HAL_I2C_Master_Transmit HAL_TIMEOUT\015\000"
+  83      4932435F 
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s 			page 3
+
+
+  83      4D617374 
+  83      65725F54 
+  83      72616E73 
+  84 0049 000000   		.align	2
+  85              	.LC2:
+  86 004c 48414C5F 		.ascii	"HAL_I2C_Master_Transmit HAL_BUSY\015\000"
+  86      4932435F 
+  86      4D617374 
+  86      65725F54 
+  86      72616E73 
+  87 006e 0000     		.align	2
+  88              	.LC3:
+  89 0070 556E6B6E 		.ascii	"Unknown status data %d\000"
+  89      6F776E20 
+  89      73746174 
+  89      75732064 
+  89      61746120 
+  90 0087 00       		.align	2
+  91              	.LC4:
+  92 0088 48414C5F 		.ascii	"HAL_I2C_ERROR_BERR\015\000"
+  92      4932435F 
+  92      4552524F 
+  92      525F4245 
+  92      52520D00 
+  93              		.align	2
+  94              	.LC5:
+  95 009c 48414C5F 		.ascii	"HAL_I2C_ERROR_ARLO\015\000"
+  95      4932435F 
+  95      4552524F 
+  95      525F4152 
+  95      4C4F0D00 
+  96              		.align	2
+  97              	.LC6:
+  98 00b0 48414C5F 		.ascii	"HAL_I2C_ERROR_AF\015\000"
+  98      4932435F 
+  98      4552524F 
+  98      525F4146 
+  98      0D00
+  99 00c2 0000     		.align	2
+ 100              	.LC7:
+ 101 00c4 48414C5F 		.ascii	"HAL_I2C_ERROR_OVR\015\000"
+ 101      4932435F 
+ 101      4552524F 
+ 101      525F4F56 
+ 101      520D00
+ 102 00d7 00       		.align	2
+ 103              	.LC8:
+ 104 00d8 48414C5F 		.ascii	"HAL_I2C_ERROR_DMA\015\000"
+ 104      4932435F 
+ 104      4552524F 
+ 104      525F444D 
+ 104      410D00
+ 105 00eb 00       		.align	2
+ 106              	.LC9:
+ 107 00ec 48414C5F 		.ascii	"HAL_I2C_ERROR_TIMEOUT\015\000"
+ 107      4932435F 
+ 107      4552524F 
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s 			page 4
+
+
+ 107      525F5449 
+ 107      4D454F55 
+ 108 0103 00       		.align	2
+ 109              	.LC10:
+ 110 0104 48414C5F 		.ascii	"HAL_I2C_STATE_RESET\015\000"
+ 110      4932435F 
+ 110      53544154 
+ 110      455F5245 
+ 110      5345540D 
+ 111 0119 000000   		.align	2
+ 112              	.LC11:
+ 113 011c 48414C5F 		.ascii	"HAL_I2C_STATE_BUSY\015\000"
+ 113      4932435F 
+ 113      53544154 
+ 113      455F4255 
+ 113      53590D00 
+ 114              		.align	2
+ 115              	.LC12:
+ 116 0130 48414C5F 		.ascii	"HAL_I2C_STATE_BUSY_TX\015\000"
+ 116      4932435F 
+ 116      53544154 
+ 116      455F4255 
+ 116      53595F54 
+ 117 0147 00       		.align	2
+ 118              	.LC13:
+ 119 0148 48414C5F 		.ascii	"HAL_I2C_STATE_BUSY_RX\015\000"
+ 119      4932435F 
+ 119      53544154 
+ 119      455F4255 
+ 119      53595F52 
+ 120 015f 00       		.align	2
+ 121              	.LC14:
+ 122 0160 48414C5F 		.ascii	"HAL_I2C_STATE_LISTEN\015\000"
+ 122      4932435F 
+ 122      53544154 
+ 122      455F4C49 
+ 122      5354454E 
+ 123 0176 0000     		.align	2
+ 124              	.LC15:
+ 125 0178 48414C5F 		.ascii	"HAL_I2C_STATE_BUSY_TX_LISTEN\015\000"
+ 125      4932435F 
+ 125      53544154 
+ 125      455F4255 
+ 125      53595F54 
+ 126 0196 0000     		.align	2
+ 127              	.LC16:
+ 128 0198 48414C5F 		.ascii	"HAL_I2C_STATE_BUSY_RX_LISTEN\015\000"
+ 128      4932435F 
+ 128      53544154 
+ 128      455F4255 
+ 128      53595F52 
+ 129 01b6 0000     		.align	2
+ 130              	.LC17:
+ 131 01b8 48414C5F 		.ascii	"HAL_I2C_STATE_ABORT\015\000"
+ 131      4932435F 
+ 131      53544154 
+ 131      455F4142 
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s 			page 5
+
+
+ 131      4F52540D 
+ 132              		.section	.text.bno055_writeData,"ax",%progbits
+ 133              		.align	1
+ 134              		.global	bno055_writeData
+ 135              		.syntax unified
+ 136              		.thumb
+ 137              		.thumb_func
+ 139              	bno055_writeData:
+ 140              	.LVL3:
+ 141              	.LFB139:
+  31:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** 
+  32:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** void bno055_writeData(uint8_t reg, uint8_t data) {
+ 142              		.loc 2 32 50 is_stmt 1 view -0
+ 143              		.cfi_startproc
+ 144              		@ args = 0, pretend = 0, frame = 8
+ 145              		@ frame_needed = 0, uses_anonymous_args = 0
+ 146              		.loc 2 32 50 is_stmt 0 view .LVU9
+ 147 0000 00B5     		push	{lr}
+ 148              	.LCFI1:
+ 149              		.cfi_def_cfa_offset 4
+ 150              		.cfi_offset 14, -4
+ 151 0002 85B0     		sub	sp, sp, #20
+ 152              	.LCFI2:
+ 153              		.cfi_def_cfa_offset 24
+  33:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   uint8_t txdata[2] = {reg, data};
+ 154              		.loc 2 33 3 is_stmt 1 view .LVU10
+ 155              		.loc 2 33 11 is_stmt 0 view .LVU11
+ 156 0004 8DF80C00 		strb	r0, [sp, #12]
+ 157 0008 8DF80D10 		strb	r1, [sp, #13]
+  34:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   uint8_t status;
+ 158              		.loc 2 34 3 is_stmt 1 view .LVU12
+  35:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   status = HAL_I2C_Master_Transmit(_bno055_i2c_port, BNO055_I2C_ADDR << 1,
+ 159              		.loc 2 35 3 view .LVU13
+ 160              		.loc 2 35 12 is_stmt 0 view .LVU14
+ 161 000c 0A23     		movs	r3, #10
+ 162 000e 0093     		str	r3, [sp]
+ 163 0010 0223     		movs	r3, #2
+ 164 0012 03AA     		add	r2, sp, #12
+ 165 0014 5021     		movs	r1, #80
+ 166              	.LVL4:
+ 167              		.loc 2 35 12 view .LVU15
+ 168 0016 4948     		ldr	r0, .L40
+ 169              	.LVL5:
+ 170              		.loc 2 35 12 view .LVU16
+ 171 0018 0068     		ldr	r0, [r0]
+ 172 001a FFF7FEFF 		bl	HAL_I2C_Master_Transmit
+ 173              	.LVL6:
+  36:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****                                    txdata, sizeof(txdata), 10);
+  37:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   if (status == HAL_OK) {
+ 174              		.loc 2 37 3 is_stmt 1 view .LVU17
+ 175 001e 0328     		cmp	r0, #3
+ 176 0020 27D8     		bhi	.L7
+ 177 0022 DFE800F0 		tbb	[pc, r0]
+ 178              	.L9:
+ 179 0026 6B       		.byte	(.L6-.L9)/2
+ 180 0027 02       		.byte	(.L11-.L9)/2
+ 181 0028 22       		.byte	(.L10-.L9)/2
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s 			page 6
+
+
+ 182 0029 1E       		.byte	(.L8-.L9)/2
+ 183              		.p2align 1
+ 184              	.L11:
+  38:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****     return;
+  39:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   }
+  40:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** 
+  41:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   if (status == HAL_ERROR) {
+  42:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****     printf("HAL_I2C_Master_Transmit HAL_ERROR\r\n");
+ 185              		.loc 2 42 5 view .LVU18
+ 186 002a 4548     		ldr	r0, .L40+4
+ 187              	.LVL7:
+ 188              		.loc 2 42 5 is_stmt 0 view .LVU19
+ 189 002c FFF7FEFF 		bl	puts
+ 190              	.LVL8:
+ 191              	.L13:
+  43:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (status == HAL_TIMEOUT) {
+  44:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****     printf("HAL_I2C_Master_Transmit HAL_TIMEOUT\r\n");
+  45:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (status == HAL_BUSY) {
+  46:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****     printf("HAL_I2C_Master_Transmit HAL_BUSY\r\n");
+  47:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else {
+  48:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****     printf("Unknown status data %d", status);
+  49:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   }
+  50:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** 
+  51:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   uint32_t error = HAL_I2C_GetError(_bno055_i2c_port);
+ 192              		.loc 2 51 3 is_stmt 1 view .LVU20
+ 193              		.loc 2 51 20 is_stmt 0 view .LVU21
+ 194 0030 424B     		ldr	r3, .L40
+ 195 0032 1868     		ldr	r0, [r3]
+ 196 0034 FFF7FEFF 		bl	HAL_I2C_GetError
+ 197              	.LVL9:
+  52:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   if (error == HAL_I2C_ERROR_NONE) {
+ 198              		.loc 2 52 3 is_stmt 1 view .LVU22
+ 199 0038 2028     		cmp	r0, #32
+ 200 003a 22D8     		bhi	.L14
+ 201 003c DFE800F0 		tbb	[pc, r0]
+ 202              	.L16:
+ 203 0040 5E       		.byte	(.L6-.L16)/2
+ 204 0041 1E       		.byte	(.L21-.L16)/2
+ 205 0042 41       		.byte	(.L20-.L16)/2
+ 206 0043 21       		.byte	(.L14-.L16)/2
+ 207 0044 45       		.byte	(.L19-.L16)/2
+ 208 0045 21       		.byte	(.L14-.L16)/2
+ 209 0046 21       		.byte	(.L14-.L16)/2
+ 210 0047 21       		.byte	(.L14-.L16)/2
+ 211 0048 49       		.byte	(.L18-.L16)/2
+ 212 0049 21       		.byte	(.L14-.L16)/2
+ 213 004a 21       		.byte	(.L14-.L16)/2
+ 214 004b 21       		.byte	(.L14-.L16)/2
+ 215 004c 21       		.byte	(.L14-.L16)/2
+ 216 004d 21       		.byte	(.L14-.L16)/2
+ 217 004e 21       		.byte	(.L14-.L16)/2
+ 218 004f 21       		.byte	(.L14-.L16)/2
+ 219 0050 4D       		.byte	(.L17-.L16)/2
+ 220 0051 21       		.byte	(.L14-.L16)/2
+ 221 0052 21       		.byte	(.L14-.L16)/2
+ 222 0053 21       		.byte	(.L14-.L16)/2
+ 223 0054 21       		.byte	(.L14-.L16)/2
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s 			page 7
+
+
+ 224 0055 21       		.byte	(.L14-.L16)/2
+ 225 0056 21       		.byte	(.L14-.L16)/2
+ 226 0057 21       		.byte	(.L14-.L16)/2
+ 227 0058 21       		.byte	(.L14-.L16)/2
+ 228 0059 21       		.byte	(.L14-.L16)/2
+ 229 005a 21       		.byte	(.L14-.L16)/2
+ 230 005b 21       		.byte	(.L14-.L16)/2
+ 231 005c 21       		.byte	(.L14-.L16)/2
+ 232 005d 21       		.byte	(.L14-.L16)/2
+ 233 005e 21       		.byte	(.L14-.L16)/2
+ 234 005f 21       		.byte	(.L14-.L16)/2
+ 235 0060 51       		.byte	(.L15-.L16)/2
+ 236              	.LVL10:
+ 237 0061 00       		.p2align 1
+ 238              	.L8:
+  44:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (status == HAL_BUSY) {
+ 239              		.loc 2 44 5 view .LVU23
+ 240 0062 3848     		ldr	r0, .L40+8
+ 241              	.LVL11:
+  44:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (status == HAL_BUSY) {
+ 242              		.loc 2 44 5 is_stmt 0 view .LVU24
+ 243 0064 FFF7FEFF 		bl	puts
+ 244              	.LVL12:
+ 245 0068 E2E7     		b	.L13
+ 246              	.LVL13:
+ 247              	.L10:
+  46:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else {
+ 248              		.loc 2 46 5 is_stmt 1 view .LVU25
+ 249 006a 3748     		ldr	r0, .L40+12
+ 250              	.LVL14:
+  46:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else {
+ 251              		.loc 2 46 5 is_stmt 0 view .LVU26
+ 252 006c FFF7FEFF 		bl	puts
+ 253              	.LVL15:
+ 254 0070 DEE7     		b	.L13
+ 255              	.LVL16:
+ 256              	.L7:
+  48:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   }
+ 257              		.loc 2 48 5 is_stmt 1 view .LVU27
+ 258 0072 0146     		mov	r1, r0
+ 259 0074 3548     		ldr	r0, .L40+16
+ 260              	.LVL17:
+  48:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   }
+ 261              		.loc 2 48 5 is_stmt 0 view .LVU28
+ 262 0076 FFF7FEFF 		bl	printf
+ 263              	.LVL18:
+ 264 007a D9E7     		b	.L13
+ 265              	.LVL19:
+ 266              	.L21:
+  53:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****     return;
+  54:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (error == HAL_I2C_ERROR_BERR) {
+  55:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****     printf("HAL_I2C_ERROR_BERR\r\n");
+ 267              		.loc 2 55 5 is_stmt 1 view .LVU29
+ 268 007c 3448     		ldr	r0, .L40+20
+ 269              	.LVL20:
+ 270              		.loc 2 55 5 is_stmt 0 view .LVU30
+ 271 007e FFF7FEFF 		bl	puts
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s 			page 8
+
+
+ 272              	.LVL21:
+ 273              	.L14:
+  56:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (error == HAL_I2C_ERROR_ARLO) {
+  57:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****     printf("HAL_I2C_ERROR_ARLO\r\n");
+  58:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (error == HAL_I2C_ERROR_AF) {
+  59:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****     printf("HAL_I2C_ERROR_AF\r\n");
+  60:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (error == HAL_I2C_ERROR_OVR) {
+  61:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****     printf("HAL_I2C_ERROR_OVR\r\n");
+  62:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (error == HAL_I2C_ERROR_DMA) {
+  63:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****     printf("HAL_I2C_ERROR_DMA\r\n");
+  64:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (error == HAL_I2C_ERROR_TIMEOUT) {
+  65:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****     printf("HAL_I2C_ERROR_TIMEOUT\r\n");
+  66:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   }
+  67:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** 
+  68:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   HAL_I2C_StateTypeDef state = HAL_I2C_GetState(_bno055_i2c_port);
+ 274              		.loc 2 68 3 is_stmt 1 view .LVU31
+ 275              		.loc 2 68 32 is_stmt 0 view .LVU32
+ 276 0082 2E4B     		ldr	r3, .L40
+ 277 0084 1868     		ldr	r0, [r3]
+ 278 0086 FFF7FEFF 		bl	HAL_I2C_GetState
+ 279              	.LVL22:
+  69:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   if (state == HAL_I2C_STATE_RESET) {
+ 280              		.loc 2 69 3 is_stmt 1 view .LVU33
+ 281 008a 2A28     		cmp	r0, #42
+ 282 008c 2DD8     		bhi	.L22
+ 283 008e 2A28     		cmp	r0, #42
+ 284 0090 34D8     		bhi	.L6
+ 285 0092 DFE800F0 		tbb	[pc, r0]
+ 286              	.L25:
+ 287 0096 30       		.byte	(.L32-.L25)/2
+ 288 0097 33       		.byte	(.L6-.L25)/2
+ 289 0098 33       		.byte	(.L6-.L25)/2
+ 290 0099 33       		.byte	(.L6-.L25)/2
+ 291 009a 33       		.byte	(.L6-.L25)/2
+ 292 009b 33       		.byte	(.L6-.L25)/2
+ 293 009c 33       		.byte	(.L6-.L25)/2
+ 294 009d 33       		.byte	(.L6-.L25)/2
+ 295 009e 33       		.byte	(.L6-.L25)/2
+ 296 009f 33       		.byte	(.L6-.L25)/2
+ 297 00a0 33       		.byte	(.L6-.L25)/2
+ 298 00a1 33       		.byte	(.L6-.L25)/2
+ 299 00a2 33       		.byte	(.L6-.L25)/2
+ 300 00a3 33       		.byte	(.L6-.L25)/2
+ 301 00a4 33       		.byte	(.L6-.L25)/2
+ 302 00a5 33       		.byte	(.L6-.L25)/2
+ 303 00a6 33       		.byte	(.L6-.L25)/2
+ 304 00a7 33       		.byte	(.L6-.L25)/2
+ 305 00a8 33       		.byte	(.L6-.L25)/2
+ 306 00a9 33       		.byte	(.L6-.L25)/2
+ 307 00aa 33       		.byte	(.L6-.L25)/2
+ 308 00ab 33       		.byte	(.L6-.L25)/2
+ 309 00ac 33       		.byte	(.L6-.L25)/2
+ 310 00ad 33       		.byte	(.L6-.L25)/2
+ 311 00ae 33       		.byte	(.L6-.L25)/2
+ 312 00af 33       		.byte	(.L6-.L25)/2
+ 313 00b0 33       		.byte	(.L6-.L25)/2
+ 314 00b1 33       		.byte	(.L6-.L25)/2
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s 			page 9
+
+
+ 315 00b2 33       		.byte	(.L6-.L25)/2
+ 316 00b3 33       		.byte	(.L6-.L25)/2
+ 317 00b4 33       		.byte	(.L6-.L25)/2
+ 318 00b5 33       		.byte	(.L6-.L25)/2
+ 319 00b6 36       		.byte	(.L31-.L25)/2
+ 320 00b7 3E       		.byte	(.L30-.L25)/2
+ 321 00b8 42       		.byte	(.L29-.L25)/2
+ 322 00b9 33       		.byte	(.L6-.L25)/2
+ 323 00ba 3A       		.byte	(.L28-.L25)/2
+ 324 00bb 33       		.byte	(.L6-.L25)/2
+ 325 00bc 33       		.byte	(.L6-.L25)/2
+ 326 00bd 33       		.byte	(.L6-.L25)/2
+ 327 00be 46       		.byte	(.L27-.L25)/2
+ 328 00bf 4A       		.byte	(.L26-.L25)/2
+ 329 00c0 4E       		.byte	(.L24-.L25)/2
+ 330              	.LVL23:
+ 331 00c1 00       		.p2align 1
+ 332              	.L20:
+  57:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (error == HAL_I2C_ERROR_AF) {
+ 333              		.loc 2 57 5 view .LVU34
+ 334 00c2 2448     		ldr	r0, .L40+24
+ 335              	.LVL24:
+  57:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (error == HAL_I2C_ERROR_AF) {
+ 336              		.loc 2 57 5 is_stmt 0 view .LVU35
+ 337 00c4 FFF7FEFF 		bl	puts
+ 338              	.LVL25:
+ 339 00c8 DBE7     		b	.L14
+ 340              	.LVL26:
+ 341              	.L19:
+  59:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (error == HAL_I2C_ERROR_OVR) {
+ 342              		.loc 2 59 5 is_stmt 1 view .LVU36
+ 343 00ca 2348     		ldr	r0, .L40+28
+ 344              	.LVL27:
+  59:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (error == HAL_I2C_ERROR_OVR) {
+ 345              		.loc 2 59 5 is_stmt 0 view .LVU37
+ 346 00cc FFF7FEFF 		bl	puts
+ 347              	.LVL28:
+ 348 00d0 D7E7     		b	.L14
+ 349              	.LVL29:
+ 350              	.L18:
+  61:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (error == HAL_I2C_ERROR_DMA) {
+ 351              		.loc 2 61 5 is_stmt 1 view .LVU38
+ 352 00d2 2248     		ldr	r0, .L40+32
+ 353              	.LVL30:
+  61:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (error == HAL_I2C_ERROR_DMA) {
+ 354              		.loc 2 61 5 is_stmt 0 view .LVU39
+ 355 00d4 FFF7FEFF 		bl	puts
+ 356              	.LVL31:
+ 357 00d8 D3E7     		b	.L14
+ 358              	.LVL32:
+ 359              	.L17:
+  63:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (error == HAL_I2C_ERROR_TIMEOUT) {
+ 360              		.loc 2 63 5 is_stmt 1 view .LVU40
+ 361 00da 2148     		ldr	r0, .L40+36
+ 362              	.LVL33:
+  63:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (error == HAL_I2C_ERROR_TIMEOUT) {
+ 363              		.loc 2 63 5 is_stmt 0 view .LVU41
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s 			page 10
+
+
+ 364 00dc FFF7FEFF 		bl	puts
+ 365              	.LVL34:
+ 366 00e0 CFE7     		b	.L14
+ 367              	.LVL35:
+ 368              	.L15:
+  65:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   }
+ 369              		.loc 2 65 5 is_stmt 1 view .LVU42
+ 370 00e2 2048     		ldr	r0, .L40+40
+ 371              	.LVL36:
+  65:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   }
+ 372              		.loc 2 65 5 is_stmt 0 view .LVU43
+ 373 00e4 FFF7FEFF 		bl	puts
+ 374              	.LVL37:
+ 375 00e8 CBE7     		b	.L14
+ 376              	.LVL38:
+ 377              	.L22:
+  65:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   }
+ 378              		.loc 2 65 5 view .LVU44
+ 379 00ea 6028     		cmp	r0, #96
+ 380 00ec 06D1     		bne	.L6
+  70:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****     printf("HAL_I2C_STATE_RESET\r\n");
+  71:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (state == HAL_I2C_STATE_READY) {
+  72:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****     printf("HAL_I2C_STATE_RESET\r\n");
+  73:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (state == HAL_I2C_STATE_BUSY) {
+  74:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****     printf("HAL_I2C_STATE_BUSY\r\n");
+  75:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (state == HAL_I2C_STATE_BUSY_TX) {
+  76:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****     printf("HAL_I2C_STATE_BUSY_TX\r\n");
+  77:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (state == HAL_I2C_STATE_BUSY_RX) {
+  78:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****     printf("HAL_I2C_STATE_BUSY_RX\r\n");
+  79:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (state == HAL_I2C_STATE_LISTEN) {
+  80:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****     printf("HAL_I2C_STATE_LISTEN\r\n");
+  81:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (state == HAL_I2C_STATE_BUSY_TX_LISTEN) {
+  82:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****     printf("HAL_I2C_STATE_BUSY_TX_LISTEN\r\n");
+  83:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (state == HAL_I2C_STATE_BUSY_RX_LISTEN) {
+  84:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****     printf("HAL_I2C_STATE_BUSY_RX_LISTEN\r\n");
+  85:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (state == HAL_I2C_STATE_ABORT) {
+  86:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****     printf("HAL_I2C_STATE_ABORT\r\n");
+ 381              		.loc 2 86 5 is_stmt 1 view .LVU45
+ 382 00ee 1E48     		ldr	r0, .L40+44
+ 383              	.LVL39:
+ 384              		.loc 2 86 5 is_stmt 0 view .LVU46
+ 385 00f0 FFF7FEFF 		bl	puts
+ 386              	.LVL40:
+ 387 00f4 02E0     		b	.L6
+ 388              	.LVL41:
+ 389              	.L32:
+  70:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****     printf("HAL_I2C_STATE_RESET\r\n");
+ 390              		.loc 2 70 5 is_stmt 1 view .LVU47
+ 391 00f6 1D48     		ldr	r0, .L40+48
+ 392              	.LVL42:
+  70:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****     printf("HAL_I2C_STATE_RESET\r\n");
+ 393              		.loc 2 70 5 is_stmt 0 view .LVU48
+ 394 00f8 FFF7FEFF 		bl	puts
+ 395              	.LVL43:
+ 396              	.L6:
+  87:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   }
+  88:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   // while (HAL_I2C_GetState(_bno055_i2c_port) != HAL_I2C_STATE_READY) {}
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s 			page 11
+
+
+  89:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   // return;
+  90:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** }
+ 397              		.loc 2 90 1 view .LVU49
+ 398 00fc 05B0     		add	sp, sp, #20
+ 399              	.LCFI3:
+ 400              		.cfi_remember_state
+ 401              		.cfi_def_cfa_offset 4
+ 402              		@ sp needed
+ 403 00fe 5DF804FB 		ldr	pc, [sp], #4
+ 404              	.LVL44:
+ 405              	.L31:
+ 406              	.LCFI4:
+ 407              		.cfi_restore_state
+  72:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (state == HAL_I2C_STATE_BUSY) {
+ 408              		.loc 2 72 5 is_stmt 1 view .LVU50
+ 409 0102 1A48     		ldr	r0, .L40+48
+ 410              	.LVL45:
+  72:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (state == HAL_I2C_STATE_BUSY) {
+ 411              		.loc 2 72 5 is_stmt 0 view .LVU51
+ 412 0104 FFF7FEFF 		bl	puts
+ 413              	.LVL46:
+ 414 0108 F8E7     		b	.L6
+ 415              	.LVL47:
+ 416              	.L28:
+  74:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (state == HAL_I2C_STATE_BUSY_TX) {
+ 417              		.loc 2 74 5 is_stmt 1 view .LVU52
+ 418 010a 1948     		ldr	r0, .L40+52
+ 419              	.LVL48:
+  74:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (state == HAL_I2C_STATE_BUSY_TX) {
+ 420              		.loc 2 74 5 is_stmt 0 view .LVU53
+ 421 010c FFF7FEFF 		bl	puts
+ 422              	.LVL49:
+ 423 0110 F4E7     		b	.L6
+ 424              	.LVL50:
+ 425              	.L30:
+  76:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (state == HAL_I2C_STATE_BUSY_RX) {
+ 426              		.loc 2 76 5 is_stmt 1 view .LVU54
+ 427 0112 1848     		ldr	r0, .L40+56
+ 428              	.LVL51:
+  76:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (state == HAL_I2C_STATE_BUSY_RX) {
+ 429              		.loc 2 76 5 is_stmt 0 view .LVU55
+ 430 0114 FFF7FEFF 		bl	puts
+ 431              	.LVL52:
+ 432 0118 F0E7     		b	.L6
+ 433              	.LVL53:
+ 434              	.L29:
+  78:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (state == HAL_I2C_STATE_LISTEN) {
+ 435              		.loc 2 78 5 is_stmt 1 view .LVU56
+ 436 011a 1748     		ldr	r0, .L40+60
+ 437              	.LVL54:
+  78:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (state == HAL_I2C_STATE_LISTEN) {
+ 438              		.loc 2 78 5 is_stmt 0 view .LVU57
+ 439 011c FFF7FEFF 		bl	puts
+ 440              	.LVL55:
+ 441 0120 ECE7     		b	.L6
+ 442              	.LVL56:
+ 443              	.L27:
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s 			page 12
+
+
+  80:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (state == HAL_I2C_STATE_BUSY_TX_LISTEN) {
+ 444              		.loc 2 80 5 is_stmt 1 view .LVU58
+ 445 0122 1648     		ldr	r0, .L40+64
+ 446              	.LVL57:
+  80:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (state == HAL_I2C_STATE_BUSY_TX_LISTEN) {
+ 447              		.loc 2 80 5 is_stmt 0 view .LVU59
+ 448 0124 FFF7FEFF 		bl	puts
+ 449              	.LVL58:
+ 450 0128 E8E7     		b	.L6
+ 451              	.LVL59:
+ 452              	.L26:
+  82:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (state == HAL_I2C_STATE_BUSY_RX_LISTEN) {
+ 453              		.loc 2 82 5 is_stmt 1 view .LVU60
+ 454 012a 1548     		ldr	r0, .L40+68
+ 455              	.LVL60:
+  82:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (state == HAL_I2C_STATE_BUSY_RX_LISTEN) {
+ 456              		.loc 2 82 5 is_stmt 0 view .LVU61
+ 457 012c FFF7FEFF 		bl	puts
+ 458              	.LVL61:
+ 459 0130 E4E7     		b	.L6
+ 460              	.LVL62:
+ 461              	.L24:
+  84:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (state == HAL_I2C_STATE_ABORT) {
+ 462              		.loc 2 84 5 is_stmt 1 view .LVU62
+ 463 0132 1448     		ldr	r0, .L40+72
+ 464              	.LVL63:
+  84:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   } else if (state == HAL_I2C_STATE_ABORT) {
+ 465              		.loc 2 84 5 is_stmt 0 view .LVU63
+ 466 0134 FFF7FEFF 		bl	puts
+ 467              	.LVL64:
+ 468 0138 E0E7     		b	.L6
+ 469              	.L41:
+ 470 013a 00BF     		.align	2
+ 471              	.L40:
+ 472 013c 00000000 		.word	_bno055_i2c_port
+ 473 0140 00000000 		.word	.LC0
+ 474 0144 24000000 		.word	.LC1
+ 475 0148 4C000000 		.word	.LC2
+ 476 014c 70000000 		.word	.LC3
+ 477 0150 88000000 		.word	.LC4
+ 478 0154 9C000000 		.word	.LC5
+ 479 0158 B0000000 		.word	.LC6
+ 480 015c C4000000 		.word	.LC7
+ 481 0160 D8000000 		.word	.LC8
+ 482 0164 EC000000 		.word	.LC9
+ 483 0168 B8010000 		.word	.LC17
+ 484 016c 04010000 		.word	.LC10
+ 485 0170 1C010000 		.word	.LC11
+ 486 0174 30010000 		.word	.LC12
+ 487 0178 48010000 		.word	.LC13
+ 488 017c 60010000 		.word	.LC14
+ 489 0180 78010000 		.word	.LC15
+ 490 0184 98010000 		.word	.LC16
+ 491              		.cfi_endproc
+ 492              	.LFE139:
+ 494              		.section	.text.bno055_readData,"ax",%progbits
+ 495              		.align	1
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s 			page 13
+
+
+ 496              		.global	bno055_readData
+ 497              		.syntax unified
+ 498              		.thumb
+ 499              		.thumb_func
+ 501              	bno055_readData:
+ 502              	.LVL65:
+ 503              	.LFB140:
+  91:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** 
+  92:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** void bno055_readData(uint8_t reg, uint8_t *data, uint8_t len) {
+ 504              		.loc 2 92 63 is_stmt 1 view -0
+ 505              		.cfi_startproc
+ 506              		@ args = 0, pretend = 0, frame = 8
+ 507              		@ frame_needed = 0, uses_anonymous_args = 0
+ 508              		.loc 2 92 63 is_stmt 0 view .LVU65
+ 509 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 510              	.LCFI5:
+ 511              		.cfi_def_cfa_offset 20
+ 512              		.cfi_offset 4, -20
+ 513              		.cfi_offset 5, -16
+ 514              		.cfi_offset 6, -12
+ 515              		.cfi_offset 7, -8
+ 516              		.cfi_offset 14, -4
+ 517 0002 85B0     		sub	sp, sp, #20
+ 518              	.LCFI6:
+ 519              		.cfi_def_cfa_offset 40
+ 520 0004 0C46     		mov	r4, r1
+ 521 0006 1546     		mov	r5, r2
+ 522 0008 8DF80F00 		strb	r0, [sp, #15]
+  93:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   HAL_I2C_Master_Transmit(_bno055_i2c_port, BNO055_I2C_ADDR << 1, &reg, 1,
+ 523              		.loc 2 93 3 is_stmt 1 view .LVU66
+ 524 000c 094E     		ldr	r6, .L44
+ 525 000e 6427     		movs	r7, #100
+ 526 0010 0097     		str	r7, [sp]
+ 527 0012 0123     		movs	r3, #1
+ 528 0014 0DF10F02 		add	r2, sp, #15
+ 529              	.LVL66:
+ 530              		.loc 2 93 3 is_stmt 0 view .LVU67
+ 531 0018 5021     		movs	r1, #80
+ 532              	.LVL67:
+ 533              		.loc 2 93 3 view .LVU68
+ 534 001a 3068     		ldr	r0, [r6]
+ 535              	.LVL68:
+ 536              		.loc 2 93 3 view .LVU69
+ 537 001c FFF7FEFF 		bl	HAL_I2C_Master_Transmit
+ 538              	.LVL69:
+  94:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****                           100);
+  95:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   HAL_I2C_Master_Receive(_bno055_i2c_port, BNO055_I2C_ADDR << 1, data, len,
+ 539              		.loc 2 95 3 is_stmt 1 view .LVU70
+ 540 0020 0097     		str	r7, [sp]
+ 541 0022 2B46     		mov	r3, r5
+ 542 0024 2246     		mov	r2, r4
+ 543 0026 5021     		movs	r1, #80
+ 544 0028 3068     		ldr	r0, [r6]
+ 545 002a FFF7FEFF 		bl	HAL_I2C_Master_Receive
+ 546              	.LVL70:
+  96:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****                          100);
+  97:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   // HAL_I2C_Mem_Read(_bno055_i2c_port, BNO055_I2C_ADDR_LO<<1, reg,
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s 			page 14
+
+
+  98:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h ****   // I2C_MEMADD_SIZE_8BIT, data, len, 100);
+  99:rover/Mission/Src/../../ECAL/Inc/bno055_stm32.h **** }
+ 547              		.loc 2 99 1 is_stmt 0 view .LVU71
+ 548 002e 05B0     		add	sp, sp, #20
+ 549              	.LCFI7:
+ 550              		.cfi_def_cfa_offset 20
+ 551              		@ sp needed
+ 552 0030 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 553              	.LVL71:
+ 554              	.L45:
+ 555              		.loc 2 99 1 view .LVU72
+ 556 0032 00BF     		.align	2
+ 557              	.L44:
+ 558 0034 00000000 		.word	_bno055_i2c_port
+ 559              		.cfi_endproc
+ 560              	.LFE140:
+ 562              		.section	.text.IMU_Setup,"ax",%progbits
+ 563              		.align	1
+ 564              		.global	IMU_Setup
+ 565              		.syntax unified
+ 566              		.thumb
+ 567              		.thumb_func
+ 569              	IMU_Setup:
+ 570              	.LVL72:
+ 571              	.LFB141:
+   1:rover/Mission/Src/IMU.c **** 
+   2:rover/Mission/Src/IMU.c **** // ------------------------ Includes -----------------------------------------
+   3:rover/Mission/Src/IMU.c **** #include "../Inc/IMU.h"
+   4:rover/Mission/Src/IMU.c **** #include "stm32f4xx_hal.h"  // <-- ✅ Add this line
+   5:rover/Mission/Src/IMU.c **** #include "../../ECAL/Inc/bno055.h"
+   6:rover/Mission/Src/IMU.c **** #include "../../ECAL/Inc/bno055_stm32.h"
+   7:rover/Mission/Src/IMU.c **** 
+   8:rover/Mission/Src/IMU.c **** //----------------------------------------------------------------------------
+   9:rover/Mission/Src/IMU.c **** 
+  10:rover/Mission/Src/IMU.c **** // ------------------------------- Functions ---------------------------
+  11:rover/Mission/Src/IMU.c **** void IMU_Setup (I2C_HandleTypeDef* hi2c1){
+ 572              		.loc 1 11 42 is_stmt 1 view -0
+ 573              		.cfi_startproc
+ 574              		@ args = 0, pretend = 0, frame = 0
+ 575              		@ frame_needed = 0, uses_anonymous_args = 0
+ 576              		.loc 1 11 42 is_stmt 0 view .LVU74
+ 577 0000 08B5     		push	{r3, lr}
+ 578              	.LCFI8:
+ 579              		.cfi_def_cfa_offset 8
+ 580              		.cfi_offset 3, -8
+ 581              		.cfi_offset 14, -4
+  12:rover/Mission/Src/IMU.c **** 	  // Assign the I2C handle to the bno055 driver
+  13:rover/Mission/Src/IMU.c **** 	  bno055_assignI2C(hi2c1);
+ 582              		.loc 1 13 4 is_stmt 1 view .LVU75
+ 583 0002 FFF7FEFF 		bl	bno055_assignI2C
+ 584              	.LVL73:
+  14:rover/Mission/Src/IMU.c **** 	  // Setup the BNO055 sensor using your provided bno055.c functions
+  15:rover/Mission/Src/IMU.c **** 	  bno055_setup();
+ 585              		.loc 1 15 4 view .LVU76
+ 586 0006 FFF7FEFF 		bl	bno055_setup
+ 587              	.LVL74:
+  16:rover/Mission/Src/IMU.c **** 	  // Set the BNO055 operation mode to NDOF (9-degrees-of-freedom).
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s 			page 15
+
+
+  17:rover/Mission/Src/IMU.c **** 	  bno055_setOperationModeNDOF();
+ 588              		.loc 1 17 4 view .LVU77
+ 589 000a FFF7FEFF 		bl	bno055_setOperationModeNDOF
+ 590              	.LVL75:
+  18:rover/Mission/Src/IMU.c **** 
+  19:rover/Mission/Src/IMU.c **** }
+ 591              		.loc 1 19 1 is_stmt 0 view .LVU78
+ 592 000e 08BD     		pop	{r3, pc}
+ 593              		.cfi_endproc
+ 594              	.LFE141:
+ 596              		.global	__aeabi_i2d
+ 597              		.section	.text.IMU_Operation,"ax",%progbits
+ 598              		.align	1
+ 599              		.global	IMU_Operation
+ 600              		.syntax unified
+ 601              		.thumb
+ 602              		.thumb_func
+ 604              	IMU_Operation:
+ 605              	.LVL76:
+ 606              	.LFB142:
+  20:rover/Mission/Src/IMU.c **** 
+  21:rover/Mission/Src/IMU.c **** void IMU_Operation(IMU_INFO* imu){
+ 607              		.loc 1 21 34 is_stmt 1 view -0
+ 608              		.cfi_startproc
+ 609              		@ args = 0, pretend = 0, frame = 224
+ 610              		@ frame_needed = 0, uses_anonymous_args = 0
+ 611              		.loc 1 21 34 is_stmt 0 view .LVU80
+ 612 0000 10B5     		push	{r4, lr}
+ 613              	.LCFI9:
+ 614              		.cfi_def_cfa_offset 8
+ 615              		.cfi_offset 4, -8
+ 616              		.cfi_offset 14, -4
+ 617 0002 B8B0     		sub	sp, sp, #224
+ 618              	.LCFI10:
+ 619              		.cfi_def_cfa_offset 232
+ 620 0004 0446     		mov	r4, r0
+  22:rover/Mission/Src/IMU.c **** 
+  23:rover/Mission/Src/IMU.c **** #if IMU_ReadEuler == YES
+  24:rover/Mission/Src/IMU.c **** 	// Read Euler angles (Yaw, Pitch, Roll)
+  25:rover/Mission/Src/IMU.c ****     bno055_vector_t euler_vector = bno055_getVectorEuler();
+ 621              		.loc 1 25 5 is_stmt 1 view .LVU81
+ 622              		.loc 1 25 36 is_stmt 0 view .LVU82
+ 623 0006 FFF7FEFF 		bl	bno055_getVectorEuler
+ 624              	.LVL77:
+ 625              		.loc 1 25 36 view .LVU83
+ 626 000a 8DED300B 		vstr.64	d0, [sp, #192]
+ 627 000e 8DED321B 		vstr.64	d1, [sp, #200]
+ 628 0012 8DED342B 		vstr.64	d2, [sp, #208]
+ 629 0016 8DED363B 		vstr.64	d3, [sp, #216]
+  26:rover/Mission/Src/IMU.c **** 
+  27:rover/Mission/Src/IMU.c ****     imu->Yaw = euler_vector.x;
+ 630              		.loc 1 27 5 is_stmt 1 view .LVU84
+ 631              		.loc 1 27 14 is_stmt 0 view .LVU85
+ 632 001a 84ED001B 		vstr.64	d1, [r4]
+  28:rover/Mission/Src/IMU.c ****     imu->Pitch = euler_vector.y;
+ 633              		.loc 1 28 5 is_stmt 1 view .LVU86
+ 634              		.loc 1 28 16 is_stmt 0 view .LVU87
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s 			page 16
+
+
+ 635 001e 84ED022B 		vstr.64	d2, [r4, #8]
+  29:rover/Mission/Src/IMU.c ****     imu->Roll = euler_vector.z;
+ 636              		.loc 1 29 5 is_stmt 1 view .LVU88
+ 637              		.loc 1 29 15 is_stmt 0 view .LVU89
+ 638 0022 84ED043B 		vstr.64	d3, [r4, #16]
+  30:rover/Mission/Src/IMU.c **** #endif
+  31:rover/Mission/Src/IMU.c **** 
+  32:rover/Mission/Src/IMU.c **** #if IMU_ReadAcceleration == YES
+  33:rover/Mission/Src/IMU.c ****     // Read Accelerometer data (m/s^2)
+  34:rover/Mission/Src/IMU.c ****     bno055_vector_t accel_vector = bno055_getVectorAccelerometer();
+ 639              		.loc 1 34 5 is_stmt 1 view .LVU90
+ 640              		.loc 1 34 36 is_stmt 0 view .LVU91
+ 641 0026 FFF7FEFF 		bl	bno055_getVectorAccelerometer
+ 642              	.LVL78:
+ 643 002a 8DED280B 		vstr.64	d0, [sp, #160]
+ 644 002e 8DED2A1B 		vstr.64	d1, [sp, #168]
+ 645 0032 8DED2C2B 		vstr.64	d2, [sp, #176]
+ 646 0036 8DED2E3B 		vstr.64	d3, [sp, #184]
+  35:rover/Mission/Src/IMU.c **** 
+  36:rover/Mission/Src/IMU.c ****     imu->AccX = accel_vector.x;
+ 647              		.loc 1 36 5 is_stmt 1 view .LVU92
+ 648              		.loc 1 36 15 is_stmt 0 view .LVU93
+ 649 003a 84ED061B 		vstr.64	d1, [r4, #24]
+  37:rover/Mission/Src/IMU.c ****     imu->AccY = accel_vector.y;
+ 650              		.loc 1 37 5 is_stmt 1 view .LVU94
+ 651              		.loc 1 37 15 is_stmt 0 view .LVU95
+ 652 003e 84ED082B 		vstr.64	d2, [r4, #32]
+  38:rover/Mission/Src/IMU.c ****     imu->AccZ = accel_vector.z;
+ 653              		.loc 1 38 5 is_stmt 1 view .LVU96
+ 654              		.loc 1 38 15 is_stmt 0 view .LVU97
+ 655 0042 84ED0A3B 		vstr.64	d3, [r4, #40]
+  39:rover/Mission/Src/IMU.c **** #endif
+  40:rover/Mission/Src/IMU.c **** 
+  41:rover/Mission/Src/IMU.c **** #if IMU_ReadLinearAcceleration == YES
+  42:rover/Mission/Src/IMU.c ****     // Read Linear Acceleration data (m/s^2, with gravity removed)
+  43:rover/Mission/Src/IMU.c ****     bno055_vector_t lin_acc_vector = bno055_getVectorLinearAccel();
+ 656              		.loc 1 43 5 is_stmt 1 view .LVU98
+ 657              		.loc 1 43 38 is_stmt 0 view .LVU99
+ 658 0046 FFF7FEFF 		bl	bno055_getVectorLinearAccel
+ 659              	.LVL79:
+ 660 004a 8DED200B 		vstr.64	d0, [sp, #128]
+ 661 004e 8DED221B 		vstr.64	d1, [sp, #136]
+ 662 0052 8DED242B 		vstr.64	d2, [sp, #144]
+ 663 0056 8DED263B 		vstr.64	d3, [sp, #152]
+  44:rover/Mission/Src/IMU.c **** 
+  45:rover/Mission/Src/IMU.c ****     imu->linAccX = lin_acc_vector.x;
+ 664              		.loc 1 45 5 is_stmt 1 view .LVU100
+ 665              		.loc 1 45 18 is_stmt 0 view .LVU101
+ 666 005a 84ED0C1B 		vstr.64	d1, [r4, #48]
+  46:rover/Mission/Src/IMU.c ****     imu->linAccY = lin_acc_vector.y;
+ 667              		.loc 1 46 5 is_stmt 1 view .LVU102
+ 668              		.loc 1 46 18 is_stmt 0 view .LVU103
+ 669 005e 84ED0E2B 		vstr.64	d2, [r4, #56]
+  47:rover/Mission/Src/IMU.c ****     imu->linAccZ = lin_acc_vector.z;
+ 670              		.loc 1 47 5 is_stmt 1 view .LVU104
+ 671              		.loc 1 47 18 is_stmt 0 view .LVU105
+ 672 0062 84ED103B 		vstr.64	d3, [r4, #64]
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s 			page 17
+
+
+  48:rover/Mission/Src/IMU.c **** #endif
+  49:rover/Mission/Src/IMU.c **** 
+  50:rover/Mission/Src/IMU.c **** #if IMU_ReadMagnetometer == YES
+  51:rover/Mission/Src/IMU.c ****     // Read Magnetometer data (microTesla)
+  52:rover/Mission/Src/IMU.c ****     bno055_vector_t mag_vector = bno055_getVectorMagnetometer();
+ 673              		.loc 1 52 5 is_stmt 1 view .LVU106
+ 674              		.loc 1 52 34 is_stmt 0 view .LVU107
+ 675 0066 FFF7FEFF 		bl	bno055_getVectorMagnetometer
+ 676              	.LVL80:
+ 677 006a 8DED180B 		vstr.64	d0, [sp, #96]
+ 678 006e 8DED1A1B 		vstr.64	d1, [sp, #104]
+ 679 0072 8DED1C2B 		vstr.64	d2, [sp, #112]
+ 680 0076 8DED1E3B 		vstr.64	d3, [sp, #120]
+  53:rover/Mission/Src/IMU.c **** 
+  54:rover/Mission/Src/IMU.c ****     imu->MagX = mag_vector.x;
+ 681              		.loc 1 54 5 is_stmt 1 view .LVU108
+ 682              		.loc 1 54 15 is_stmt 0 view .LVU109
+ 683 007a 84ED121B 		vstr.64	d1, [r4, #72]
+  55:rover/Mission/Src/IMU.c ****     imu->MagY = mag_vector.y;
+ 684              		.loc 1 55 5 is_stmt 1 view .LVU110
+ 685              		.loc 1 55 15 is_stmt 0 view .LVU111
+ 686 007e 84ED142B 		vstr.64	d2, [r4, #80]
+  56:rover/Mission/Src/IMU.c ****     imu->MagZ = mag_vector.z;
+ 687              		.loc 1 56 5 is_stmt 1 view .LVU112
+ 688              		.loc 1 56 15 is_stmt 0 view .LVU113
+ 689 0082 84ED163B 		vstr.64	d3, [r4, #88]
+  57:rover/Mission/Src/IMU.c **** #endif
+  58:rover/Mission/Src/IMU.c **** 
+  59:rover/Mission/Src/IMU.c **** #if IMU_ReadGyroscope == YES
+  60:rover/Mission/Src/IMU.c ****     // Read Gyroscope data (degrees/second)
+  61:rover/Mission/Src/IMU.c ****     bno055_vector_t gyro_vector = bno055_getVectorGyroscope();
+ 690              		.loc 1 61 5 is_stmt 1 view .LVU114
+ 691              		.loc 1 61 35 is_stmt 0 view .LVU115
+ 692 0086 FFF7FEFF 		bl	bno055_getVectorGyroscope
+ 693              	.LVL81:
+ 694 008a 8DED100B 		vstr.64	d0, [sp, #64]
+ 695 008e 8DED121B 		vstr.64	d1, [sp, #72]
+ 696 0092 8DED142B 		vstr.64	d2, [sp, #80]
+ 697 0096 8DED163B 		vstr.64	d3, [sp, #88]
+  62:rover/Mission/Src/IMU.c **** 
+  63:rover/Mission/Src/IMU.c ****     imu->GyroX = gyro_vector.x;
+ 698              		.loc 1 63 5 is_stmt 1 view .LVU116
+ 699              		.loc 1 63 16 is_stmt 0 view .LVU117
+ 700 009a 84ED181B 		vstr.64	d1, [r4, #96]
+  64:rover/Mission/Src/IMU.c ****     imu->GyroY = gyro_vector.y;
+ 701              		.loc 1 64 5 is_stmt 1 view .LVU118
+ 702              		.loc 1 64 16 is_stmt 0 view .LVU119
+ 703 009e 84ED1A2B 		vstr.64	d2, [r4, #104]
+  65:rover/Mission/Src/IMU.c ****     imu->GyroZ = gyro_vector.z;
+ 704              		.loc 1 65 5 is_stmt 1 view .LVU120
+ 705              		.loc 1 65 16 is_stmt 0 view .LVU121
+ 706 00a2 84ED1C3B 		vstr.64	d3, [r4, #112]
+  66:rover/Mission/Src/IMU.c **** #endif
+  67:rover/Mission/Src/IMU.c **** 
+  68:rover/Mission/Src/IMU.c **** #if IMU_ReadGravityVector == YES
+  69:rover/Mission/Src/IMU.c ****     // Read Gravity vector (m/s^2)
+  70:rover/Mission/Src/IMU.c ****     bno055_vector_t gravity_vector = bno055_getVectorGravity();
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s 			page 18
+
+
+ 707              		.loc 1 70 5 is_stmt 1 view .LVU122
+ 708              		.loc 1 70 38 is_stmt 0 view .LVU123
+ 709 00a6 FFF7FEFF 		bl	bno055_getVectorGravity
+ 710              	.LVL82:
+ 711 00aa 8DED080B 		vstr.64	d0, [sp, #32]
+ 712 00ae 8DED0A1B 		vstr.64	d1, [sp, #40]
+ 713 00b2 8DED0C2B 		vstr.64	d2, [sp, #48]
+ 714 00b6 8DED0E3B 		vstr.64	d3, [sp, #56]
+  71:rover/Mission/Src/IMU.c **** 
+  72:rover/Mission/Src/IMU.c ****     imu->GravityX = gravity_vector.x;
+ 715              		.loc 1 72 5 is_stmt 1 view .LVU124
+ 716              		.loc 1 72 19 is_stmt 0 view .LVU125
+ 717 00ba 84ED1E1B 		vstr.64	d1, [r4, #120]
+  73:rover/Mission/Src/IMU.c ****     imu->GravityY = gravity_vector.y;
+ 718              		.loc 1 73 5 is_stmt 1 view .LVU126
+ 719              		.loc 1 73 19 is_stmt 0 view .LVU127
+ 720 00be 84ED202B 		vstr.64	d2, [r4, #128]
+  74:rover/Mission/Src/IMU.c ****     imu->GravityZ = gravity_vector.z;
+ 721              		.loc 1 74 5 is_stmt 1 view .LVU128
+ 722              		.loc 1 74 19 is_stmt 0 view .LVU129
+ 723 00c2 84ED223B 		vstr.64	d3, [r4, #136]
+  75:rover/Mission/Src/IMU.c **** #endif
+  76:rover/Mission/Src/IMU.c **** 
+  77:rover/Mission/Src/IMU.c **** #if IMU_ReadQuanterion == YES
+  78:rover/Mission/Src/IMU.c ****     // Read Quaternion data
+  79:rover/Mission/Src/IMU.c ****     bno055_vector_t quat = bno055_getVectorQuaternion();
+ 724              		.loc 1 79 5 is_stmt 1 view .LVU130
+ 725              		.loc 1 79 28 is_stmt 0 view .LVU131
+ 726 00c6 FFF7FEFF 		bl	bno055_getVectorQuaternion
+ 727              	.LVL83:
+ 728 00ca 8DED000B 		vstr.64	d0, [sp]
+ 729 00ce 8DED021B 		vstr.64	d1, [sp, #8]
+ 730 00d2 8DED042B 		vstr.64	d2, [sp, #16]
+ 731 00d6 8DED063B 		vstr.64	d3, [sp, #24]
+  80:rover/Mission/Src/IMU.c **** 
+  81:rover/Mission/Src/IMU.c ****     imu->QuatW = quat.w;
+ 732              		.loc 1 81 5 is_stmt 1 view .LVU132
+ 733              		.loc 1 81 16 is_stmt 0 view .LVU133
+ 734 00da 84ED240B 		vstr.64	d0, [r4, #144]
+  82:rover/Mission/Src/IMU.c ****     imu->QuatX = quat.x;
+ 735              		.loc 1 82 5 is_stmt 1 view .LVU134
+ 736              		.loc 1 82 16 is_stmt 0 view .LVU135
+ 737 00de 84ED261B 		vstr.64	d1, [r4, #152]
+  83:rover/Mission/Src/IMU.c ****     imu->QuatY = quat.y;
+ 738              		.loc 1 83 5 is_stmt 1 view .LVU136
+ 739              		.loc 1 83 16 is_stmt 0 view .LVU137
+ 740 00e2 84ED282B 		vstr.64	d2, [r4, #160]
+  84:rover/Mission/Src/IMU.c ****     imu->QuatZ = quat.z;
+ 741              		.loc 1 84 5 is_stmt 1 view .LVU138
+ 742              		.loc 1 84 16 is_stmt 0 view .LVU139
+ 743 00e6 84ED2A3B 		vstr.64	d3, [r4, #168]
+  85:rover/Mission/Src/IMU.c **** #endif
+  86:rover/Mission/Src/IMU.c **** 
+  87:rover/Mission/Src/IMU.c **** #if IMU_ReadTemperature == YES
+  88:rover/Mission/Src/IMU.c ****     // Read Temperature (Celsius)
+  89:rover/Mission/Src/IMU.c ****     imu->temperature = bno055_getTemp();
+ 744              		.loc 1 89 5 is_stmt 1 view .LVU140
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s 			page 19
+
+
+ 745              		.loc 1 89 24 is_stmt 0 view .LVU141
+ 746 00ea FFF7FEFF 		bl	bno055_getTemp
+ 747              	.LVL84:
+ 748              		.loc 1 89 22 discriminator 1 view .LVU142
+ 749 00ee FFF7FEFF 		bl	__aeabi_i2d
+ 750              	.LVL85:
+ 751 00f2 C4E92C01 		strd	r0, [r4, #176]
+  90:rover/Mission/Src/IMU.c **** #endif
+  91:rover/Mission/Src/IMU.c **** }
+ 752              		.loc 1 91 1 view .LVU143
+ 753 00f6 38B0     		add	sp, sp, #224
+ 754              	.LCFI11:
+ 755              		.cfi_def_cfa_offset 8
+ 756              		@ sp needed
+ 757 00f8 10BD     		pop	{r4, pc}
+ 758              		.loc 1 91 1 view .LVU144
+ 759              		.cfi_endproc
+ 760              	.LFE142:
+ 762              		.global	__aeabi_dmul
+ 763              		.global	__aeabi_d2uiz
+ 764              		.section	.text.IMU_CANMsgSendOrientation,"ax",%progbits
+ 765              		.align	1
+ 766              		.global	IMU_CANMsgSendOrientation
+ 767              		.syntax unified
+ 768              		.thumb
+ 769              		.thumb_func
+ 771              	IMU_CANMsgSendOrientation:
+ 772              	.LVL86:
+ 773              	.LFB143:
+  92:rover/Mission/Src/IMU.c **** 
+  93:rover/Mission/Src/IMU.c **** 
+  94:rover/Mission/Src/IMU.c **** void IMU_CANMsgSendOrientation(IMU_INFO* imu, uint8_t* buffer, uint16_t sequence_num){
+ 774              		.loc 1 94 86 is_stmt 1 view -0
+ 775              		.cfi_startproc
+ 776              		@ args = 0, pretend = 0, frame = 0
+ 777              		@ frame_needed = 0, uses_anonymous_args = 0
+ 778              		.loc 1 94 86 is_stmt 0 view .LVU146
+ 779 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 780              	.LCFI12:
+ 781              		.cfi_def_cfa_offset 24
+ 782              		.cfi_offset 4, -24
+ 783              		.cfi_offset 5, -20
+ 784              		.cfi_offset 6, -16
+ 785              		.cfi_offset 7, -12
+ 786              		.cfi_offset 8, -8
+ 787              		.cfi_offset 14, -4
+ 788 0004 8046     		mov	r8, r0
+ 789 0006 0C46     		mov	r4, r1
+ 790 0008 1546     		mov	r5, r2
+  95:rover/Mission/Src/IMU.c **** 	uint16_t Yaw = imu->Yaw * 100;
+ 791              		.loc 1 95 2 is_stmt 1 view .LVU147
+ 792              		.loc 1 95 26 is_stmt 0 view .LVU148
+ 793 000a 0022     		movs	r2, #0
+ 794              	.LVL87:
+ 795              		.loc 1 95 26 view .LVU149
+ 796 000c 134B     		ldr	r3, .L52
+ 797 000e D0E90001 		ldrd	r0, [r0]
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s 			page 20
+
+
+ 798              	.LVL88:
+ 799              		.loc 1 95 26 view .LVU150
+ 800 0012 FFF7FEFF 		bl	__aeabi_dmul
+ 801              	.LVL89:
+ 802              		.loc 1 95 11 view .LVU151
+ 803 0016 FFF7FEFF 		bl	__aeabi_d2uiz
+ 804              	.LVL90:
+ 805 001a 87B2     		uxth	r7, r0
+ 806              	.LVL91:
+  96:rover/Mission/Src/IMU.c **** 	uint16_t Pitch = imu->Pitch * 100;
+ 807              		.loc 1 96 2 is_stmt 1 view .LVU152
+ 808              		.loc 1 96 30 is_stmt 0 view .LVU153
+ 809 001c 0022     		movs	r2, #0
+ 810 001e 0F4B     		ldr	r3, .L52
+ 811 0020 D8E90201 		ldrd	r0, [r8, #8]
+ 812 0024 FFF7FEFF 		bl	__aeabi_dmul
+ 813              	.LVL92:
+ 814              		.loc 1 96 11 view .LVU154
+ 815 0028 FFF7FEFF 		bl	__aeabi_d2uiz
+ 816              	.LVL93:
+ 817 002c 86B2     		uxth	r6, r0
+ 818              	.LVL94:
+  97:rover/Mission/Src/IMU.c **** 	uint16_t Roll = imu->Roll * 100;
+ 819              		.loc 1 97 2 is_stmt 1 view .LVU155
+ 820              		.loc 1 97 28 is_stmt 0 view .LVU156
+ 821 002e 0022     		movs	r2, #0
+ 822 0030 0A4B     		ldr	r3, .L52
+ 823 0032 D8E90401 		ldrd	r0, [r8, #16]
+ 824 0036 FFF7FEFF 		bl	__aeabi_dmul
+ 825              	.LVL95:
+ 826              		.loc 1 97 11 view .LVU157
+ 827 003a FFF7FEFF 		bl	__aeabi_d2uiz
+ 828              	.LVL96:
+ 829 003e 83B2     		uxth	r3, r0
+ 830              	.LVL97:
+  98:rover/Mission/Src/IMU.c **** 
+  99:rover/Mission/Src/IMU.c **** 	buffer[0] = (Yaw >> 0) & 0xFF;  // low byte
+ 831              		.loc 1 99 2 is_stmt 1 view .LVU158
+ 832              		.loc 1 99 12 is_stmt 0 view .LVU159
+ 833 0040 2770     		strb	r7, [r4]
+ 100:rover/Mission/Src/IMU.c **** 	buffer[1] = (Yaw >> 8) & 0xFF;  // high byte
+ 834              		.loc 1 100 2 is_stmt 1 view .LVU160
+ 835              		.loc 1 100 12 is_stmt 0 view .LVU161
+ 836 0042 3F0A     		lsrs	r7, r7, #8
+ 837              	.LVL98:
+ 838              		.loc 1 100 12 view .LVU162
+ 839 0044 6770     		strb	r7, [r4, #1]
+ 101:rover/Mission/Src/IMU.c **** 
+ 102:rover/Mission/Src/IMU.c **** 	buffer[2] = (Pitch >> 0) & 0xFF;
+ 840              		.loc 1 102 2 is_stmt 1 view .LVU163
+ 841              		.loc 1 102 12 is_stmt 0 view .LVU164
+ 842 0046 A670     		strb	r6, [r4, #2]
+ 103:rover/Mission/Src/IMU.c **** 	buffer[3] = (Pitch >> 8) & 0xFF;
+ 843              		.loc 1 103 2 is_stmt 1 view .LVU165
+ 844              		.loc 1 103 12 is_stmt 0 view .LVU166
+ 845 0048 360A     		lsrs	r6, r6, #8
+ 846              	.LVL99:
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s 			page 21
+
+
+ 847              		.loc 1 103 12 view .LVU167
+ 848 004a E670     		strb	r6, [r4, #3]
+ 104:rover/Mission/Src/IMU.c **** 
+ 105:rover/Mission/Src/IMU.c **** 	buffer[4] = (Roll >> 0) & 0xFF;
+ 849              		.loc 1 105 2 is_stmt 1 view .LVU168
+ 850              		.loc 1 105 12 is_stmt 0 view .LVU169
+ 851 004c 2371     		strb	r3, [r4, #4]
+ 106:rover/Mission/Src/IMU.c **** 	buffer[5] = (Roll >> 8) & 0xFF;
+ 852              		.loc 1 106 2 is_stmt 1 view .LVU170
+ 853              		.loc 1 106 12 is_stmt 0 view .LVU171
+ 854 004e 1B0A     		lsrs	r3, r3, #8
+ 855              	.LVL100:
+ 856              		.loc 1 106 12 view .LVU172
+ 857 0050 6371     		strb	r3, [r4, #5]
+ 107:rover/Mission/Src/IMU.c **** 
+ 108:rover/Mission/Src/IMU.c **** 	buffer[6] = (sequence_num >> 0) & 0xFF;
+ 858              		.loc 1 108 2 is_stmt 1 view .LVU173
+ 859              		.loc 1 108 12 is_stmt 0 view .LVU174
+ 860 0052 A571     		strb	r5, [r4, #6]
+ 109:rover/Mission/Src/IMU.c **** 	buffer[7] = (sequence_num >> 8) & 0xFF;
+ 861              		.loc 1 109 2 is_stmt 1 view .LVU175
+ 862              		.loc 1 109 12 is_stmt 0 view .LVU176
+ 863 0054 2D0A     		lsrs	r5, r5, #8
+ 864              	.LVL101:
+ 865              		.loc 1 109 12 view .LVU177
+ 866 0056 E571     		strb	r5, [r4, #7]
+ 110:rover/Mission/Src/IMU.c **** }
+ 867              		.loc 1 110 1 view .LVU178
+ 868 0058 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 869              	.LVL102:
+ 870              	.L53:
+ 871              		.loc 1 110 1 view .LVU179
+ 872              		.align	2
+ 873              	.L52:
+ 874 005c 00005940 		.word	1079574528
+ 875              		.cfi_endproc
+ 876              	.LFE143:
+ 878              		.section	.text.IMU_CANMsgSendLinearAccel,"ax",%progbits
+ 879              		.align	1
+ 880              		.global	IMU_CANMsgSendLinearAccel
+ 881              		.syntax unified
+ 882              		.thumb
+ 883              		.thumb_func
+ 885              	IMU_CANMsgSendLinearAccel:
+ 886              	.LVL103:
+ 887              	.LFB144:
+ 111:rover/Mission/Src/IMU.c **** void IMU_CANMsgSendLinearAccel(IMU_INFO* imu, uint8_t* buffer, uint16_t sequence_num){
+ 888              		.loc 1 111 86 is_stmt 1 view -0
+ 889              		.cfi_startproc
+ 890              		@ args = 0, pretend = 0, frame = 0
+ 891              		@ frame_needed = 0, uses_anonymous_args = 0
+ 892              		.loc 1 111 86 is_stmt 0 view .LVU181
+ 893 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 894              	.LCFI13:
+ 895              		.cfi_def_cfa_offset 24
+ 896              		.cfi_offset 4, -24
+ 897              		.cfi_offset 5, -20
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s 			page 22
+
+
+ 898              		.cfi_offset 6, -16
+ 899              		.cfi_offset 7, -12
+ 900              		.cfi_offset 8, -8
+ 901              		.cfi_offset 14, -4
+ 902 0004 8046     		mov	r8, r0
+ 903 0006 0C46     		mov	r4, r1
+ 904 0008 1546     		mov	r5, r2
+ 112:rover/Mission/Src/IMU.c **** 	uint16_t linAccX = imu->linAccX * 1000;
+ 905              		.loc 1 112 2 is_stmt 1 view .LVU182
+ 906              		.loc 1 112 34 is_stmt 0 view .LVU183
+ 907 000a 0022     		movs	r2, #0
+ 908              	.LVL104:
+ 909              		.loc 1 112 34 view .LVU184
+ 910 000c 134B     		ldr	r3, .L56
+ 911 000e D0E90C01 		ldrd	r0, [r0, #48]
+ 912              	.LVL105:
+ 913              		.loc 1 112 34 view .LVU185
+ 914 0012 FFF7FEFF 		bl	__aeabi_dmul
+ 915              	.LVL106:
+ 916              		.loc 1 112 11 view .LVU186
+ 917 0016 FFF7FEFF 		bl	__aeabi_d2uiz
+ 918              	.LVL107:
+ 919 001a 87B2     		uxth	r7, r0
+ 920              	.LVL108:
+ 113:rover/Mission/Src/IMU.c **** 	uint16_t linAccY = imu->linAccY * 1000;
+ 921              		.loc 1 113 2 is_stmt 1 view .LVU187
+ 922              		.loc 1 113 34 is_stmt 0 view .LVU188
+ 923 001c 0022     		movs	r2, #0
+ 924 001e 0F4B     		ldr	r3, .L56
+ 925 0020 D8E90E01 		ldrd	r0, [r8, #56]
+ 926 0024 FFF7FEFF 		bl	__aeabi_dmul
+ 927              	.LVL109:
+ 928              		.loc 1 113 11 view .LVU189
+ 929 0028 FFF7FEFF 		bl	__aeabi_d2uiz
+ 930              	.LVL110:
+ 931 002c 86B2     		uxth	r6, r0
+ 932              	.LVL111:
+ 114:rover/Mission/Src/IMU.c **** 	uint16_t linAccZ = imu->linAccZ * 1000;
+ 933              		.loc 1 114 2 is_stmt 1 view .LVU190
+ 934              		.loc 1 114 34 is_stmt 0 view .LVU191
+ 935 002e 0022     		movs	r2, #0
+ 936 0030 0A4B     		ldr	r3, .L56
+ 937 0032 D8E91001 		ldrd	r0, [r8, #64]
+ 938 0036 FFF7FEFF 		bl	__aeabi_dmul
+ 939              	.LVL112:
+ 940              		.loc 1 114 11 view .LVU192
+ 941 003a FFF7FEFF 		bl	__aeabi_d2uiz
+ 942              	.LVL113:
+ 943 003e 83B2     		uxth	r3, r0
+ 944              	.LVL114:
+ 115:rover/Mission/Src/IMU.c **** 
+ 116:rover/Mission/Src/IMU.c **** 	buffer[0] = (linAccX >> 0) & 0xFF;
+ 945              		.loc 1 116 2 is_stmt 1 view .LVU193
+ 946              		.loc 1 116 12 is_stmt 0 view .LVU194
+ 947 0040 2770     		strb	r7, [r4]
+ 117:rover/Mission/Src/IMU.c **** 	buffer[1] = (linAccX >> 8) & 0xFF;
+ 948              		.loc 1 117 2 is_stmt 1 view .LVU195
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s 			page 23
+
+
+ 949              		.loc 1 117 12 is_stmt 0 view .LVU196
+ 950 0042 3F0A     		lsrs	r7, r7, #8
+ 951              	.LVL115:
+ 952              		.loc 1 117 12 view .LVU197
+ 953 0044 6770     		strb	r7, [r4, #1]
+ 118:rover/Mission/Src/IMU.c **** 
+ 119:rover/Mission/Src/IMU.c **** 	buffer[2] = (linAccY >> 0) & 0xFF;
+ 954              		.loc 1 119 2 is_stmt 1 view .LVU198
+ 955              		.loc 1 119 12 is_stmt 0 view .LVU199
+ 956 0046 A670     		strb	r6, [r4, #2]
+ 120:rover/Mission/Src/IMU.c **** 	buffer[3] = (linAccY >> 8) & 0xFF;
+ 957              		.loc 1 120 2 is_stmt 1 view .LVU200
+ 958              		.loc 1 120 12 is_stmt 0 view .LVU201
+ 959 0048 360A     		lsrs	r6, r6, #8
+ 960              	.LVL116:
+ 961              		.loc 1 120 12 view .LVU202
+ 962 004a E670     		strb	r6, [r4, #3]
+ 121:rover/Mission/Src/IMU.c **** 
+ 122:rover/Mission/Src/IMU.c **** 	buffer[4] = (linAccZ >> 0) & 0xFF;
+ 963              		.loc 1 122 2 is_stmt 1 view .LVU203
+ 964              		.loc 1 122 12 is_stmt 0 view .LVU204
+ 965 004c 2371     		strb	r3, [r4, #4]
+ 123:rover/Mission/Src/IMU.c **** 	buffer[5] = (linAccZ >> 8) & 0xFF;
+ 966              		.loc 1 123 2 is_stmt 1 view .LVU205
+ 967              		.loc 1 123 12 is_stmt 0 view .LVU206
+ 968 004e 1B0A     		lsrs	r3, r3, #8
+ 969              	.LVL117:
+ 970              		.loc 1 123 12 view .LVU207
+ 971 0050 6371     		strb	r3, [r4, #5]
+ 124:rover/Mission/Src/IMU.c **** 
+ 125:rover/Mission/Src/IMU.c **** 	buffer[6] = (sequence_num >> 0) & 0xFF;
+ 972              		.loc 1 125 2 is_stmt 1 view .LVU208
+ 973              		.loc 1 125 12 is_stmt 0 view .LVU209
+ 974 0052 A571     		strb	r5, [r4, #6]
+ 126:rover/Mission/Src/IMU.c **** 	buffer[7] = (sequence_num >> 8) & 0xFF;
+ 975              		.loc 1 126 2 is_stmt 1 view .LVU210
+ 976              		.loc 1 126 12 is_stmt 0 view .LVU211
+ 977 0054 2D0A     		lsrs	r5, r5, #8
+ 978              	.LVL118:
+ 979              		.loc 1 126 12 view .LVU212
+ 980 0056 E571     		strb	r5, [r4, #7]
+ 127:rover/Mission/Src/IMU.c **** }
+ 981              		.loc 1 127 1 view .LVU213
+ 982 0058 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 983              	.LVL119:
+ 984              	.L57:
+ 985              		.loc 1 127 1 view .LVU214
+ 986              		.align	2
+ 987              	.L56:
+ 988 005c 00408F40 		.word	1083129856
+ 989              		.cfi_endproc
+ 990              	.LFE144:
+ 992              		.global	_bno055_i2c_port
+ 993              		.section	.bss._bno055_i2c_port,"aw",%nobits
+ 994              		.align	2
+ 997              	_bno055_i2c_port:
+ 998 0000 00000000 		.space	4
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s 			page 24
+
+
+ 999              		.text
+ 1000              	.Letext0:
+ 1001              		.file 3 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 1002              		.file 4 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 1003              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f401xc.h"
+ 1004              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 1005              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 1006              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.h"
+ 1007              		.file 9 "rover/Mission/Src/../Inc/IMU.h"
+ 1008              		.file 10 "rover/Mission/Src/../../ECAL/Inc/bno055.h"
+ 1009              		.file 11 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltoo
+ 1010              		.file 12 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ 1011              		.file 13 "<built-in>"
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s 			page 25
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 IMU.c
+C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s:21     .text.bno055_assignI2C:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s:27     .text.bno055_assignI2C:00000000 bno055_assignI2C
+C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s:45     .text.bno055_assignI2C:00000008 $d
+C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s:997    .bss._bno055_i2c_port:00000000 _bno055_i2c_port
+C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s:50     .text.bno055_delay:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s:56     .text.bno055_delay:00000000 bno055_delay
+C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s:78     .rodata.bno055_writeData.str1.4:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s:133    .text.bno055_writeData:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s:139    .text.bno055_writeData:00000000 bno055_writeData
+C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s:179    .text.bno055_writeData:00000026 $d
+C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s:183    .text.bno055_writeData:0000002a $t
+C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s:203    .text.bno055_writeData:00000040 $d
+C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s:287    .text.bno055_writeData:00000096 $d
+C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s:472    .text.bno055_writeData:0000013c $d
+C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s:495    .text.bno055_readData:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s:501    .text.bno055_readData:00000000 bno055_readData
+C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s:558    .text.bno055_readData:00000034 $d
+C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s:563    .text.IMU_Setup:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s:569    .text.IMU_Setup:00000000 IMU_Setup
+C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s:598    .text.IMU_Operation:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s:604    .text.IMU_Operation:00000000 IMU_Operation
+C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s:765    .text.IMU_CANMsgSendOrientation:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s:771    .text.IMU_CANMsgSendOrientation:00000000 IMU_CANMsgSendOrientation
+C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s:874    .text.IMU_CANMsgSendOrientation:0000005c $d
+C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s:879    .text.IMU_CANMsgSendLinearAccel:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s:885    .text.IMU_CANMsgSendLinearAccel:00000000 IMU_CANMsgSendLinearAccel
+C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s:988    .text.IMU_CANMsgSendLinearAccel:0000005c $d
+C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s:994    .bss._bno055_i2c_port:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s:237    .text.bno055_writeData:00000061 $d
+C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s:237    .text.bno055_writeData:00000062 $t
+C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s:331    .text.bno055_writeData:000000c1 $d
+C:\Users\bavly\AppData\Local\Temp\cctCsl4R.s:331    .text.bno055_writeData:000000c2 $t
+
+UNDEFINED SYMBOLS
+HAL_Delay
+HAL_I2C_Master_Transmit
+puts
+HAL_I2C_GetError
+printf
+HAL_I2C_GetState
+HAL_I2C_Master_Receive
+bno055_setup
+bno055_setOperationModeNDOF
+__aeabi_i2d
+bno055_getVectorEuler
+bno055_getVectorAccelerometer
+bno055_getVectorLinearAccel
+bno055_getVectorMagnetometer
+bno055_getVectorGyroscope
+bno055_getVectorGravity
+bno055_getVectorQuaternion
+bno055_getTemp
+__aeabi_dmul
+__aeabi_d2uiz

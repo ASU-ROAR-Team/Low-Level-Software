@@ -1,0 +1,179 @@
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccGuNFU5.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"base_serial.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "rover/ECAL/Src/base_serial.c"
+  20              		.section	.text.get_serial_handler,"ax",%progbits
+  21              		.align	1
+  22              		.global	get_serial_handler
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	get_serial_handler:
+  28              	.LVL0:
+  29              	.LFB137:
+   1:rover/ECAL/Src/base_serial.c **** /*
+   2:rover/ECAL/Src/base_serial.c ****  * base_serial.c
+   3:rover/ECAL/Src/base_serial.c ****  *
+   4:rover/ECAL/Src/base_serial.c ****  *  Created on: April 27, 2025
+   5:rover/ECAL/Src/base_serial.c ****  *      Author: Adham
+   6:rover/ECAL/Src/base_serial.c ****  */
+   7:rover/ECAL/Src/base_serial.c **** 
+   8:rover/ECAL/Src/base_serial.c **** #include "base_serial.h"
+   9:rover/ECAL/Src/base_serial.c **** #include "usart.h"
+  10:rover/ECAL/Src/base_serial.c **** extern SERIAL_HandleTypeDef* USART1_Serial_Handler;
+  11:rover/ECAL/Src/base_serial.c **** extern SERIAL_HandleTypeDef* USART2_Serial_Handler;
+  12:rover/ECAL/Src/base_serial.c **** extern SERIAL_HandleTypeDef* USART6_Serial_Handler;
+  13:rover/ECAL/Src/base_serial.c **** //extern SERIAL_HandleTypeDef* USART4_Serial_Handler;
+  14:rover/ECAL/Src/base_serial.c **** 
+  15:rover/ECAL/Src/base_serial.c **** SERIAL_HandleTypeDef* get_serial_handler(UART_HandleTypeDef *huartx){
+  30              		.loc 1 15 69 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  16:rover/ECAL/Src/base_serial.c **** 
+  17:rover/ECAL/Src/base_serial.c **** 	SERIAL_HandleTypeDef* ret_serial_handler = NULL;
+  35              		.loc 1 17 2 view .LVU1
+  18:rover/ECAL/Src/base_serial.c **** 
+  19:rover/ECAL/Src/base_serial.c **** #ifdef USE_USART1
+  20:rover/ECAL/Src/base_serial.c **** 	if(huartx->Instance == USART1){
+  36              		.loc 1 20 2 view .LVU2
+  37              		.loc 1 20 11 is_stmt 0 view .LVU3
+  38 0000 0368     		ldr	r3, [r0]
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccGuNFU5.s 			page 2
+
+
+  39              		.loc 1 20 4 view .LVU4
+  40 0002 0A4A     		ldr	r2, .L9
+  41 0004 9342     		cmp	r3, r2
+  42 0006 07D0     		beq	.L6
+  17:rover/ECAL/Src/base_serial.c **** 
+  43              		.loc 1 17 24 view .LVU5
+  44 0008 0020     		movs	r0, #0
+  45              	.LVL1:
+  46              	.L2:
+  21:rover/ECAL/Src/base_serial.c **** 		ret_serial_handler = USART1_Serial_Handler;
+  22:rover/ECAL/Src/base_serial.c **** 	}
+  23:rover/ECAL/Src/base_serial.c **** #endif
+  24:rover/ECAL/Src/base_serial.c **** #ifdef USE_USART2
+  25:rover/ECAL/Src/base_serial.c **** 	if(huartx->Instance == USART2){
+  47              		.loc 1 25 2 is_stmt 1 view .LVU6
+  48              		.loc 1 25 4 is_stmt 0 view .LVU7
+  49 000a 094A     		ldr	r2, .L9+4
+  50 000c 9342     		cmp	r3, r2
+  51 000e 06D0     		beq	.L7
+  52              	.L3:
+  26:rover/ECAL/Src/base_serial.c **** 		ret_serial_handler = USART2_Serial_Handler;
+  27:rover/ECAL/Src/base_serial.c **** 	}
+  28:rover/ECAL/Src/base_serial.c **** #endif
+  29:rover/ECAL/Src/base_serial.c **** #ifdef USE_USART6
+  30:rover/ECAL/Src/base_serial.c **** 	if(huartx->Instance == USART6){
+  53              		.loc 1 30 2 is_stmt 1 view .LVU8
+  54              		.loc 1 30 4 is_stmt 0 view .LVU9
+  55 0010 084A     		ldr	r2, .L9+8
+  56 0012 9342     		cmp	r3, r2
+  57 0014 06D0     		beq	.L8
+  58              	.L1:
+  31:rover/ECAL/Src/base_serial.c **** 		ret_serial_handler = USART6_Serial_Handler;
+  32:rover/ECAL/Src/base_serial.c **** 	}
+  33:rover/ECAL/Src/base_serial.c **** #endif
+  34:rover/ECAL/Src/base_serial.c **** #ifdef USE_USART4
+  35:rover/ECAL/Src/base_serial.c **** 	if(huartx->Instance == USART4){
+  36:rover/ECAL/Src/base_serial.c **** 		ret_serial_handler = USART4_Serial_Handler;
+  37:rover/ECAL/Src/base_serial.c **** 	}
+  38:rover/ECAL/Src/base_serial.c **** #endif
+  39:rover/ECAL/Src/base_serial.c **** 	return ret_serial_handler;
+  40:rover/ECAL/Src/base_serial.c **** }
+  59              		.loc 1 40 1 view .LVU10
+  60 0016 7047     		bx	lr
+  61              	.LVL2:
+  62              	.L6:
+  21:rover/ECAL/Src/base_serial.c **** 	}
+  63              		.loc 1 21 3 is_stmt 1 view .LVU11
+  21:rover/ECAL/Src/base_serial.c **** 	}
+  64              		.loc 1 21 22 is_stmt 0 view .LVU12
+  65 0018 074A     		ldr	r2, .L9+12
+  66 001a 1068     		ldr	r0, [r2]
+  67              	.LVL3:
+  21:rover/ECAL/Src/base_serial.c **** 	}
+  68              		.loc 1 21 22 view .LVU13
+  69 001c F5E7     		b	.L2
+  70              	.L7:
+  26:rover/ECAL/Src/base_serial.c **** 		ret_serial_handler = USART2_Serial_Handler;
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccGuNFU5.s 			page 3
+
+
+  71              		.loc 1 26 3 is_stmt 1 view .LVU14
+  26:rover/ECAL/Src/base_serial.c **** 		ret_serial_handler = USART2_Serial_Handler;
+  72              		.loc 1 26 22 is_stmt 0 view .LVU15
+  73 001e 074A     		ldr	r2, .L9+16
+  74 0020 1068     		ldr	r0, [r2]
+  75              	.LVL4:
+  26:rover/ECAL/Src/base_serial.c **** 		ret_serial_handler = USART2_Serial_Handler;
+  76              		.loc 1 26 22 view .LVU16
+  77 0022 F5E7     		b	.L3
+  78              	.L8:
+  31:rover/ECAL/Src/base_serial.c **** 		ret_serial_handler = USART6_Serial_Handler;
+  79              		.loc 1 31 3 is_stmt 1 view .LVU17
+  31:rover/ECAL/Src/base_serial.c **** 		ret_serial_handler = USART6_Serial_Handler;
+  80              		.loc 1 31 22 is_stmt 0 view .LVU18
+  81 0024 064B     		ldr	r3, .L9+20
+  82 0026 1868     		ldr	r0, [r3]
+  83              	.LVL5:
+  39:rover/ECAL/Src/base_serial.c **** }
+  84              		.loc 1 39 2 is_stmt 1 view .LVU19
+  39:rover/ECAL/Src/base_serial.c **** }
+  85              		.loc 1 39 9 is_stmt 0 view .LVU20
+  86 0028 F5E7     		b	.L1
+  87              	.L10:
+  88 002a 00BF     		.align	2
+  89              	.L9:
+  90 002c 00100140 		.word	1073811456
+  91 0030 00440040 		.word	1073759232
+  92 0034 00140140 		.word	1073812480
+  93 0038 00000000 		.word	USART1_Serial_Handler
+  94 003c 00000000 		.word	USART2_Serial_Handler
+  95 0040 00000000 		.word	USART6_Serial_Handler
+  96              		.cfi_endproc
+  97              	.LFE137:
+  99              		.text
+ 100              	.Letext0:
+ 101              		.file 2 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 102              		.file 3 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 103              		.file 4 "rover/ECAL/Inc/ringbuffer.h"
+ 104              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f401xc.h"
+ 105              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 106              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 107              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
+ 108              		.file 9 "rover/ECAL/Inc/base_serial.h"
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccGuNFU5.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 base_serial.c
+C:\Users\bavly\AppData\Local\Temp\ccGuNFU5.s:21     .text.get_serial_handler:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccGuNFU5.s:27     .text.get_serial_handler:00000000 get_serial_handler
+C:\Users\bavly\AppData\Local\Temp\ccGuNFU5.s:90     .text.get_serial_handler:0000002c $d
+
+UNDEFINED SYMBOLS
+USART1_Serial_Handler
+USART2_Serial_Handler
+USART6_Serial_Handler
