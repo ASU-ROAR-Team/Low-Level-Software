@@ -1,0 +1,303 @@
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccvththJ.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"app_ros.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "rover/App/Src/app_ros.c"
+  20              		.section	.rodata.App_ROS_Task.str1.4,"aMS",%progbits,1
+  21              		.align	2
+  22              	.LC0:
+  23 0000 00       		.ascii	"\000"
+  24 0001 000000   		.align	2
+  25              	.LC1:
+  26 0004 726F7665 		.ascii	"rover_node\000"
+  26      725F6E6F 
+  26      646500
+  27              		.section	.text.App_ROS_Task,"ax",%progbits
+  28              		.align	1
+  29              		.global	App_ROS_Task
+  30              		.syntax unified
+  31              		.thumb
+  32              		.thumb_func
+  34              	App_ROS_Task:
+  35              	.LVL0:
+  36              	.LFB143:
+   1:rover/App/Src/app_ros.c **** /*
+   2:rover/App/Src/app_ros.c ****  * app_ros.c
+   3:rover/App/Src/app_ros.c ****  *
+   4:rover/App/Src/app_ros.c ****  *  Created on: Feb 9, 2026
+   5:rover/App/Src/app_ros.c ****  *      Author: bavly
+   6:rover/App/Src/app_ros.c ****  */
+   7:rover/App/Src/app_ros.c **** 
+   8:rover/App/Src/app_ros.c **** #include "FreeRTOS.h"
+   9:rover/App/Src/app_ros.c **** #include "task.h"
+  10:rover/App/Src/app_ros.c **** #include "usart.h"
+  11:rover/App/Src/app_ros.c **** #include <rcl/rcl.h>
+  12:rover/App/Src/app_ros.c **** #include <rcl/error_handling.h>
+  13:rover/App/Src/app_ros.c **** #include <rclc/rclc.h>
+  14:rover/App/Src/app_ros.c **** #include <rclc/executor.h>
+  15:rover/App/Src/app_ros.c **** #include <uxr/client/transport.h>
+  16:rover/App/Src/app_ros.c **** #include <rmw_microxrcedds_c/config.h>
+  17:rover/App/Src/app_ros.c **** #include <rmw_microros/rmw_microros.h>
+  18:rover/App/Src/app_ros.c **** #include <sensor_msgs/msg/imu.h>
+  19:rover/App/Src/app_ros.c **** #include <std_msgs/msg/int32.h>
+  20:rover/App/Src/app_ros.c **** #include "app_ros.h"
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccvththJ.s 			page 2
+
+
+  21:rover/App/Src/app_ros.c **** 
+  22:rover/App/Src/app_ros.c **** 
+  23:rover/App/Src/app_ros.c **** 
+  24:rover/App/Src/app_ros.c **** 
+  25:rover/App/Src/app_ros.c **** 
+  26:rover/App/Src/app_ros.c **** 
+  27:rover/App/Src/app_ros.c **** static rcl_node_t node;
+  28:rover/App/Src/app_ros.c **** static rclc_executor_t executor;
+  29:rover/App/Src/app_ros.c **** 
+  30:rover/App/Src/app_ros.c **** void App_ROS_Create(void)
+  31:rover/App/Src/app_ros.c **** {
+  32:rover/App/Src/app_ros.c ****     xTaskCreate(App_ROS_Task,
+  33:rover/App/Src/app_ros.c ****                 "ROS_Task",
+  34:rover/App/Src/app_ros.c ****                 6000,
+  35:rover/App/Src/app_ros.c ****                 NULL,
+  36:rover/App/Src/app_ros.c ****                 3,
+  37:rover/App/Src/app_ros.c ****                 NULL);
+  38:rover/App/Src/app_ros.c **** }
+  39:rover/App/Src/app_ros.c **** 
+  40:rover/App/Src/app_ros.c **** void App_ROS_Task(void *argument)
+  41:rover/App/Src/app_ros.c **** {
+  37              		.loc 1 41 1 view -0
+  38              		.cfi_startproc
+  39              		@ Volatile: function does not return.
+  40              		@ args = 0, pretend = 0, frame = 72
+  41              		@ frame_needed = 0, uses_anonymous_args = 0
+  42              		.loc 1 41 1 is_stmt 0 view .LVU1
+  43 0000 00B5     		push	{lr}
+  44              	.LCFI0:
+  45              		.cfi_def_cfa_offset 4
+  46              		.cfi_offset 14, -4
+  47 0002 93B0     		sub	sp, sp, #76
+  48              	.LCFI1:
+  49              		.cfi_def_cfa_offset 80
+  42:rover/App/Src/app_ros.c ****     rcl_allocator_t allocator = rcl_get_default_allocator();
+  50              		.loc 1 42 5 is_stmt 1 view .LVU2
+  51              		.loc 1 42 33 is_stmt 0 view .LVU3
+  52 0004 0DA8     		add	r0, sp, #52
+  53              	.LVL1:
+  54              		.loc 1 42 33 view .LVU4
+  55 0006 FFF7FEFF 		bl	rcutils_get_default_allocator
+  56              	.LVL2:
+  43:rover/App/Src/app_ros.c ****     rclc_support_t support;
+  57              		.loc 1 43 5 is_stmt 1 view .LVU5
+  44:rover/App/Src/app_ros.c **** 
+  45:rover/App/Src/app_ros.c ****     rclc_support_init(&support, 0, NULL, &allocator);
+  58              		.loc 1 45 5 view .LVU6
+  59 000a 0DAB     		add	r3, sp, #52
+  60 000c 0022     		movs	r2, #0
+  61 000e 1146     		mov	r1, r2
+  62 0010 6846     		mov	r0, sp
+  63 0012 FFF7FEFF 		bl	rclc_support_init
+  64              	.LVL3:
+  46:rover/App/Src/app_ros.c ****     rclc_node_init_default(&node, "rover_node", "", &support);
+  65              		.loc 1 46 5 view .LVU7
+  66 0016 6B46     		mov	r3, sp
+  67 0018 094A     		ldr	r2, .L4
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccvththJ.s 			page 3
+
+
+  68 001a 0A49     		ldr	r1, .L4+4
+  69 001c 0A48     		ldr	r0, .L4+8
+  70 001e FFF7FEFF 		bl	rclc_node_init_default
+  71              	.LVL4:
+  47:rover/App/Src/app_ros.c ****     rclc_executor_init(&executor, &support.context, 1, &allocator);
+  72              		.loc 1 47 5 view .LVU8
+  73 0022 0DAB     		add	r3, sp, #52
+  74 0024 0122     		movs	r2, #1
+  75 0026 6946     		mov	r1, sp
+  76 0028 0848     		ldr	r0, .L4+12
+  77 002a FFF7FEFF 		bl	rclc_executor_init
+  78              	.LVL5:
+  79              	.L2:
+  48:rover/App/Src/app_ros.c **** 
+  49:rover/App/Src/app_ros.c ****     while (1)
+  80              		.loc 1 49 5 view .LVU9
+  50:rover/App/Src/app_ros.c ****     {
+  51:rover/App/Src/app_ros.c ****         rclc_executor_spin_some(&executor, RCL_MS_TO_NS(10));
+  81              		.loc 1 51 9 view .LVU10
+  82 002e 084A     		ldr	r2, .L4+16
+  83 0030 0023     		movs	r3, #0
+  84 0032 0648     		ldr	r0, .L4+12
+  85 0034 FFF7FEFF 		bl	rclc_executor_spin_some
+  86              	.LVL6:
+  52:rover/App/Src/app_ros.c ****         vTaskDelay(pdMS_TO_TICKS(10));
+  87              		.loc 1 52 9 discriminator 1 view .LVU11
+  88 0038 0A20     		movs	r0, #10
+  89 003a FFF7FEFF 		bl	vTaskDelay
+  90              	.LVL7:
+  49:rover/App/Src/app_ros.c ****     {
+  91              		.loc 1 49 11 view .LVU12
+  92 003e F6E7     		b	.L2
+  93              	.L5:
+  94              		.align	2
+  95              	.L4:
+  96 0040 00000000 		.word	.LC0
+  97 0044 04000000 		.word	.LC1
+  98 0048 00000000 		.word	node
+  99 004c 00000000 		.word	executor
+ 100 0050 80969800 		.word	10000000
+ 101              		.cfi_endproc
+ 102              	.LFE143:
+ 104              		.section	.rodata.App_ROS_Create.str1.4,"aMS",%progbits,1
+ 105              		.align	2
+ 106              	.LC2:
+ 107 0000 524F535F 		.ascii	"ROS_Task\000"
+ 107      5461736B 
+ 107      00
+ 108              		.section	.text.App_ROS_Create,"ax",%progbits
+ 109              		.align	1
+ 110              		.global	App_ROS_Create
+ 111              		.syntax unified
+ 112              		.thumb
+ 113              		.thumb_func
+ 115              	App_ROS_Create:
+ 116              	.LFB142:
+  31:rover/App/Src/app_ros.c ****     xTaskCreate(App_ROS_Task,
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccvththJ.s 			page 4
+
+
+ 117              		.loc 1 31 1 view -0
+ 118              		.cfi_startproc
+ 119              		@ args = 0, pretend = 0, frame = 0
+ 120              		@ frame_needed = 0, uses_anonymous_args = 0
+ 121 0000 00B5     		push	{lr}
+ 122              	.LCFI2:
+ 123              		.cfi_def_cfa_offset 4
+ 124              		.cfi_offset 14, -4
+ 125 0002 83B0     		sub	sp, sp, #12
+ 126              	.LCFI3:
+ 127              		.cfi_def_cfa_offset 16
+  32:rover/App/Src/app_ros.c ****                 "ROS_Task",
+ 128              		.loc 1 32 5 view .LVU14
+ 129 0004 0023     		movs	r3, #0
+ 130 0006 0193     		str	r3, [sp, #4]
+ 131 0008 0322     		movs	r2, #3
+ 132 000a 0092     		str	r2, [sp]
+ 133 000c 41F27072 		movw	r2, #6000
+ 134 0010 0349     		ldr	r1, .L8
+ 135 0012 0448     		ldr	r0, .L8+4
+ 136 0014 FFF7FEFF 		bl	xTaskCreate
+ 137              	.LVL8:
+  38:rover/App/Src/app_ros.c **** 
+ 138              		.loc 1 38 1 is_stmt 0 view .LVU15
+ 139 0018 03B0     		add	sp, sp, #12
+ 140              	.LCFI4:
+ 141              		.cfi_def_cfa_offset 4
+ 142              		@ sp needed
+ 143 001a 5DF804FB 		ldr	pc, [sp], #4
+ 144              	.L9:
+ 145 001e 00BF     		.align	2
+ 146              	.L8:
+ 147 0020 00000000 		.word	.LC2
+ 148 0024 00000000 		.word	App_ROS_Task
+ 149              		.cfi_endproc
+ 150              	.LFE142:
+ 152              		.section	.bss.executor,"aw",%nobits
+ 153              		.align	3
+ 156              	executor:
+ 157 0000 00000000 		.space	136
+ 157      00000000 
+ 157      00000000 
+ 157      00000000 
+ 157      00000000 
+ 158              		.section	.bss.node,"aw",%nobits
+ 159              		.align	2
+ 162              	node:
+ 163 0000 00000000 		.space	8
+ 163      00000000 
+ 164              		.text
+ 165              	.Letext0:
+ 166              		.file 2 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 167              		.file 3 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 168              		.file 4 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 169              		.file 5 "Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h"
+ 170              		.file 6 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h"
+ 171              		.file 7 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccvththJ.s 			page 5
+
+
+ 172              		.file 8 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rcutils/
+ 173              		.file 9 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rcl/allo
+ 174              		.file 10 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rmw/ret
+ 175              		.file 11 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rcutils
+ 176              		.file 12 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rmw/tim
+ 177              		.file 13 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rmw/typ
+ 178              		.file 14 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rcl/typ
+ 179              		.file 15 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rcl/con
+ 180              		.file 16 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rcl/gua
+ 181              		.file 17 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rcl/nod
+ 182              		.file 18 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rcl/tim
+ 183              		.file 19 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rcl/sub
+ 184              		.file 20 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rcl/cli
+ 185              		.file 21 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rcl/ser
+ 186              		.file 22 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rmw/qos
+ 187              		.file 23 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rcl/tim
+ 188              		.file 24 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rcl/eve
+ 189              		.file 25 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rcl/wai
+ 190              		.file 26 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rclc/ty
+ 191              		.file 27 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/unique_
+ 192              		.file 28 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/builtin
+ 193              		.file 29 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/action_
+ 194              		.file 30 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/action_
+ 195              		.file 31 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rcl_act
+ 196              		.file 32 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rcl_act
+ 197              		.file 33 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rcl_act
+ 198              		.file 34 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rcl_act
+ 199              		.file 35 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rclc/ac
+ 200              		.file 36 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rclc/ac
+ 201              		.file 37 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rclc/ac
+ 202              		.file 38 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rclc/ex
+ 203              		.file 39 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rclc/ex
+ 204              		.file 40 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rclc/no
+ 205              		.file 41 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rclc/in
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccvththJ.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 app_ros.c
+C:\Users\bavly\AppData\Local\Temp\ccvththJ.s:21     .rodata.App_ROS_Task.str1.4:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccvththJ.s:28     .text.App_ROS_Task:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccvththJ.s:34     .text.App_ROS_Task:00000000 App_ROS_Task
+C:\Users\bavly\AppData\Local\Temp\ccvththJ.s:96     .text.App_ROS_Task:00000040 $d
+C:\Users\bavly\AppData\Local\Temp\ccvththJ.s:162    .bss.node:00000000 node
+C:\Users\bavly\AppData\Local\Temp\ccvththJ.s:156    .bss.executor:00000000 executor
+C:\Users\bavly\AppData\Local\Temp\ccvththJ.s:105    .rodata.App_ROS_Create.str1.4:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccvththJ.s:109    .text.App_ROS_Create:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccvththJ.s:115    .text.App_ROS_Create:00000000 App_ROS_Create
+C:\Users\bavly\AppData\Local\Temp\ccvththJ.s:147    .text.App_ROS_Create:00000020 $d
+C:\Users\bavly\AppData\Local\Temp\ccvththJ.s:153    .bss.executor:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccvththJ.s:159    .bss.node:00000000 $d
+
+UNDEFINED SYMBOLS
+rcutils_get_default_allocator
+rclc_support_init
+rclc_node_init_default
+rclc_executor_init
+rclc_executor_spin_some
+vTaskDelay
+xTaskCreate

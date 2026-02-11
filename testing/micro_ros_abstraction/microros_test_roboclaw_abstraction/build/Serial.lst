@@ -1,0 +1,1097 @@
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"Serial.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "rover/ECAL/Src/Serial.c"
+  20              		.section	.text.serial_init,"ax",%progbits
+  21              		.align	1
+  22              		.global	serial_init
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	serial_init:
+  28              	.LVL0:
+  29              	.LFB137:
+   1:rover/ECAL/Src/Serial.c **** /*
+   2:rover/ECAL/Src/Serial.c ****  * Serial.c
+   3:rover/ECAL/Src/Serial.c ****  *
+   4:rover/ECAL/Src/Serial.c ****  *  Created on: April 27, 2025
+   5:rover/ECAL/Src/Serial.c ****  *      Author: Adham
+   6:rover/ECAL/Src/Serial.c ****  */
+   7:rover/ECAL/Src/Serial.c **** 
+   8:rover/ECAL/Src/Serial.c **** #include "Serial.h"
+   9:rover/ECAL/Src/Serial.c **** 
+  10:rover/ECAL/Src/Serial.c **** #ifdef USE_USART1
+  11:rover/ECAL/Src/Serial.c **** SERIAL_HandleTypeDef* USART1_Serial_Handler;
+  12:rover/ECAL/Src/Serial.c **** ring_buffer_t USART1_Buffer_TX, USART1_Buffer_RX;
+  13:rover/ECAL/Src/Serial.c **** uint8_t USART1_HAL_Reg_Tx, USART1_HAL_Reg_Rx, USART1_Application_Reg_Tx;
+  14:rover/ECAL/Src/Serial.c **** #endif
+  15:rover/ECAL/Src/Serial.c **** #ifdef USE_USART2
+  16:rover/ECAL/Src/Serial.c **** SERIAL_HandleTypeDef* USART2_Serial_Handler;
+  17:rover/ECAL/Src/Serial.c **** ring_buffer_t USART2_Buffer_TX, USART2_Buffer_RX;
+  18:rover/ECAL/Src/Serial.c **** uint8_t USART2_HAL_Reg_Tx, USART2_HAL_Reg_Rx, USART2_Application_Reg_Tx;
+  19:rover/ECAL/Src/Serial.c **** #endif
+  20:rover/ECAL/Src/Serial.c **** #ifdef USE_USART6
+  21:rover/ECAL/Src/Serial.c **** SERIAL_HandleTypeDef* USART6_Serial_Handler;
+  22:rover/ECAL/Src/Serial.c **** ring_buffer_t USART6_Buffer_TX, USART6_Buffer_RX;
+  23:rover/ECAL/Src/Serial.c **** uint8_t USART6_HAL_Reg_Tx, USART6_HAL_Reg_Rx, USART6_Application_Reg_Tx;
+  24:rover/ECAL/Src/Serial.c **** #endif
+  25:rover/ECAL/Src/Serial.c **** #ifdef USE_USART4
+  26:rover/ECAL/Src/Serial.c **** SERIAL_HandleTypeDef* USART4_Serial_Handler;
+  27:rover/ECAL/Src/Serial.c **** ring_buffer_t USART4_Buffer_TX, USART4_Buffer_RX;
+  28:rover/ECAL/Src/Serial.c **** uint8_t USART4_HAL_Reg_Tx, USART4_HAL_Reg_Rx, USART4_Application_Reg_Tx;
+  29:rover/ECAL/Src/Serial.c **** #endif
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s 			page 2
+
+
+  30:rover/ECAL/Src/Serial.c **** #ifdef USE_USART1
+  31:rover/ECAL/Src/Serial.c **** SERIAL_HandleTypeDef __usart1_serial_handler = {
+  32:rover/ECAL/Src/Serial.c **** 
+  33:rover/ECAL/Src/Serial.c **** 		.buffer_Tx = &USART1_Buffer_TX,
+  34:rover/ECAL/Src/Serial.c **** 		.buffer_Rx = &USART1_Buffer_RX,
+  35:rover/ECAL/Src/Serial.c **** 		.hal_reg_Tx = &USART1_HAL_Reg_Tx,
+  36:rover/ECAL/Src/Serial.c **** 		.hal_reg_Rx = &USART1_HAL_Reg_Rx,
+  37:rover/ECAL/Src/Serial.c **** 		.application_reg_Rx = &USART1_Application_Reg_Tx,
+  38:rover/ECAL/Src/Serial.c **** 		.WriteLock = SERIAL_WRITE_UNLOCKED,
+  39:rover/ECAL/Src/Serial.c **** 		.ReadLock = SERIAL_READ_UNLOCKED
+  40:rover/ECAL/Src/Serial.c **** };
+  41:rover/ECAL/Src/Serial.c **** #endif
+  42:rover/ECAL/Src/Serial.c **** #ifdef USE_USART2
+  43:rover/ECAL/Src/Serial.c **** SERIAL_HandleTypeDef __usart2_serial_handler = {
+  44:rover/ECAL/Src/Serial.c **** 
+  45:rover/ECAL/Src/Serial.c **** 		.buffer_Tx = &USART2_Buffer_TX,
+  46:rover/ECAL/Src/Serial.c **** 		.buffer_Rx = &USART2_Buffer_RX,
+  47:rover/ECAL/Src/Serial.c **** 		.hal_reg_Tx = &USART2_HAL_Reg_Tx,
+  48:rover/ECAL/Src/Serial.c **** 		.hal_reg_Rx = &USART2_HAL_Reg_Rx,
+  49:rover/ECAL/Src/Serial.c **** 		.application_reg_Rx = &USART2_Application_Reg_Tx,
+  50:rover/ECAL/Src/Serial.c **** 		.WriteLock = SERIAL_WRITE_UNLOCKED,
+  51:rover/ECAL/Src/Serial.c **** 		.ReadLock = SERIAL_READ_UNLOCKED
+  52:rover/ECAL/Src/Serial.c **** };
+  53:rover/ECAL/Src/Serial.c **** #endif
+  54:rover/ECAL/Src/Serial.c **** #ifdef USE_USART6
+  55:rover/ECAL/Src/Serial.c **** SERIAL_HandleTypeDef __usart6_serial_handler = {
+  56:rover/ECAL/Src/Serial.c **** 
+  57:rover/ECAL/Src/Serial.c **** 		.buffer_Tx = &USART6_Buffer_TX,
+  58:rover/ECAL/Src/Serial.c **** 		.buffer_Rx = &USART6_Buffer_RX,
+  59:rover/ECAL/Src/Serial.c **** 		.hal_reg_Tx = &USART6_HAL_Reg_Tx,
+  60:rover/ECAL/Src/Serial.c **** 		.hal_reg_Rx = &USART6_HAL_Reg_Rx,
+  61:rover/ECAL/Src/Serial.c **** 		.application_reg_Rx = &USART6_Application_Reg_Tx,
+  62:rover/ECAL/Src/Serial.c **** 		.WriteLock = SERIAL_WRITE_UNLOCKED,
+  63:rover/ECAL/Src/Serial.c **** 		.ReadLock = SERIAL_READ_UNLOCKED
+  64:rover/ECAL/Src/Serial.c **** };
+  65:rover/ECAL/Src/Serial.c **** #endif
+  66:rover/ECAL/Src/Serial.c **** #ifdef USE_USART4
+  67:rover/ECAL/Src/Serial.c **** SERIAL_HandleTypeDef __usart4_serial_handler = {
+  68:rover/ECAL/Src/Serial.c ****     .buffer_Tx = &USART4_Buffer_TX,
+  69:rover/ECAL/Src/Serial.c ****     .buffer_Rx = &USART4_Buffer_RX,
+  70:rover/ECAL/Src/Serial.c ****     .hal_reg_Tx = &USART4_HAL_Reg_Tx,
+  71:rover/ECAL/Src/Serial.c ****     .hal_reg_Rx = &USART4_HAL_Reg_Rx,
+  72:rover/ECAL/Src/Serial.c ****     .application_reg_Rx = &USART4_Application_Reg_Tx,
+  73:rover/ECAL/Src/Serial.c ****     .WriteLock = SERIAL_WRITE_UNLOCKED,
+  74:rover/ECAL/Src/Serial.c ****     .ReadLock = SERIAL_READ_UNLOCKED
+  75:rover/ECAL/Src/Serial.c **** };
+  76:rover/ECAL/Src/Serial.c **** #endif
+  77:rover/ECAL/Src/Serial.c **** SERIAL_HandleTypeDef* serial_init(UART_HandleTypeDef *huartx) {
+  30              		.loc 1 77 63 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		.loc 1 77 63 is_stmt 0 view .LVU1
+  35 0000 38B5     		push	{r3, r4, r5, lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 16
+  38              		.cfi_offset 3, -16
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s 			page 3
+
+
+  39              		.cfi_offset 4, -12
+  40              		.cfi_offset 5, -8
+  41              		.cfi_offset 14, -4
+  42 0002 0446     		mov	r4, r0
+  78:rover/ECAL/Src/Serial.c **** 
+  79:rover/ECAL/Src/Serial.c **** 	SERIAL_HandleTypeDef *serial_handler = NULL;
+  43              		.loc 1 79 2 is_stmt 1 view .LVU2
+  44              	.LVL1:
+  80:rover/ECAL/Src/Serial.c **** 
+  81:rover/ECAL/Src/Serial.c **** #ifdef USE_USART1
+  82:rover/ECAL/Src/Serial.c **** 		if(huartx->Instance == USART1){
+  45              		.loc 1 82 3 view .LVU3
+  46              		.loc 1 82 12 is_stmt 0 view .LVU4
+  47 0004 0268     		ldr	r2, [r0]
+  48              		.loc 1 82 5 view .LVU5
+  49 0006 224B     		ldr	r3, .L10
+  50 0008 9A42     		cmp	r2, r3
+  51 000a 0AD0     		beq	.L7
+  79:rover/ECAL/Src/Serial.c **** 
+  52              		.loc 1 79 24 view .LVU6
+  53 000c 0025     		movs	r5, #0
+  54              	.LVL2:
+  55              	.L2:
+  83:rover/ECAL/Src/Serial.c **** 
+  84:rover/ECAL/Src/Serial.c **** 			USART1_Serial_Handler = &(__usart1_serial_handler);
+  85:rover/ECAL/Src/Serial.c **** 
+  86:rover/ECAL/Src/Serial.c **** 			USART1_Serial_Handler->huartx = huartx;
+  87:rover/ECAL/Src/Serial.c **** 			ring_buffer_init(USART1_Serial_Handler->buffer_Rx);
+  88:rover/ECAL/Src/Serial.c **** 			ring_buffer_init(USART1_Serial_Handler->buffer_Tx);
+  89:rover/ECAL/Src/Serial.c **** 			serial_handler = USART1_Serial_Handler;
+  90:rover/ECAL/Src/Serial.c **** 			HAL_UART_Receive_DMA(USART1_Serial_Handler->huartx, USART1_Serial_Handler->hal_reg_Rx, PRIMARY_R
+  91:rover/ECAL/Src/Serial.c **** 		}
+  92:rover/ECAL/Src/Serial.c **** #endif
+  93:rover/ECAL/Src/Serial.c **** #ifdef USE_USART2
+  94:rover/ECAL/Src/Serial.c **** 		if(huartx->Instance == USART2){
+  56              		.loc 1 94 3 is_stmt 1 view .LVU7
+  57              		.loc 1 94 12 is_stmt 0 view .LVU8
+  58 000e 2268     		ldr	r2, [r4]
+  59              		.loc 1 94 5 view .LVU9
+  60 0010 204B     		ldr	r3, .L10+4
+  61 0012 9A42     		cmp	r2, r3
+  62 0014 17D0     		beq	.L8
+  63              	.L3:
+  95:rover/ECAL/Src/Serial.c **** 
+  96:rover/ECAL/Src/Serial.c **** 			USART2_Serial_Handler = &(__usart2_serial_handler);
+  97:rover/ECAL/Src/Serial.c **** 
+  98:rover/ECAL/Src/Serial.c **** 			USART2_Serial_Handler->huartx = huartx;
+  99:rover/ECAL/Src/Serial.c **** 			ring_buffer_init(USART2_Serial_Handler->buffer_Rx);
+ 100:rover/ECAL/Src/Serial.c **** 			ring_buffer_init(USART2_Serial_Handler->buffer_Tx);
+ 101:rover/ECAL/Src/Serial.c **** 			serial_handler = USART2_Serial_Handler;
+ 102:rover/ECAL/Src/Serial.c **** 			HAL_UART_Receive_DMA(USART2_Serial_Handler->huartx, USART2_Serial_Handler->hal_reg_Rx, PRIMARY_R
+ 103:rover/ECAL/Src/Serial.c **** 		}
+ 104:rover/ECAL/Src/Serial.c **** #endif
+ 105:rover/ECAL/Src/Serial.c **** #ifdef USE_USART6
+ 106:rover/ECAL/Src/Serial.c **** 		if(huartx->Instance == USART6){
+  64              		.loc 1 106 3 is_stmt 1 view .LVU10
+  65              		.loc 1 106 12 is_stmt 0 view .LVU11
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s 			page 4
+
+
+  66 0016 2268     		ldr	r2, [r4]
+  67              		.loc 1 106 5 view .LVU12
+  68 0018 1F4B     		ldr	r3, .L10+8
+  69 001a 9A42     		cmp	r2, r3
+  70 001c 25D0     		beq	.L9
+  71              	.L1:
+ 107:rover/ECAL/Src/Serial.c **** 
+ 108:rover/ECAL/Src/Serial.c **** 			USART6_Serial_Handler = &(__usart6_serial_handler);
+ 109:rover/ECAL/Src/Serial.c **** 
+ 110:rover/ECAL/Src/Serial.c **** 			USART6_Serial_Handler->huartx = huartx;
+ 111:rover/ECAL/Src/Serial.c **** 			ring_buffer_init(USART6_Serial_Handler->buffer_Rx);
+ 112:rover/ECAL/Src/Serial.c **** 			ring_buffer_init(USART6_Serial_Handler->buffer_Tx);
+ 113:rover/ECAL/Src/Serial.c **** 			serial_handler = USART6_Serial_Handler;
+ 114:rover/ECAL/Src/Serial.c **** 			HAL_UART_Receive_DMA(USART6_Serial_Handler->huartx, USART6_Serial_Handler->hal_reg_Rx, PRIMARY_R
+ 115:rover/ECAL/Src/Serial.c **** 		}
+ 116:rover/ECAL/Src/Serial.c **** #endif
+ 117:rover/ECAL/Src/Serial.c **** #ifdef USE_USART4
+ 118:rover/ECAL/Src/Serial.c **** 		if(huartx->Instance == USART4){
+ 119:rover/ECAL/Src/Serial.c **** 
+ 120:rover/ECAL/Src/Serial.c **** 			USART4_Serial_Handler = &(__usart4_serial_handler);
+ 121:rover/ECAL/Src/Serial.c **** 
+ 122:rover/ECAL/Src/Serial.c **** 			USART4_Serial_Handler->huartx = huartx;
+ 123:rover/ECAL/Src/Serial.c **** 			ring_buffer_init(USART4_Serial_Handler->buffer_Rx);
+ 124:rover/ECAL/Src/Serial.c **** 			ring_buffer_init(USART4_Serial_Handler->buffer_Tx);
+ 125:rover/ECAL/Src/Serial.c **** 			serial_handler = USART4_Serial_Handler;
+ 126:rover/ECAL/Src/Serial.c **** 			HAL_UART_Receive_DMA(USART4_Serial_Handler->huartx, USART4_Serial_Handler->hal_reg_Rx, PRIMARY_R
+ 127:rover/ECAL/Src/Serial.c **** 		}
+ 128:rover/ECAL/Src/Serial.c **** #endif
+ 129:rover/ECAL/Src/Serial.c **** 
+ 130:rover/ECAL/Src/Serial.c **** 	return serial_handler;
+ 131:rover/ECAL/Src/Serial.c **** 
+ 132:rover/ECAL/Src/Serial.c **** }
+  72              		.loc 1 132 1 view .LVU13
+  73 001e 2846     		mov	r0, r5
+  74 0020 38BD     		pop	{r3, r4, r5, pc}
+  75              	.LVL3:
+  76              	.L7:
+  84:rover/ECAL/Src/Serial.c **** 
+  77              		.loc 1 84 4 is_stmt 1 view .LVU14
+  84:rover/ECAL/Src/Serial.c **** 
+  78              		.loc 1 84 26 is_stmt 0 view .LVU15
+  79 0022 1E4D     		ldr	r5, .L10+12
+  80 0024 1E4B     		ldr	r3, .L10+16
+  81 0026 2B60     		str	r3, [r5]
+  86:rover/ECAL/Src/Serial.c **** 			ring_buffer_init(USART1_Serial_Handler->buffer_Rx);
+  82              		.loc 1 86 4 is_stmt 1 view .LVU16
+  86:rover/ECAL/Src/Serial.c **** 			ring_buffer_init(USART1_Serial_Handler->buffer_Rx);
+  83              		.loc 1 86 34 is_stmt 0 view .LVU17
+  84 0028 1860     		str	r0, [r3]
+  87:rover/ECAL/Src/Serial.c **** 			ring_buffer_init(USART1_Serial_Handler->buffer_Tx);
+  85              		.loc 1 87 4 is_stmt 1 view .LVU18
+  86 002a 9868     		ldr	r0, [r3, #8]
+  87              	.LVL4:
+  87:rover/ECAL/Src/Serial.c **** 			ring_buffer_init(USART1_Serial_Handler->buffer_Tx);
+  88              		.loc 1 87 4 is_stmt 0 view .LVU19
+  89 002c FFF7FEFF 		bl	ring_buffer_init
+  90              	.LVL5:
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s 			page 5
+
+
+  88:rover/ECAL/Src/Serial.c **** 			serial_handler = USART1_Serial_Handler;
+  91              		.loc 1 88 4 is_stmt 1 view .LVU20
+  88:rover/ECAL/Src/Serial.c **** 			serial_handler = USART1_Serial_Handler;
+  92              		.loc 1 88 42 is_stmt 0 view .LVU21
+  93 0030 2B68     		ldr	r3, [r5]
+  88:rover/ECAL/Src/Serial.c **** 			serial_handler = USART1_Serial_Handler;
+  94              		.loc 1 88 4 view .LVU22
+  95 0032 5868     		ldr	r0, [r3, #4]
+  96 0034 FFF7FEFF 		bl	ring_buffer_init
+  97              	.LVL6:
+  89:rover/ECAL/Src/Serial.c **** 			HAL_UART_Receive_DMA(USART1_Serial_Handler->huartx, USART1_Serial_Handler->hal_reg_Rx, PRIMARY_R
+  98              		.loc 1 89 4 is_stmt 1 view .LVU23
+  89:rover/ECAL/Src/Serial.c **** 			HAL_UART_Receive_DMA(USART1_Serial_Handler->huartx, USART1_Serial_Handler->hal_reg_Rx, PRIMARY_R
+  99              		.loc 1 89 19 is_stmt 0 view .LVU24
+ 100 0038 2D68     		ldr	r5, [r5]
+ 101              	.LVL7:
+  90:rover/ECAL/Src/Serial.c **** 		}
+ 102              		.loc 1 90 4 is_stmt 1 view .LVU25
+ 103 003a 0122     		movs	r2, #1
+ 104 003c 2969     		ldr	r1, [r5, #16]
+ 105 003e 2868     		ldr	r0, [r5]
+ 106 0040 FFF7FEFF 		bl	HAL_UART_Receive_DMA
+ 107              	.LVL8:
+ 108 0044 E3E7     		b	.L2
+ 109              	.L8:
+  96:rover/ECAL/Src/Serial.c **** 
+ 110              		.loc 1 96 4 view .LVU26
+  96:rover/ECAL/Src/Serial.c **** 
+ 111              		.loc 1 96 26 is_stmt 0 view .LVU27
+ 112 0046 174D     		ldr	r5, .L10+20
+ 113              	.LVL9:
+  96:rover/ECAL/Src/Serial.c **** 
+ 114              		.loc 1 96 26 view .LVU28
+ 115 0048 174B     		ldr	r3, .L10+24
+ 116 004a 2B60     		str	r3, [r5]
+  98:rover/ECAL/Src/Serial.c **** 			ring_buffer_init(USART2_Serial_Handler->buffer_Rx);
+ 117              		.loc 1 98 4 is_stmt 1 view .LVU29
+  98:rover/ECAL/Src/Serial.c **** 			ring_buffer_init(USART2_Serial_Handler->buffer_Rx);
+ 118              		.loc 1 98 34 is_stmt 0 view .LVU30
+ 119 004c 1C60     		str	r4, [r3]
+  99:rover/ECAL/Src/Serial.c **** 			ring_buffer_init(USART2_Serial_Handler->buffer_Tx);
+ 120              		.loc 1 99 4 is_stmt 1 view .LVU31
+ 121 004e 9868     		ldr	r0, [r3, #8]
+ 122 0050 FFF7FEFF 		bl	ring_buffer_init
+ 123              	.LVL10:
+ 100:rover/ECAL/Src/Serial.c **** 			serial_handler = USART2_Serial_Handler;
+ 124              		.loc 1 100 4 view .LVU32
+ 100:rover/ECAL/Src/Serial.c **** 			serial_handler = USART2_Serial_Handler;
+ 125              		.loc 1 100 42 is_stmt 0 view .LVU33
+ 126 0054 2B68     		ldr	r3, [r5]
+ 100:rover/ECAL/Src/Serial.c **** 			serial_handler = USART2_Serial_Handler;
+ 127              		.loc 1 100 4 view .LVU34
+ 128 0056 5868     		ldr	r0, [r3, #4]
+ 129 0058 FFF7FEFF 		bl	ring_buffer_init
+ 130              	.LVL11:
+ 101:rover/ECAL/Src/Serial.c **** 			HAL_UART_Receive_DMA(USART2_Serial_Handler->huartx, USART2_Serial_Handler->hal_reg_Rx, PRIMARY_R
+ 131              		.loc 1 101 4 is_stmt 1 view .LVU35
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s 			page 6
+
+
+ 101:rover/ECAL/Src/Serial.c **** 			HAL_UART_Receive_DMA(USART2_Serial_Handler->huartx, USART2_Serial_Handler->hal_reg_Rx, PRIMARY_R
+ 132              		.loc 1 101 19 is_stmt 0 view .LVU36
+ 133 005c 2D68     		ldr	r5, [r5]
+ 134              	.LVL12:
+ 102:rover/ECAL/Src/Serial.c **** 		}
+ 135              		.loc 1 102 4 is_stmt 1 view .LVU37
+ 136 005e 0122     		movs	r2, #1
+ 137 0060 2969     		ldr	r1, [r5, #16]
+ 138 0062 2868     		ldr	r0, [r5]
+ 139 0064 FFF7FEFF 		bl	HAL_UART_Receive_DMA
+ 140              	.LVL13:
+ 141 0068 D5E7     		b	.L3
+ 142              	.L9:
+ 108:rover/ECAL/Src/Serial.c **** 
+ 143              		.loc 1 108 4 view .LVU38
+ 108:rover/ECAL/Src/Serial.c **** 
+ 144              		.loc 1 108 26 is_stmt 0 view .LVU39
+ 145 006a 104D     		ldr	r5, .L10+28
+ 146              	.LVL14:
+ 108:rover/ECAL/Src/Serial.c **** 
+ 147              		.loc 1 108 26 view .LVU40
+ 148 006c 104B     		ldr	r3, .L10+32
+ 149 006e 2B60     		str	r3, [r5]
+ 110:rover/ECAL/Src/Serial.c **** 			ring_buffer_init(USART6_Serial_Handler->buffer_Rx);
+ 150              		.loc 1 110 4 is_stmt 1 view .LVU41
+ 110:rover/ECAL/Src/Serial.c **** 			ring_buffer_init(USART6_Serial_Handler->buffer_Rx);
+ 151              		.loc 1 110 34 is_stmt 0 view .LVU42
+ 152 0070 1C60     		str	r4, [r3]
+ 111:rover/ECAL/Src/Serial.c **** 			ring_buffer_init(USART6_Serial_Handler->buffer_Tx);
+ 153              		.loc 1 111 4 is_stmt 1 view .LVU43
+ 154 0072 9868     		ldr	r0, [r3, #8]
+ 155 0074 FFF7FEFF 		bl	ring_buffer_init
+ 156              	.LVL15:
+ 112:rover/ECAL/Src/Serial.c **** 			serial_handler = USART6_Serial_Handler;
+ 157              		.loc 1 112 4 view .LVU44
+ 112:rover/ECAL/Src/Serial.c **** 			serial_handler = USART6_Serial_Handler;
+ 158              		.loc 1 112 42 is_stmt 0 view .LVU45
+ 159 0078 2B68     		ldr	r3, [r5]
+ 112:rover/ECAL/Src/Serial.c **** 			serial_handler = USART6_Serial_Handler;
+ 160              		.loc 1 112 4 view .LVU46
+ 161 007a 5868     		ldr	r0, [r3, #4]
+ 162 007c FFF7FEFF 		bl	ring_buffer_init
+ 163              	.LVL16:
+ 113:rover/ECAL/Src/Serial.c **** 			HAL_UART_Receive_DMA(USART6_Serial_Handler->huartx, USART6_Serial_Handler->hal_reg_Rx, PRIMARY_R
+ 164              		.loc 1 113 4 is_stmt 1 view .LVU47
+ 113:rover/ECAL/Src/Serial.c **** 			HAL_UART_Receive_DMA(USART6_Serial_Handler->huartx, USART6_Serial_Handler->hal_reg_Rx, PRIMARY_R
+ 165              		.loc 1 113 19 is_stmt 0 view .LVU48
+ 166 0080 2D68     		ldr	r5, [r5]
+ 167              	.LVL17:
+ 114:rover/ECAL/Src/Serial.c **** 		}
+ 168              		.loc 1 114 4 is_stmt 1 view .LVU49
+ 169 0082 0122     		movs	r2, #1
+ 170 0084 2969     		ldr	r1, [r5, #16]
+ 171 0086 2868     		ldr	r0, [r5]
+ 172 0088 FFF7FEFF 		bl	HAL_UART_Receive_DMA
+ 173              	.LVL18:
+ 130:rover/ECAL/Src/Serial.c **** 
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s 			page 7
+
+
+ 174              		.loc 1 130 2 view .LVU50
+ 130:rover/ECAL/Src/Serial.c **** 
+ 175              		.loc 1 130 9 is_stmt 0 view .LVU51
+ 176 008c C7E7     		b	.L1
+ 177              	.L11:
+ 178 008e 00BF     		.align	2
+ 179              	.L10:
+ 180 0090 00100140 		.word	1073811456
+ 181 0094 00440040 		.word	1073759232
+ 182 0098 00140140 		.word	1073812480
+ 183 009c 00000000 		.word	USART1_Serial_Handler
+ 184 00a0 00000000 		.word	__usart1_serial_handler
+ 185 00a4 00000000 		.word	USART2_Serial_Handler
+ 186 00a8 00000000 		.word	__usart2_serial_handler
+ 187 00ac 00000000 		.word	USART6_Serial_Handler
+ 188 00b0 00000000 		.word	__usart6_serial_handler
+ 189              		.cfi_endproc
+ 190              	.LFE137:
+ 192              		.section	.text.serial_write,"ax",%progbits
+ 193              		.align	1
+ 194              		.global	serial_write
+ 195              		.syntax unified
+ 196              		.thumb
+ 197              		.thumb_func
+ 199              	serial_write:
+ 200              	.LVL19:
+ 201              	.LFB138:
+ 133:rover/ECAL/Src/Serial.c **** 
+ 134:rover/ECAL/Src/Serial.c **** void serial_write(SERIAL_HandleTypeDef* hserial, uint8_t *pData, uint16_t len) {
+ 202              		.loc 1 134 80 is_stmt 1 view -0
+ 203              		.cfi_startproc
+ 204              		@ args = 0, pretend = 0, frame = 0
+ 205              		@ frame_needed = 0, uses_anonymous_args = 0
+ 206              		.loc 1 134 80 is_stmt 0 view .LVU53
+ 207 0000 70B5     		push	{r4, r5, r6, lr}
+ 208              	.LCFI1:
+ 209              		.cfi_def_cfa_offset 16
+ 210              		.cfi_offset 4, -16
+ 211              		.cfi_offset 5, -12
+ 212              		.cfi_offset 6, -8
+ 213              		.cfi_offset 14, -4
+ 214 0002 0446     		mov	r4, r0
+ 215 0004 0D46     		mov	r5, r1
+ 216 0006 1646     		mov	r6, r2
+ 135:rover/ECAL/Src/Serial.c **** 
+ 136:rover/ECAL/Src/Serial.c **** 	if (ring_buffer_is_empty(hserial->buffer_Tx)) {
+ 217              		.loc 1 136 2 is_stmt 1 view .LVU54
+ 218              		.loc 1 136 6 is_stmt 0 view .LVU55
+ 219 0008 4068     		ldr	r0, [r0, #4]
+ 220              	.LVL20:
+ 221              	.LBB10:
+ 222              	.LBI10:
+ 223              		.file 2 "rover/ECAL/Inc/ringbuffer.h"
+   1:rover/ECAL/Inc/ringbuffer.h **** /*
+   2:rover/ECAL/Inc/ringbuffer.h ****  * ringbuffer.h
+   3:rover/ECAL/Inc/ringbuffer.h ****  *
+   4:rover/ECAL/Inc/ringbuffer.h ****  *  Created on: April 27, 2025
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s 			page 8
+
+
+   5:rover/ECAL/Inc/ringbuffer.h ****  *      Author: Adham
+   6:rover/ECAL/Inc/ringbuffer.h ****  */
+   7:rover/ECAL/Inc/ringbuffer.h **** 
+   8:rover/ECAL/Inc/ringbuffer.h **** #include <inttypes.h>
+   9:rover/ECAL/Inc/ringbuffer.h **** 
+  10:rover/ECAL/Inc/ringbuffer.h **** 
+  11:rover/ECAL/Inc/ringbuffer.h **** #ifndef RINGBUFFER_H_
+  12:rover/ECAL/Inc/ringbuffer.h **** #define RINGBUFFER_H_
+  13:rover/ECAL/Inc/ringbuffer.h **** 
+  14:rover/ECAL/Inc/ringbuffer.h **** #define RING_BUFFER_SIZE 512
+  15:rover/ECAL/Inc/ringbuffer.h **** #define RING_BUFFER_MASK (RING_BUFFER_SIZE-1)
+  16:rover/ECAL/Inc/ringbuffer.h **** 
+  17:rover/ECAL/Inc/ringbuffer.h **** #if (RING_BUFFER_SIZE & (RING_BUFFER_SIZE - 1)) != 0
+  18:rover/ECAL/Inc/ringbuffer.h **** #error "BUFFER SIZE MISSMATCH"
+  19:rover/ECAL/Inc/ringbuffer.h **** #endif
+  20:rover/ECAL/Inc/ringbuffer.h **** 
+  21:rover/ECAL/Inc/ringbuffer.h **** /**virtual address size types of the buffer*/
+  22:rover/ECAL/Inc/ringbuffer.h **** typedef uint16_t ring_buffer_size_t;
+  23:rover/ECAL/Inc/ringbuffer.h **** 
+  24:rover/ECAL/Inc/ringbuffer.h **** typedef struct _ring_buffer_t {
+  25:rover/ECAL/Inc/ringbuffer.h ****   /** Buffer memory. */
+  26:rover/ECAL/Inc/ringbuffer.h ****   uint8_t buffer[RING_BUFFER_SIZE];
+  27:rover/ECAL/Inc/ringbuffer.h ****   /** Index of tail. */
+  28:rover/ECAL/Inc/ringbuffer.h ****   ring_buffer_size_t tail_index;
+  29:rover/ECAL/Inc/ringbuffer.h ****   /** Index of head. */
+  30:rover/ECAL/Inc/ringbuffer.h ****   ring_buffer_size_t head_index;
+  31:rover/ECAL/Inc/ringbuffer.h **** 
+  32:rover/ECAL/Inc/ringbuffer.h ****   /**debug features. */
+  33:rover/ECAL/Inc/ringbuffer.h ****   uint32_t byte_enqueue_hit;
+  34:rover/ECAL/Inc/ringbuffer.h ****   uint32_t byte_dequeue_hit;
+  35:rover/ECAL/Inc/ringbuffer.h **** 
+  36:rover/ECAL/Inc/ringbuffer.h **** }ring_buffer_t;
+  37:rover/ECAL/Inc/ringbuffer.h **** 
+  38:rover/ECAL/Inc/ringbuffer.h **** /**
+  39:rover/ECAL/Inc/ringbuffer.h ****  * Initializes the ring buffer pointed to by <em>buffer</em>.
+  40:rover/ECAL/Inc/ringbuffer.h ****  * This function can also be used to empty/reset the buffer.
+  41:rover/ECAL/Inc/ringbuffer.h ****  * @param buffer The ring buffer to initialize.
+  42:rover/ECAL/Inc/ringbuffer.h ****  */
+  43:rover/ECAL/Inc/ringbuffer.h **** void ring_buffer_init(ring_buffer_t *buffer);
+  44:rover/ECAL/Inc/ringbuffer.h **** 
+  45:rover/ECAL/Inc/ringbuffer.h **** /**
+  46:rover/ECAL/Inc/ringbuffer.h ****  * Adds a byte to a ring buffer.
+  47:rover/ECAL/Inc/ringbuffer.h ****  * @param buffer The buffer in which the data should be placed.
+  48:rover/ECAL/Inc/ringbuffer.h ****  * @param data The byte to place.
+  49:rover/ECAL/Inc/ringbuffer.h ****  */
+  50:rover/ECAL/Inc/ringbuffer.h **** void ring_buffer_queue(ring_buffer_t *buffer, uint8_t data);
+  51:rover/ECAL/Inc/ringbuffer.h **** 
+  52:rover/ECAL/Inc/ringbuffer.h **** /**
+  53:rover/ECAL/Inc/ringbuffer.h ****  * Adds an array of bytes to a ring buffer.
+  54:rover/ECAL/Inc/ringbuffer.h ****  * @param buffer The buffer in which the data should be placed.
+  55:rover/ECAL/Inc/ringbuffer.h ****  * @param data A pointer to the array of bytes to place in the queue.
+  56:rover/ECAL/Inc/ringbuffer.h ****  * @param size The size of the array.
+  57:rover/ECAL/Inc/ringbuffer.h ****  */
+  58:rover/ECAL/Inc/ringbuffer.h **** void ring_buffer_queue_arr(ring_buffer_t *buffer, uint8_t *data, ring_buffer_size_t size);
+  59:rover/ECAL/Inc/ringbuffer.h **** 
+  60:rover/ECAL/Inc/ringbuffer.h **** /**
+  61:rover/ECAL/Inc/ringbuffer.h ****  * Returns the oldest byte in a ring buffer.
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s 			page 9
+
+
+  62:rover/ECAL/Inc/ringbuffer.h ****  * @param buffer The buffer from which the data should be returned.
+  63:rover/ECAL/Inc/ringbuffer.h ****  * @param data A pointer to the location at which the data should be placed.
+  64:rover/ECAL/Inc/ringbuffer.h ****  * @return 1 if data was returned; 0 otherwise.
+  65:rover/ECAL/Inc/ringbuffer.h ****  */
+  66:rover/ECAL/Inc/ringbuffer.h **** uint8_t ring_buffer_dequeue(ring_buffer_t *buffer, uint8_t *data);
+  67:rover/ECAL/Inc/ringbuffer.h **** 
+  68:rover/ECAL/Inc/ringbuffer.h **** /**
+  69:rover/ECAL/Inc/ringbuffer.h ****  * Returns the <em>len</em> oldest bytes in a ring buffer.
+  70:rover/ECAL/Inc/ringbuffer.h ****  * @param buffer The buffer from which the data should be returned.
+  71:rover/ECAL/Inc/ringbuffer.h ****  * @param data A pointer to the array at which the data should be placed.
+  72:rover/ECAL/Inc/ringbuffer.h ****  * @param len The maximum number of bytes to return.
+  73:rover/ECAL/Inc/ringbuffer.h ****  * @return The number of bytes returned.
+  74:rover/ECAL/Inc/ringbuffer.h ****  */
+  75:rover/ECAL/Inc/ringbuffer.h **** uint8_t ring_buffer_dequeue_arr(ring_buffer_t *buffer, uint8_t *data, ring_buffer_size_t len);
+  76:rover/ECAL/Inc/ringbuffer.h **** /**
+  77:rover/ECAL/Inc/ringbuffer.h ****  * Peeks a ring buffer, i.e. returns an element without removing it.
+  78:rover/ECAL/Inc/ringbuffer.h ****  * @param buffer The buffer from which the data should be returned.
+  79:rover/ECAL/Inc/ringbuffer.h ****  * @param data A pointer to the location at which the data should be placed.
+  80:rover/ECAL/Inc/ringbuffer.h ****  * @param index The index to peek.
+  81:rover/ECAL/Inc/ringbuffer.h ****  * @return 1 if data was returned; 0 otherwise.
+  82:rover/ECAL/Inc/ringbuffer.h ****  */
+  83:rover/ECAL/Inc/ringbuffer.h **** ring_buffer_size_t ring_buffer_peek(ring_buffer_t *buffer, uint8_t *data, ring_buffer_size_t index)
+  84:rover/ECAL/Inc/ringbuffer.h **** 
+  85:rover/ECAL/Inc/ringbuffer.h **** 
+  86:rover/ECAL/Inc/ringbuffer.h **** /**
+  87:rover/ECAL/Inc/ringbuffer.h ****  * Returns whether a ring buffer is empty.
+  88:rover/ECAL/Inc/ringbuffer.h ****  * @param buffer The buffer for which it should be returned whether it is empty.
+  89:rover/ECAL/Inc/ringbuffer.h ****  * @return 1 if empty; 0 otherwise.
+  90:rover/ECAL/Inc/ringbuffer.h ****  */
+  91:rover/ECAL/Inc/ringbuffer.h **** inline uint8_t ring_buffer_is_empty(ring_buffer_t *buffer) {
+ 224              		.loc 2 91 16 is_stmt 1 view .LVU56
+ 225              	.LBB11:
+  92:rover/ECAL/Inc/ringbuffer.h ****   return (buffer->head_index == buffer->tail_index);
+ 226              		.loc 2 92 3 view .LVU57
+ 227              		.loc 2 92 17 is_stmt 0 view .LVU58
+ 228 000a B0F80222 		ldrh	r2, [r0, #514]
+ 229              	.LVL21:
+ 230              		.loc 2 92 39 view .LVU59
+ 231 000e B0F80032 		ldrh	r3, [r0, #512]
+ 232              	.LVL22:
+ 233              		.loc 2 92 39 view .LVU60
+ 234              	.LBE11:
+ 235              	.LBE10:
+ 236              		.loc 1 136 5 discriminator 1 view .LVU61
+ 237 0012 9A42     		cmp	r2, r3
+ 238 0014 03D0     		beq	.L16
+ 137:rover/ECAL/Src/Serial.c **** 
+ 138:rover/ECAL/Src/Serial.c **** 			if (HAL_UART_Transmit_DMA(hserial->huartx, pData, len) != HAL_OK) {
+ 139:rover/ECAL/Src/Serial.c **** 				ring_buffer_queue_arr(hserial->buffer_Tx, pData, len);
+ 140:rover/ECAL/Src/Serial.c **** 			}
+ 141:rover/ECAL/Src/Serial.c **** 	} else {
+ 142:rover/ECAL/Src/Serial.c **** 			ring_buffer_queue_arr(hserial->buffer_Tx, pData, len);
+ 239              		.loc 1 142 4 is_stmt 1 view .LVU62
+ 240 0016 3246     		mov	r2, r6
+ 241 0018 FFF7FEFF 		bl	ring_buffer_queue_arr
+ 242              	.LVL23:
+ 243              	.L12:
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s 			page 10
+
+
+ 143:rover/ECAL/Src/Serial.c **** 	}
+ 144:rover/ECAL/Src/Serial.c **** //	ring_buffer_queue_arr(hserial->buffer_Tx, pData, len);
+ 145:rover/ECAL/Src/Serial.c **** }
+ 244              		.loc 1 145 1 is_stmt 0 view .LVU63
+ 245 001c 70BD     		pop	{r4, r5, r6, pc}
+ 246              	.LVL24:
+ 247              	.L16:
+ 138:rover/ECAL/Src/Serial.c **** 				ring_buffer_queue_arr(hserial->buffer_Tx, pData, len);
+ 248              		.loc 1 138 4 is_stmt 1 view .LVU64
+ 138:rover/ECAL/Src/Serial.c **** 				ring_buffer_queue_arr(hserial->buffer_Tx, pData, len);
+ 249              		.loc 1 138 8 is_stmt 0 view .LVU65
+ 250 001e 3246     		mov	r2, r6
+ 251 0020 2068     		ldr	r0, [r4]
+ 252 0022 FFF7FEFF 		bl	HAL_UART_Transmit_DMA
+ 253              	.LVL25:
+ 138:rover/ECAL/Src/Serial.c **** 				ring_buffer_queue_arr(hserial->buffer_Tx, pData, len);
+ 254              		.loc 1 138 7 discriminator 1 view .LVU66
+ 255 0026 0028     		cmp	r0, #0
+ 256 0028 F8D0     		beq	.L12
+ 139:rover/ECAL/Src/Serial.c **** 			}
+ 257              		.loc 1 139 5 is_stmt 1 view .LVU67
+ 258 002a 3246     		mov	r2, r6
+ 259 002c 2946     		mov	r1, r5
+ 260 002e 6068     		ldr	r0, [r4, #4]
+ 261 0030 FFF7FEFF 		bl	ring_buffer_queue_arr
+ 262              	.LVL26:
+ 263 0034 F2E7     		b	.L12
+ 264              		.cfi_endproc
+ 265              	.LFE138:
+ 267              		.section	.text.serial_available,"ax",%progbits
+ 268              		.align	1
+ 269              		.global	serial_available
+ 270              		.syntax unified
+ 271              		.thumb
+ 272              		.thumb_func
+ 274              	serial_available:
+ 275              	.LVL27:
+ 276              	.LFB139:
+ 146:rover/ECAL/Src/Serial.c **** 
+ 147:rover/ECAL/Src/Serial.c **** uint8_t serial_available(SERIAL_HandleTypeDef* hserial) {
+ 277              		.loc 1 147 57 view -0
+ 278              		.cfi_startproc
+ 279              		@ args = 0, pretend = 0, frame = 0
+ 280              		@ frame_needed = 0, uses_anonymous_args = 0
+ 281              		@ link register save eliminated.
+ 148:rover/ECAL/Src/Serial.c **** 
+ 149:rover/ECAL/Src/Serial.c **** 	return !ring_buffer_is_empty(hserial->buffer_Rx);
+ 282              		.loc 1 149 2 view .LVU69
+ 283              		.loc 1 149 10 is_stmt 0 view .LVU70
+ 284 0000 8368     		ldr	r3, [r0, #8]
+ 285              	.LVL28:
+ 286              	.LBB12:
+ 287              	.LBI12:
+  91:rover/ECAL/Inc/ringbuffer.h ****   return (buffer->head_index == buffer->tail_index);
+ 288              		.loc 2 91 16 is_stmt 1 view .LVU71
+ 289              	.LBB13:
+ 290              		.loc 2 92 3 view .LVU72
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s 			page 11
+
+
+ 291              		.loc 2 92 17 is_stmt 0 view .LVU73
+ 292 0002 B3F80202 		ldrh	r0, [r3, #514]
+ 293              	.LVL29:
+ 294              		.loc 2 92 39 view .LVU74
+ 295 0006 B3F80032 		ldrh	r3, [r3, #512]
+ 296              	.LVL30:
+ 297              		.loc 2 92 39 view .LVU75
+ 298              	.LBE13:
+ 299              	.LBE12:
+ 150:rover/ECAL/Src/Serial.c **** }
+ 300              		.loc 1 150 1 view .LVU76
+ 301 000a C01A     		subs	r0, r0, r3
+ 302 000c 18BF     		it	ne
+ 303 000e 0120     		movne	r0, #1
+ 304 0010 7047     		bx	lr
+ 305              		.cfi_endproc
+ 306              	.LFE139:
+ 308              		.section	.text.serial_read,"ax",%progbits
+ 309              		.align	1
+ 310              		.global	serial_read
+ 311              		.syntax unified
+ 312              		.thumb
+ 313              		.thumb_func
+ 315              	serial_read:
+ 316              	.LVL31:
+ 317              	.LFB140:
+ 151:rover/ECAL/Src/Serial.c **** 
+ 152:rover/ECAL/Src/Serial.c **** uint8_t serial_read(SERIAL_HandleTypeDef* hserial) {
+ 318              		.loc 1 152 52 is_stmt 1 view -0
+ 319              		.cfi_startproc
+ 320              		@ args = 0, pretend = 0, frame = 0
+ 321              		@ frame_needed = 0, uses_anonymous_args = 0
+ 322              		.loc 1 152 52 is_stmt 0 view .LVU78
+ 323 0000 10B5     		push	{r4, lr}
+ 324              	.LCFI2:
+ 325              		.cfi_def_cfa_offset 8
+ 326              		.cfi_offset 4, -8
+ 327              		.cfi_offset 14, -4
+ 328 0002 0446     		mov	r4, r0
+ 153:rover/ECAL/Src/Serial.c **** 
+ 154:rover/ECAL/Src/Serial.c **** 		if (!ring_buffer_is_empty(hserial->buffer_Rx)) {
+ 329              		.loc 1 154 3 is_stmt 1 view .LVU79
+ 330              		.loc 1 154 8 is_stmt 0 view .LVU80
+ 331 0004 8068     		ldr	r0, [r0, #8]
+ 332              	.LVL32:
+ 333              	.LBB14:
+ 334              	.LBI14:
+  91:rover/ECAL/Inc/ringbuffer.h ****   return (buffer->head_index == buffer->tail_index);
+ 335              		.loc 2 91 16 is_stmt 1 view .LVU81
+ 336              	.LBB15:
+ 337              		.loc 2 92 3 view .LVU82
+ 338              		.loc 2 92 17 is_stmt 0 view .LVU83
+ 339 0006 B0F80222 		ldrh	r2, [r0, #514]
+ 340              		.loc 2 92 39 view .LVU84
+ 341 000a B0F80032 		ldrh	r3, [r0, #512]
+ 342              	.LVL33:
+ 343              		.loc 2 92 39 view .LVU85
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s 			page 12
+
+
+ 344              	.LBE15:
+ 345              	.LBE14:
+ 346              		.loc 1 154 6 discriminator 1 view .LVU86
+ 347 000e 9A42     		cmp	r2, r3
+ 348 0010 01D1     		bne	.L22
+ 155:rover/ECAL/Src/Serial.c **** 			ring_buffer_dequeue(hserial->buffer_Rx, hserial->application_reg_Rx);
+ 156:rover/ECAL/Src/Serial.c **** 			return *(hserial->application_reg_Rx);
+ 157:rover/ECAL/Src/Serial.c **** 		}
+ 158:rover/ECAL/Src/Serial.c **** 
+ 159:rover/ECAL/Src/Serial.c **** 		return '\0';
+ 349              		.loc 1 159 10 view .LVU87
+ 350 0012 0020     		movs	r0, #0
+ 351              	.L19:
+ 160:rover/ECAL/Src/Serial.c **** }
+ 352              		.loc 1 160 1 view .LVU88
+ 353 0014 10BD     		pop	{r4, pc}
+ 354              	.LVL34:
+ 355              	.L22:
+ 155:rover/ECAL/Src/Serial.c **** 			ring_buffer_dequeue(hserial->buffer_Rx, hserial->application_reg_Rx);
+ 356              		.loc 1 155 4 is_stmt 1 view .LVU89
+ 357 0016 6169     		ldr	r1, [r4, #20]
+ 358 0018 FFF7FEFF 		bl	ring_buffer_dequeue
+ 359              	.LVL35:
+ 156:rover/ECAL/Src/Serial.c **** 		}
+ 360              		.loc 1 156 4 view .LVU90
+ 156:rover/ECAL/Src/Serial.c **** 		}
+ 361              		.loc 1 156 20 is_stmt 0 view .LVU91
+ 362 001c 6369     		ldr	r3, [r4, #20]
+ 156:rover/ECAL/Src/Serial.c **** 		}
+ 363              		.loc 1 156 11 view .LVU92
+ 364 001e 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 365 0020 F8E7     		b	.L19
+ 366              		.cfi_endproc
+ 367              	.LFE140:
+ 369              		.section	.text.HAL_UART_TxCpltCallback,"ax",%progbits
+ 370              		.align	1
+ 371              		.global	HAL_UART_TxCpltCallback
+ 372              		.syntax unified
+ 373              		.thumb
+ 374              		.thumb_func
+ 376              	HAL_UART_TxCpltCallback:
+ 377              	.LVL36:
+ 378              	.LFB141:
+ 161:rover/ECAL/Src/Serial.c **** 
+ 162:rover/ECAL/Src/Serial.c **** void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart) {
+ 379              		.loc 1 162 57 is_stmt 1 view -0
+ 380              		.cfi_startproc
+ 381              		@ args = 0, pretend = 0, frame = 0
+ 382              		@ frame_needed = 0, uses_anonymous_args = 0
+ 383              		.loc 1 162 57 is_stmt 0 view .LVU94
+ 384 0000 38B5     		push	{r3, r4, r5, lr}
+ 385              	.LCFI3:
+ 386              		.cfi_def_cfa_offset 16
+ 387              		.cfi_offset 3, -16
+ 388              		.cfi_offset 4, -12
+ 389              		.cfi_offset 5, -8
+ 390              		.cfi_offset 14, -4
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s 			page 13
+
+
+ 391 0002 0446     		mov	r4, r0
+ 163:rover/ECAL/Src/Serial.c **** 
+ 164:rover/ECAL/Src/Serial.c **** 	SERIAL_HandleTypeDef* serial_handler = get_serial_handler(huart);
+ 392              		.loc 1 164 2 is_stmt 1 view .LVU95
+ 393              		.loc 1 164 41 is_stmt 0 view .LVU96
+ 394 0004 FFF7FEFF 		bl	get_serial_handler
+ 395              	.LVL37:
+ 165:rover/ECAL/Src/Serial.c **** 	
+ 166:rover/ECAL/Src/Serial.c **** 	if (serial_handler != NULL) {
+ 396              		.loc 1 166 2 is_stmt 1 view .LVU97
+ 397              		.loc 1 166 5 is_stmt 0 view .LVU98
+ 398 0008 38B1     		cbz	r0, .L23
+ 399 000a 0546     		mov	r5, r0
+ 167:rover/ECAL/Src/Serial.c **** 		if (!ring_buffer_is_empty(serial_handler->buffer_Tx)) {
+ 400              		.loc 1 167 3 is_stmt 1 view .LVU99
+ 401              		.loc 1 167 8 is_stmt 0 view .LVU100
+ 402 000c 4068     		ldr	r0, [r0, #4]
+ 403              	.LVL38:
+ 404              	.LBB16:
+ 405              	.LBI16:
+  91:rover/ECAL/Inc/ringbuffer.h ****   return (buffer->head_index == buffer->tail_index);
+ 406              		.loc 2 91 16 is_stmt 1 view .LVU101
+ 407              	.LBB17:
+ 408              		.loc 2 92 3 view .LVU102
+ 409              		.loc 2 92 17 is_stmt 0 view .LVU103
+ 410 000e B0F80222 		ldrh	r2, [r0, #514]
+ 411              		.loc 2 92 39 view .LVU104
+ 412 0012 B0F80032 		ldrh	r3, [r0, #512]
+ 413              	.LVL39:
+ 414              		.loc 2 92 39 view .LVU105
+ 415              	.LBE17:
+ 416              	.LBE16:
+ 417              		.loc 1 167 6 discriminator 1 view .LVU106
+ 418 0016 9A42     		cmp	r2, r3
+ 419 0018 00D1     		bne	.L26
+ 420              	.LVL40:
+ 421              	.L23:
+ 168:rover/ECAL/Src/Serial.c **** 
+ 169:rover/ECAL/Src/Serial.c **** 			  ring_buffer_dequeue(serial_handler->buffer_Tx, serial_handler->hal_reg_Tx);
+ 170:rover/ECAL/Src/Serial.c **** 			  HAL_UART_Transmit_DMA(huart, serial_handler->hal_reg_Tx, PRIMARY_REG_SIZE);
+ 171:rover/ECAL/Src/Serial.c **** 		}
+ 172:rover/ECAL/Src/Serial.c **** 	}
+ 173:rover/ECAL/Src/Serial.c **** }
+ 422              		.loc 1 173 1 view .LVU107
+ 423 001a 38BD     		pop	{r3, r4, r5, pc}
+ 424              	.LVL41:
+ 425              	.L26:
+ 169:rover/ECAL/Src/Serial.c **** 			  HAL_UART_Transmit_DMA(huart, serial_handler->hal_reg_Tx, PRIMARY_REG_SIZE);
+ 426              		.loc 1 169 6 is_stmt 1 view .LVU108
+ 427 001c E968     		ldr	r1, [r5, #12]
+ 428 001e FFF7FEFF 		bl	ring_buffer_dequeue
+ 429              	.LVL42:
+ 170:rover/ECAL/Src/Serial.c **** 		}
+ 430              		.loc 1 170 6 view .LVU109
+ 431 0022 0122     		movs	r2, #1
+ 432 0024 E968     		ldr	r1, [r5, #12]
+ 433 0026 2046     		mov	r0, r4
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s 			page 14
+
+
+ 434 0028 FFF7FEFF 		bl	HAL_UART_Transmit_DMA
+ 435              	.LVL43:
+ 436              		.loc 1 173 1 is_stmt 0 view .LVU110
+ 437 002c F5E7     		b	.L23
+ 438              		.cfi_endproc
+ 439              	.LFE141:
+ 441              		.section	.text.HAL_UART_ErrorCallback,"ax",%progbits
+ 442              		.align	1
+ 443              		.global	HAL_UART_ErrorCallback
+ 444              		.syntax unified
+ 445              		.thumb
+ 446              		.thumb_func
+ 448              	HAL_UART_ErrorCallback:
+ 449              	.LVL44:
+ 450              	.LFB142:
+ 174:rover/ECAL/Src/Serial.c **** 
+ 175:rover/ECAL/Src/Serial.c **** //void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
+ 176:rover/ECAL/Src/Serial.c **** //
+ 177:rover/ECAL/Src/Serial.c **** //	SERIAL_HandleTypeDef* serial_handler = get_serial_handler(huart);
+ 178:rover/ECAL/Src/Serial.c **** //
+ 179:rover/ECAL/Src/Serial.c **** //	if (serial_handler != NULL) {
+ 180:rover/ECAL/Src/Serial.c **** //		ring_buffer_queue_arr(serial_handler->buffer_Rx, serial_handler->hal_reg_Rx, PRIMARY_REG_SIZE);
+ 181:rover/ECAL/Src/Serial.c **** //		HAL_UART_Receive_DMA(huart, serial_handler->hal_reg_Rx, PRIMARY_REG_SIZE);
+ 182:rover/ECAL/Src/Serial.c **** //	}
+ 183:rover/ECAL/Src/Serial.c **** //}
+ 184:rover/ECAL/Src/Serial.c **** 
+ 185:rover/ECAL/Src/Serial.c **** void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart) {
+ 451              		.loc 1 185 56 is_stmt 1 view -0
+ 452              		.cfi_startproc
+ 453              		@ args = 0, pretend = 0, frame = 0
+ 454              		@ frame_needed = 0, uses_anonymous_args = 0
+ 186:rover/ECAL/Src/Serial.c **** 	if (huart->ErrorCode == HAL_UART_ERROR_ORE) {
+ 455              		.loc 1 186 2 view .LVU112
+ 456              		.loc 1 186 11 is_stmt 0 view .LVU113
+ 457 0000 436C     		ldr	r3, [r0, #68]
+ 458              		.loc 1 186 5 view .LVU114
+ 459 0002 082B     		cmp	r3, #8
+ 460 0004 00D0     		beq	.L33
+ 461 0006 7047     		bx	lr
+ 462              	.L33:
+ 185:rover/ECAL/Src/Serial.c **** 	if (huart->ErrorCode == HAL_UART_ERROR_ORE) {
+ 463              		.loc 1 185 56 view .LVU115
+ 464 0008 10B5     		push	{r4, lr}
+ 465              	.LCFI4:
+ 466              		.cfi_def_cfa_offset 8
+ 467              		.cfi_offset 4, -8
+ 468              		.cfi_offset 14, -4
+ 469 000a 0446     		mov	r4, r0
+ 470              	.LBB18:
+ 187:rover/ECAL/Src/Serial.c **** 		// Overrun error - restart DMA receive
+ 188:rover/ECAL/Src/Serial.c **** 		SERIAL_HandleTypeDef* serial_handler = get_serial_handler(huart);
+ 471              		.loc 1 188 3 is_stmt 1 view .LVU116
+ 472              		.loc 1 188 42 is_stmt 0 view .LVU117
+ 473 000c FFF7FEFF 		bl	get_serial_handler
+ 474              	.LVL45:
+ 189:rover/ECAL/Src/Serial.c **** 		if (serial_handler != NULL) {
+ 475              		.loc 1 189 3 is_stmt 1 view .LVU118
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s 			page 15
+
+
+ 476              		.loc 1 189 6 is_stmt 0 view .LVU119
+ 477 0010 20B1     		cbz	r0, .L27
+ 190:rover/ECAL/Src/Serial.c **** 			HAL_UART_Receive_DMA(huart, serial_handler->hal_reg_Rx, PRIMARY_REG_SIZE);
+ 478              		.loc 1 190 4 is_stmt 1 view .LVU120
+ 479 0012 0122     		movs	r2, #1
+ 480 0014 0169     		ldr	r1, [r0, #16]
+ 481 0016 2046     		mov	r0, r4
+ 482              	.LVL46:
+ 483              		.loc 1 190 4 is_stmt 0 view .LVU121
+ 484 0018 FFF7FEFF 		bl	HAL_UART_Receive_DMA
+ 485              	.LVL47:
+ 486              	.L27:
+ 487              	.LBE18:
+ 191:rover/ECAL/Src/Serial.c **** 		}
+ 192:rover/ECAL/Src/Serial.c **** 	}
+ 193:rover/ECAL/Src/Serial.c **** }
+ 488              		.loc 1 193 1 view .LVU122
+ 489 001c 10BD     		pop	{r4, pc}
+ 490              		.loc 1 193 1 view .LVU123
+ 491              		.cfi_endproc
+ 492              	.LFE142:
+ 494              		.global	__usart6_serial_handler
+ 495              		.section	.data.__usart6_serial_handler,"aw"
+ 496              		.align	2
+ 499              	__usart6_serial_handler:
+ 500 0000 00000000 		.space	4
+ 501 0004 00000000 		.word	USART6_Buffer_TX
+ 502 0008 00000000 		.word	USART6_Buffer_RX
+ 503 000c 00000000 		.word	USART6_HAL_Reg_Tx
+ 504 0010 00000000 		.word	USART6_HAL_Reg_Rx
+ 505 0014 00000000 		.word	USART6_Application_Reg_Tx
+ 506 0018 00       		.byte	0
+ 507 0019 00       		.byte	0
+ 508 001a 0000     		.space	2
+ 509              		.global	__usart2_serial_handler
+ 510              		.section	.data.__usart2_serial_handler,"aw"
+ 511              		.align	2
+ 514              	__usart2_serial_handler:
+ 515 0000 00000000 		.space	4
+ 516 0004 00000000 		.word	USART2_Buffer_TX
+ 517 0008 00000000 		.word	USART2_Buffer_RX
+ 518 000c 00000000 		.word	USART2_HAL_Reg_Tx
+ 519 0010 00000000 		.word	USART2_HAL_Reg_Rx
+ 520 0014 00000000 		.word	USART2_Application_Reg_Tx
+ 521 0018 00       		.byte	0
+ 522 0019 00       		.byte	0
+ 523 001a 0000     		.space	2
+ 524              		.global	__usart1_serial_handler
+ 525              		.section	.data.__usart1_serial_handler,"aw"
+ 526              		.align	2
+ 529              	__usart1_serial_handler:
+ 530 0000 00000000 		.space	4
+ 531 0004 00000000 		.word	USART1_Buffer_TX
+ 532 0008 00000000 		.word	USART1_Buffer_RX
+ 533 000c 00000000 		.word	USART1_HAL_Reg_Tx
+ 534 0010 00000000 		.word	USART1_HAL_Reg_Rx
+ 535 0014 00000000 		.word	USART1_Application_Reg_Tx
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s 			page 16
+
+
+ 536 0018 00       		.byte	0
+ 537 0019 00       		.byte	0
+ 538 001a 0000     		.space	2
+ 539              		.global	USART6_Application_Reg_Tx
+ 540              		.section	.bss.USART6_Application_Reg_Tx,"aw",%nobits
+ 543              	USART6_Application_Reg_Tx:
+ 544 0000 00       		.space	1
+ 545              		.global	USART6_HAL_Reg_Rx
+ 546              		.section	.bss.USART6_HAL_Reg_Rx,"aw",%nobits
+ 549              	USART6_HAL_Reg_Rx:
+ 550 0000 00       		.space	1
+ 551              		.global	USART6_HAL_Reg_Tx
+ 552              		.section	.bss.USART6_HAL_Reg_Tx,"aw",%nobits
+ 555              	USART6_HAL_Reg_Tx:
+ 556 0000 00       		.space	1
+ 557              		.global	USART6_Buffer_RX
+ 558              		.section	.bss.USART6_Buffer_RX,"aw",%nobits
+ 559              		.align	2
+ 562              	USART6_Buffer_RX:
+ 563 0000 00000000 		.space	524
+ 563      00000000 
+ 563      00000000 
+ 563      00000000 
+ 563      00000000 
+ 564              		.global	USART6_Buffer_TX
+ 565              		.section	.bss.USART6_Buffer_TX,"aw",%nobits
+ 566              		.align	2
+ 569              	USART6_Buffer_TX:
+ 570 0000 00000000 		.space	524
+ 570      00000000 
+ 570      00000000 
+ 570      00000000 
+ 570      00000000 
+ 571              		.global	USART6_Serial_Handler
+ 572              		.section	.bss.USART6_Serial_Handler,"aw",%nobits
+ 573              		.align	2
+ 576              	USART6_Serial_Handler:
+ 577 0000 00000000 		.space	4
+ 578              		.global	USART2_Application_Reg_Tx
+ 579              		.section	.bss.USART2_Application_Reg_Tx,"aw",%nobits
+ 582              	USART2_Application_Reg_Tx:
+ 583 0000 00       		.space	1
+ 584              		.global	USART2_HAL_Reg_Rx
+ 585              		.section	.bss.USART2_HAL_Reg_Rx,"aw",%nobits
+ 588              	USART2_HAL_Reg_Rx:
+ 589 0000 00       		.space	1
+ 590              		.global	USART2_HAL_Reg_Tx
+ 591              		.section	.bss.USART2_HAL_Reg_Tx,"aw",%nobits
+ 594              	USART2_HAL_Reg_Tx:
+ 595 0000 00       		.space	1
+ 596              		.global	USART2_Buffer_RX
+ 597              		.section	.bss.USART2_Buffer_RX,"aw",%nobits
+ 598              		.align	2
+ 601              	USART2_Buffer_RX:
+ 602 0000 00000000 		.space	524
+ 602      00000000 
+ 602      00000000 
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s 			page 17
+
+
+ 602      00000000 
+ 602      00000000 
+ 603              		.global	USART2_Buffer_TX
+ 604              		.section	.bss.USART2_Buffer_TX,"aw",%nobits
+ 605              		.align	2
+ 608              	USART2_Buffer_TX:
+ 609 0000 00000000 		.space	524
+ 609      00000000 
+ 609      00000000 
+ 609      00000000 
+ 609      00000000 
+ 610              		.global	USART2_Serial_Handler
+ 611              		.section	.bss.USART2_Serial_Handler,"aw",%nobits
+ 612              		.align	2
+ 615              	USART2_Serial_Handler:
+ 616 0000 00000000 		.space	4
+ 617              		.global	USART1_Application_Reg_Tx
+ 618              		.section	.bss.USART1_Application_Reg_Tx,"aw",%nobits
+ 621              	USART1_Application_Reg_Tx:
+ 622 0000 00       		.space	1
+ 623              		.global	USART1_HAL_Reg_Rx
+ 624              		.section	.bss.USART1_HAL_Reg_Rx,"aw",%nobits
+ 627              	USART1_HAL_Reg_Rx:
+ 628 0000 00       		.space	1
+ 629              		.global	USART1_HAL_Reg_Tx
+ 630              		.section	.bss.USART1_HAL_Reg_Tx,"aw",%nobits
+ 633              	USART1_HAL_Reg_Tx:
+ 634 0000 00       		.space	1
+ 635              		.global	USART1_Buffer_RX
+ 636              		.section	.bss.USART1_Buffer_RX,"aw",%nobits
+ 637              		.align	2
+ 640              	USART1_Buffer_RX:
+ 641 0000 00000000 		.space	524
+ 641      00000000 
+ 641      00000000 
+ 641      00000000 
+ 641      00000000 
+ 642              		.global	USART1_Buffer_TX
+ 643              		.section	.bss.USART1_Buffer_TX,"aw",%nobits
+ 644              		.align	2
+ 647              	USART1_Buffer_TX:
+ 648 0000 00000000 		.space	524
+ 648      00000000 
+ 648      00000000 
+ 648      00000000 
+ 648      00000000 
+ 649              		.global	USART1_Serial_Handler
+ 650              		.section	.bss.USART1_Serial_Handler,"aw",%nobits
+ 651              		.align	2
+ 654              	USART1_Serial_Handler:
+ 655 0000 00000000 		.space	4
+ 656              		.text
+ 657              	.Letext0:
+ 658              		.file 3 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 659              		.file 4 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 660              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f401xc.h"
+ 661              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s 			page 18
+
+
+ 662              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 663              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
+ 664              		.file 9 "rover/ECAL/Inc/base_serial.h"
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s 			page 19
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 Serial.c
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:21     .text.serial_init:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:27     .text.serial_init:00000000 serial_init
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:180    .text.serial_init:00000090 $d
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:654    .bss.USART1_Serial_Handler:00000000 USART1_Serial_Handler
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:529    .data.__usart1_serial_handler:00000000 __usart1_serial_handler
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:615    .bss.USART2_Serial_Handler:00000000 USART2_Serial_Handler
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:514    .data.__usart2_serial_handler:00000000 __usart2_serial_handler
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:576    .bss.USART6_Serial_Handler:00000000 USART6_Serial_Handler
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:499    .data.__usart6_serial_handler:00000000 __usart6_serial_handler
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:193    .text.serial_write:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:199    .text.serial_write:00000000 serial_write
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:268    .text.serial_available:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:274    .text.serial_available:00000000 serial_available
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:309    .text.serial_read:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:315    .text.serial_read:00000000 serial_read
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:370    .text.HAL_UART_TxCpltCallback:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:376    .text.HAL_UART_TxCpltCallback:00000000 HAL_UART_TxCpltCallback
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:442    .text.HAL_UART_ErrorCallback:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:448    .text.HAL_UART_ErrorCallback:00000000 HAL_UART_ErrorCallback
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:496    .data.__usart6_serial_handler:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:569    .bss.USART6_Buffer_TX:00000000 USART6_Buffer_TX
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:562    .bss.USART6_Buffer_RX:00000000 USART6_Buffer_RX
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:555    .bss.USART6_HAL_Reg_Tx:00000000 USART6_HAL_Reg_Tx
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:549    .bss.USART6_HAL_Reg_Rx:00000000 USART6_HAL_Reg_Rx
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:543    .bss.USART6_Application_Reg_Tx:00000000 USART6_Application_Reg_Tx
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:511    .data.__usart2_serial_handler:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:608    .bss.USART2_Buffer_TX:00000000 USART2_Buffer_TX
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:601    .bss.USART2_Buffer_RX:00000000 USART2_Buffer_RX
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:594    .bss.USART2_HAL_Reg_Tx:00000000 USART2_HAL_Reg_Tx
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:588    .bss.USART2_HAL_Reg_Rx:00000000 USART2_HAL_Reg_Rx
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:582    .bss.USART2_Application_Reg_Tx:00000000 USART2_Application_Reg_Tx
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:526    .data.__usart1_serial_handler:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:647    .bss.USART1_Buffer_TX:00000000 USART1_Buffer_TX
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:640    .bss.USART1_Buffer_RX:00000000 USART1_Buffer_RX
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:633    .bss.USART1_HAL_Reg_Tx:00000000 USART1_HAL_Reg_Tx
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:627    .bss.USART1_HAL_Reg_Rx:00000000 USART1_HAL_Reg_Rx
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:621    .bss.USART1_Application_Reg_Tx:00000000 USART1_Application_Reg_Tx
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:544    .bss.USART6_Application_Reg_Tx:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:550    .bss.USART6_HAL_Reg_Rx:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:556    .bss.USART6_HAL_Reg_Tx:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:559    .bss.USART6_Buffer_RX:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:566    .bss.USART6_Buffer_TX:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:573    .bss.USART6_Serial_Handler:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:583    .bss.USART2_Application_Reg_Tx:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:589    .bss.USART2_HAL_Reg_Rx:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:595    .bss.USART2_HAL_Reg_Tx:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:598    .bss.USART2_Buffer_RX:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:605    .bss.USART2_Buffer_TX:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:612    .bss.USART2_Serial_Handler:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:622    .bss.USART1_Application_Reg_Tx:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:628    .bss.USART1_HAL_Reg_Rx:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:634    .bss.USART1_HAL_Reg_Tx:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:637    .bss.USART1_Buffer_RX:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:644    .bss.USART1_Buffer_TX:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s:651    .bss.USART1_Serial_Handler:00000000 $d
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccQgX9a7.s 			page 20
+
+
+
+UNDEFINED SYMBOLS
+ring_buffer_init
+HAL_UART_Receive_DMA
+ring_buffer_queue_arr
+HAL_UART_Transmit_DMA
+ring_buffer_dequeue
+get_serial_handler

@@ -1,0 +1,1907 @@
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"Adafruit_BNO055.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "rover/ECAL/Src/Adafruit_BNO055.c"
+  20              		.section	.text.Adafruit_BNO055_Init,"ax",%progbits
+  21              		.align	1
+  22              		.global	Adafruit_BNO055_Init
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	Adafruit_BNO055_Init:
+  28              	.LVL0:
+  29              	.LFB137:
+   1:rover/ECAL/Src/Adafruit_BNO055.c **** #include "main.h"
+   2:rover/ECAL/Src/Adafruit_BNO055.c **** 
+   3:rover/ECAL/Src/Adafruit_BNO055.c **** #include "math.h"
+   4:rover/ECAL/Src/Adafruit_BNO055.c **** #include "stdlib.h"
+   5:rover/ECAL/Src/Adafruit_BNO055.c **** #include "stdio.h"
+   6:rover/ECAL/Src/Adafruit_BNO055.c **** #include "string.h"
+   7:rover/ECAL/Src/Adafruit_BNO055.c **** #include "../Inc/Adafruit_BNO055.h"
+   8:rover/ECAL/Src/Adafruit_BNO055.c **** 
+   9:rover/ECAL/Src/Adafruit_BNO055.c **** #ifndef PI
+  10:rover/ECAL/Src/Adafruit_BNO055.c **** #define PI 					3.14159265359
+  11:rover/ECAL/Src/Adafruit_BNO055.c **** #endif /* PI */
+  12:rover/ECAL/Src/Adafruit_BNO055.c **** 
+  13:rover/ECAL/Src/Adafruit_BNO055.c **** static float euler[3] = {0.f};
+  14:rover/ECAL/Src/Adafruit_BNO055.c **** 
+  15:rover/ECAL/Src/Adafruit_BNO055.c **** uint8_t _address;
+  16:rover/ECAL/Src/Adafruit_BNO055.c **** int32_t _sensorID;
+  17:rover/ECAL/Src/Adafruit_BNO055.c **** adafruit_bno055_opmode_t _mode;
+  18:rover/ECAL/Src/Adafruit_BNO055.c **** 
+  19:rover/ECAL/Src/Adafruit_BNO055.c **** /*pointer to save sensor I2c configrations prameters*/
+  20:rover/ECAL/Src/Adafruit_BNO055.c **** static I2C_HandleTypeDef* GlobalConfig = NULL;
+  21:rover/ECAL/Src/Adafruit_BNO055.c **** 
+  22:rover/ECAL/Src/Adafruit_BNO055.c **** void Adafruit_BNO055_Init(I2C_HandleTypeDef* Config, int32_t sensorID, uint8_t address)
+  23:rover/ECAL/Src/Adafruit_BNO055.c **** {
+  30              		.loc 1 23 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  24:rover/ECAL/Src/Adafruit_BNO055.c **** 	_sensorID = sensorID;
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s 			page 2
+
+
+  35              		.loc 1 24 2 view .LVU1
+  36              		.loc 1 24 12 is_stmt 0 view .LVU2
+  37 0000 034B     		ldr	r3, .L2
+  38 0002 1960     		str	r1, [r3]
+  25:rover/ECAL/Src/Adafruit_BNO055.c **** 	_address = address;
+  39              		.loc 1 25 2 is_stmt 1 view .LVU3
+  40              		.loc 1 25 11 is_stmt 0 view .LVU4
+  41 0004 034B     		ldr	r3, .L2+4
+  42 0006 1A70     		strb	r2, [r3]
+  26:rover/ECAL/Src/Adafruit_BNO055.c **** 	GlobalConfig = Config;
+  43              		.loc 1 26 2 is_stmt 1 view .LVU5
+  44              		.loc 1 26 15 is_stmt 0 view .LVU6
+  45 0008 034B     		ldr	r3, .L2+8
+  46 000a 1860     		str	r0, [r3]
+  27:rover/ECAL/Src/Adafruit_BNO055.c **** }
+  47              		.loc 1 27 1 view .LVU7
+  48 000c 7047     		bx	lr
+  49              	.L3:
+  50 000e 00BF     		.align	2
+  51              	.L2:
+  52 0010 00000000 		.word	_sensorID
+  53 0014 00000000 		.word	_address
+  54 0018 00000000 		.word	GlobalConfig
+  55              		.cfi_endproc
+  56              	.LFE137:
+  58              		.section	.text.Adafruit_BNO055_SetMode,"ax",%progbits
+  59              		.align	1
+  60              		.global	Adafruit_BNO055_SetMode
+  61              		.syntax unified
+  62              		.thumb
+  63              		.thumb_func
+  65              	Adafruit_BNO055_SetMode:
+  66              	.LVL1:
+  67              	.LFB139:
+  28:rover/ECAL/Src/Adafruit_BNO055.c **** volatile uint8_t Co = 0;
+  29:rover/ECAL/Src/Adafruit_BNO055.c **** void Adafruit_BNO055_Begin(adafruit_bno055_opmode_t mode) {
+  30:rover/ECAL/Src/Adafruit_BNO055.c ****   uint8_t Data = 0;
+  31:rover/ECAL/Src/Adafruit_BNO055.c ****   uint8_t id;
+  32:rover/ECAL/Src/Adafruit_BNO055.c ****   HAL_StatusTypeDef status;
+  33:rover/ECAL/Src/Adafruit_BNO055.c **** 
+  34:rover/ECAL/Src/Adafruit_BNO055.c ****   // Reset the sensor first
+  35:rover/ECAL/Src/Adafruit_BNO055.c ****   Data = 0x20;
+  36:rover/ECAL/Src/Adafruit_BNO055.c ****   status = HAL_I2C_Mem_Write(GlobalConfig, _address, BNO055_SYS_TRIGGER_ADDR, 1, &Data, 1, HAL_MAX_
+  37:rover/ECAL/Src/Adafruit_BNO055.c ****   if (status != HAL_OK) {
+  38:rover/ECAL/Src/Adafruit_BNO055.c ****     printf("Error resetting the sensor\r\n");
+  39:rover/ECAL/Src/Adafruit_BNO055.c ****     return;
+  40:rover/ECAL/Src/Adafruit_BNO055.c ****   }
+  41:rover/ECAL/Src/Adafruit_BNO055.c ****   HAL_Delay(650); // Per datasheet, reset takes ~650ms
+  42:rover/ECAL/Src/Adafruit_BNO055.c **** 
+  43:rover/ECAL/Src/Adafruit_BNO055.c ****   // Check device ID
+  44:rover/ECAL/Src/Adafruit_BNO055.c ****   status = HAL_I2C_Mem_Read(GlobalConfig, _address, BNO055_CHIP_ID_ADDR, 1, &id, 1, HAL_MAX_DELAY);
+  45:rover/ECAL/Src/Adafruit_BNO055.c ****   if (status != HAL_OK || id != BNO055_ID) {
+  46:rover/ECAL/Src/Adafruit_BNO055.c ****     printf("Error reading device ID: %d\r\n", id);
+  47:rover/ECAL/Src/Adafruit_BNO055.c ****     return;
+  48:rover/ECAL/Src/Adafruit_BNO055.c ****   }
+  49:rover/ECAL/Src/Adafruit_BNO055.c **** 
+  50:rover/ECAL/Src/Adafruit_BNO055.c ****   // Set to normal power mode
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s 			page 3
+
+
+  51:rover/ECAL/Src/Adafruit_BNO055.c ****   Data = POWER_MODE_NORMAL;
+  52:rover/ECAL/Src/Adafruit_BNO055.c ****   HAL_I2C_Mem_Write(GlobalConfig, _address, BNO055_PWR_MODE_ADDR, 1, &Data, 1, HAL_MAX_DELAY);
+  53:rover/ECAL/Src/Adafruit_BNO055.c ****   HAL_Delay(10);
+  54:rover/ECAL/Src/Adafruit_BNO055.c **** 
+  55:rover/ECAL/Src/Adafruit_BNO055.c ****   // Set the requested operating mode
+  56:rover/ECAL/Src/Adafruit_BNO055.c ****   Adafruit_BNO055_SetMode(mode);
+  57:rover/ECAL/Src/Adafruit_BNO055.c ****   HAL_Delay(20);
+  58:rover/ECAL/Src/Adafruit_BNO055.c **** }
+  59:rover/ECAL/Src/Adafruit_BNO055.c **** 
+  60:rover/ECAL/Src/Adafruit_BNO055.c **** void Adafruit_BNO055_SetMode(adafruit_bno055_opmode_t mode)
+  61:rover/ECAL/Src/Adafruit_BNO055.c **** {
+  68              		.loc 1 61 1 is_stmt 1 view -0
+  69              		.cfi_startproc
+  70              		@ args = 0, pretend = 0, frame = 0
+  71              		@ frame_needed = 0, uses_anonymous_args = 0
+  72              		.loc 1 61 1 is_stmt 0 view .LVU9
+  73 0000 00B5     		push	{lr}
+  74              	.LCFI0:
+  75              		.cfi_def_cfa_offset 4
+  76              		.cfi_offset 14, -4
+  77 0002 85B0     		sub	sp, sp, #20
+  78              	.LCFI1:
+  79              		.cfi_def_cfa_offset 24
+  62:rover/ECAL/Src/Adafruit_BNO055.c ****   _mode = mode;
+  80              		.loc 1 62 3 is_stmt 1 view .LVU10
+  81              		.loc 1 62 9 is_stmt 0 view .LVU11
+  82 0004 0A4A     		ldr	r2, .L6
+  83 0006 1070     		strb	r0, [r2]
+  63:rover/ECAL/Src/Adafruit_BNO055.c ****   HAL_I2C_Mem_Write(GlobalConfig , _address , BNO055_OPR_MODE_ADDR , 1 , &_mode , 1 , HAL_MAX_DELAY
+  84              		.loc 1 63 3 is_stmt 1 view .LVU12
+  85 0008 4FF0FF33 		mov	r3, #-1
+  86 000c 0293     		str	r3, [sp, #8]
+  87 000e 0123     		movs	r3, #1
+  88 0010 0193     		str	r3, [sp, #4]
+  89 0012 0092     		str	r2, [sp]
+  90 0014 3D22     		movs	r2, #61
+  91 0016 0749     		ldr	r1, .L6+4
+  92 0018 0978     		ldrb	r1, [r1]	@ zero_extendqisi2
+  93 001a 0748     		ldr	r0, .L6+8
+  94              	.LVL2:
+  95              		.loc 1 63 3 is_stmt 0 view .LVU13
+  96 001c 0068     		ldr	r0, [r0]
+  97 001e FFF7FEFF 		bl	HAL_I2C_Mem_Write
+  98              	.LVL3:
+  64:rover/ECAL/Src/Adafruit_BNO055.c ****   HAL_Delay(30);
+  99              		.loc 1 64 3 is_stmt 1 view .LVU14
+ 100 0022 1E20     		movs	r0, #30
+ 101 0024 FFF7FEFF 		bl	HAL_Delay
+ 102              	.LVL4:
+  65:rover/ECAL/Src/Adafruit_BNO055.c **** }
+ 103              		.loc 1 65 1 is_stmt 0 view .LVU15
+ 104 0028 05B0     		add	sp, sp, #20
+ 105              	.LCFI2:
+ 106              		.cfi_def_cfa_offset 4
+ 107              		@ sp needed
+ 108 002a 5DF804FB 		ldr	pc, [sp], #4
+ 109              	.L7:
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s 			page 4
+
+
+ 110 002e 00BF     		.align	2
+ 111              	.L6:
+ 112 0030 00000000 		.word	_mode
+ 113 0034 00000000 		.word	_address
+ 114 0038 00000000 		.word	GlobalConfig
+ 115              		.cfi_endproc
+ 116              	.LFE139:
+ 118              		.section	.rodata.Adafruit_BNO055_Begin.str1.4,"aMS",%progbits,1
+ 119              		.align	2
+ 120              	.LC0:
+ 121 0000 4572726F 		.ascii	"Error resetting the sensor\015\000"
+ 121      72207265 
+ 121      73657474 
+ 121      696E6720 
+ 121      74686520 
+ 122              		.align	2
+ 123              	.LC1:
+ 124 001c 4572726F 		.ascii	"Error reading device ID: %d\015\012\000"
+ 124      72207265 
+ 124      6164696E 
+ 124      67206465 
+ 124      76696365 
+ 125              		.section	.text.Adafruit_BNO055_Begin,"ax",%progbits
+ 126              		.align	1
+ 127              		.global	Adafruit_BNO055_Begin
+ 128              		.syntax unified
+ 129              		.thumb
+ 130              		.thumb_func
+ 132              	Adafruit_BNO055_Begin:
+ 133              	.LVL5:
+ 134              	.LFB138:
+  29:rover/ECAL/Src/Adafruit_BNO055.c ****   uint8_t Data = 0;
+ 135              		.loc 1 29 59 is_stmt 1 view -0
+ 136              		.cfi_startproc
+ 137              		@ args = 0, pretend = 0, frame = 8
+ 138              		@ frame_needed = 0, uses_anonymous_args = 0
+  29:rover/ECAL/Src/Adafruit_BNO055.c ****   uint8_t Data = 0;
+ 139              		.loc 1 29 59 is_stmt 0 view .LVU17
+ 140 0000 10B5     		push	{r4, lr}
+ 141              	.LCFI3:
+ 142              		.cfi_def_cfa_offset 8
+ 143              		.cfi_offset 4, -8
+ 144              		.cfi_offset 14, -4
+ 145 0002 86B0     		sub	sp, sp, #24
+ 146              	.LCFI4:
+ 147              		.cfi_def_cfa_offset 32
+ 148 0004 0446     		mov	r4, r0
+  30:rover/ECAL/Src/Adafruit_BNO055.c ****   uint8_t id;
+ 149              		.loc 1 30 3 is_stmt 1 view .LVU18
+  30:rover/ECAL/Src/Adafruit_BNO055.c ****   uint8_t id;
+ 150              		.loc 1 30 11 is_stmt 0 view .LVU19
+ 151 0006 0023     		movs	r3, #0
+ 152 0008 8DF81730 		strb	r3, [sp, #23]
+  31:rover/ECAL/Src/Adafruit_BNO055.c ****   HAL_StatusTypeDef status;
+ 153              		.loc 1 31 3 is_stmt 1 view .LVU20
+  32:rover/ECAL/Src/Adafruit_BNO055.c **** 
+ 154              		.loc 1 32 3 view .LVU21
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s 			page 5
+
+
+  35:rover/ECAL/Src/Adafruit_BNO055.c ****   status = HAL_I2C_Mem_Write(GlobalConfig, _address, BNO055_SYS_TRIGGER_ADDR, 1, &Data, 1, HAL_MAX_
+ 155              		.loc 1 35 3 view .LVU22
+  35:rover/ECAL/Src/Adafruit_BNO055.c ****   status = HAL_I2C_Mem_Write(GlobalConfig, _address, BNO055_SYS_TRIGGER_ADDR, 1, &Data, 1, HAL_MAX_
+ 156              		.loc 1 35 8 is_stmt 0 view .LVU23
+ 157 000c 2023     		movs	r3, #32
+ 158 000e 8DF81730 		strb	r3, [sp, #23]
+  36:rover/ECAL/Src/Adafruit_BNO055.c ****   if (status != HAL_OK) {
+ 159              		.loc 1 36 3 is_stmt 1 view .LVU24
+  36:rover/ECAL/Src/Adafruit_BNO055.c ****   if (status != HAL_OK) {
+ 160              		.loc 1 36 12 is_stmt 0 view .LVU25
+ 161 0012 4FF0FF33 		mov	r3, #-1
+ 162 0016 0293     		str	r3, [sp, #8]
+ 163 0018 0123     		movs	r3, #1
+ 164 001a 0193     		str	r3, [sp, #4]
+ 165 001c 0DF11702 		add	r2, sp, #23
+ 166 0020 0092     		str	r2, [sp]
+ 167 0022 3F22     		movs	r2, #63
+ 168 0024 2249     		ldr	r1, .L16
+ 169 0026 0978     		ldrb	r1, [r1]	@ zero_extendqisi2
+ 170 0028 2248     		ldr	r0, .L16+4
+ 171              	.LVL6:
+  36:rover/ECAL/Src/Adafruit_BNO055.c ****   if (status != HAL_OK) {
+ 172              		.loc 1 36 12 view .LVU26
+ 173 002a 0068     		ldr	r0, [r0]
+ 174 002c FFF7FEFF 		bl	HAL_I2C_Mem_Write
+ 175              	.LVL7:
+  37:rover/ECAL/Src/Adafruit_BNO055.c ****     printf("Error resetting the sensor\r\n");
+ 176              		.loc 1 37 3 is_stmt 1 view .LVU27
+  37:rover/ECAL/Src/Adafruit_BNO055.c ****     printf("Error resetting the sensor\r\n");
+ 177              		.loc 1 37 6 is_stmt 0 view .LVU28
+ 178 0030 F0B9     		cbnz	r0, .L15
+  41:rover/ECAL/Src/Adafruit_BNO055.c **** 
+ 179              		.loc 1 41 3 is_stmt 1 view .LVU29
+ 180 0032 40F28A20 		movw	r0, #650
+ 181              	.LVL8:
+  41:rover/ECAL/Src/Adafruit_BNO055.c **** 
+ 182              		.loc 1 41 3 is_stmt 0 view .LVU30
+ 183 0036 FFF7FEFF 		bl	HAL_Delay
+ 184              	.LVL9:
+  44:rover/ECAL/Src/Adafruit_BNO055.c ****   if (status != HAL_OK || id != BNO055_ID) {
+ 185              		.loc 1 44 3 is_stmt 1 view .LVU31
+  44:rover/ECAL/Src/Adafruit_BNO055.c ****   if (status != HAL_OK || id != BNO055_ID) {
+ 186              		.loc 1 44 12 is_stmt 0 view .LVU32
+ 187 003a 4FF0FF33 		mov	r3, #-1
+ 188 003e 0293     		str	r3, [sp, #8]
+ 189 0040 0123     		movs	r3, #1
+ 190 0042 0193     		str	r3, [sp, #4]
+ 191 0044 0DF11602 		add	r2, sp, #22
+ 192 0048 0092     		str	r2, [sp]
+ 193 004a 0022     		movs	r2, #0
+ 194 004c 1849     		ldr	r1, .L16
+ 195 004e 0978     		ldrb	r1, [r1]	@ zero_extendqisi2
+ 196 0050 1848     		ldr	r0, .L16+4
+ 197 0052 0068     		ldr	r0, [r0]
+ 198 0054 FFF7FEFF 		bl	HAL_I2C_Mem_Read
+ 199              	.LVL10:
+  45:rover/ECAL/Src/Adafruit_BNO055.c ****     printf("Error reading device ID: %d\r\n", id);
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s 			page 6
+
+
+ 200              		.loc 1 45 3 is_stmt 1 view .LVU33
+  45:rover/ECAL/Src/Adafruit_BNO055.c ****     printf("Error reading device ID: %d\r\n", id);
+ 201              		.loc 1 45 6 is_stmt 0 view .LVU34
+ 202 0058 18B9     		cbnz	r0, .L11
+  45:rover/ECAL/Src/Adafruit_BNO055.c ****     printf("Error reading device ID: %d\r\n", id);
+ 203              		.loc 1 45 30 discriminator 1 view .LVU35
+ 204 005a 9DF81630 		ldrb	r3, [sp, #22]	@ zero_extendqisi2
+  45:rover/ECAL/Src/Adafruit_BNO055.c ****     printf("Error reading device ID: %d\r\n", id);
+ 205              		.loc 1 45 24 discriminator 1 view .LVU36
+ 206 005e A02B     		cmp	r3, #160
+ 207 0060 0AD0     		beq	.L12
+ 208              	.L11:
+  46:rover/ECAL/Src/Adafruit_BNO055.c ****     return;
+ 209              		.loc 1 46 5 is_stmt 1 view .LVU37
+ 210 0062 9DF81610 		ldrb	r1, [sp, #22]	@ zero_extendqisi2
+ 211 0066 1448     		ldr	r0, .L16+8
+ 212              	.LVL11:
+  46:rover/ECAL/Src/Adafruit_BNO055.c ****     return;
+ 213              		.loc 1 46 5 is_stmt 0 view .LVU38
+ 214 0068 FFF7FEFF 		bl	printf
+ 215              	.LVL12:
+  47:rover/ECAL/Src/Adafruit_BNO055.c ****   }
+ 216              		.loc 1 47 5 is_stmt 1 view .LVU39
+ 217              	.L8:
+  58:rover/ECAL/Src/Adafruit_BNO055.c **** 
+ 218              		.loc 1 58 1 is_stmt 0 view .LVU40
+ 219 006c 06B0     		add	sp, sp, #24
+ 220              	.LCFI5:
+ 221              		.cfi_remember_state
+ 222              		.cfi_def_cfa_offset 8
+ 223              		@ sp needed
+ 224 006e 10BD     		pop	{r4, pc}
+ 225              	.LVL13:
+ 226              	.L15:
+ 227              	.LCFI6:
+ 228              		.cfi_restore_state
+  38:rover/ECAL/Src/Adafruit_BNO055.c ****     return;
+ 229              		.loc 1 38 5 is_stmt 1 view .LVU41
+ 230 0070 1248     		ldr	r0, .L16+12
+ 231              	.LVL14:
+  38:rover/ECAL/Src/Adafruit_BNO055.c ****     return;
+ 232              		.loc 1 38 5 is_stmt 0 view .LVU42
+ 233 0072 FFF7FEFF 		bl	puts
+ 234              	.LVL15:
+  39:rover/ECAL/Src/Adafruit_BNO055.c ****   }
+ 235              		.loc 1 39 5 is_stmt 1 view .LVU43
+ 236 0076 F9E7     		b	.L8
+ 237              	.LVL16:
+ 238              	.L12:
+  51:rover/ECAL/Src/Adafruit_BNO055.c ****   HAL_I2C_Mem_Write(GlobalConfig, _address, BNO055_PWR_MODE_ADDR, 1, &Data, 1, HAL_MAX_DELAY);
+ 239              		.loc 1 51 3 view .LVU44
+  51:rover/ECAL/Src/Adafruit_BNO055.c ****   HAL_I2C_Mem_Write(GlobalConfig, _address, BNO055_PWR_MODE_ADDR, 1, &Data, 1, HAL_MAX_DELAY);
+ 240              		.loc 1 51 8 is_stmt 0 view .LVU45
+ 241 0078 0023     		movs	r3, #0
+ 242 007a 8DF81730 		strb	r3, [sp, #23]
+  52:rover/ECAL/Src/Adafruit_BNO055.c ****   HAL_Delay(10);
+ 243              		.loc 1 52 3 is_stmt 1 view .LVU46
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s 			page 7
+
+
+ 244 007e 4FF0FF33 		mov	r3, #-1
+ 245 0082 0293     		str	r3, [sp, #8]
+ 246 0084 0123     		movs	r3, #1
+ 247 0086 0193     		str	r3, [sp, #4]
+ 248 0088 0DF11702 		add	r2, sp, #23
+ 249 008c 0092     		str	r2, [sp]
+ 250 008e 3E22     		movs	r2, #62
+ 251 0090 0749     		ldr	r1, .L16
+ 252 0092 0978     		ldrb	r1, [r1]	@ zero_extendqisi2
+ 253 0094 0748     		ldr	r0, .L16+4
+ 254              	.LVL17:
+  52:rover/ECAL/Src/Adafruit_BNO055.c ****   HAL_Delay(10);
+ 255              		.loc 1 52 3 is_stmt 0 view .LVU47
+ 256 0096 0068     		ldr	r0, [r0]
+ 257 0098 FFF7FEFF 		bl	HAL_I2C_Mem_Write
+ 258              	.LVL18:
+  53:rover/ECAL/Src/Adafruit_BNO055.c **** 
+ 259              		.loc 1 53 3 is_stmt 1 view .LVU48
+ 260 009c 0A20     		movs	r0, #10
+ 261 009e FFF7FEFF 		bl	HAL_Delay
+ 262              	.LVL19:
+  56:rover/ECAL/Src/Adafruit_BNO055.c ****   HAL_Delay(20);
+ 263              		.loc 1 56 3 view .LVU49
+ 264 00a2 2046     		mov	r0, r4
+ 265 00a4 FFF7FEFF 		bl	Adafruit_BNO055_SetMode
+ 266              	.LVL20:
+  57:rover/ECAL/Src/Adafruit_BNO055.c **** }
+ 267              		.loc 1 57 3 view .LVU50
+ 268 00a8 1420     		movs	r0, #20
+ 269 00aa FFF7FEFF 		bl	HAL_Delay
+ 270              	.LVL21:
+ 271 00ae DDE7     		b	.L8
+ 272              	.L17:
+ 273              		.align	2
+ 274              	.L16:
+ 275 00b0 00000000 		.word	_address
+ 276 00b4 00000000 		.word	GlobalConfig
+ 277 00b8 1C000000 		.word	.LC1
+ 278 00bc 00000000 		.word	.LC0
+ 279              		.cfi_endproc
+ 280              	.LFE138:
+ 282              		.section	.text.Adafruit_BNO055_GetTemp,"ax",%progbits
+ 283              		.align	1
+ 284              		.global	Adafruit_BNO055_GetTemp
+ 285              		.syntax unified
+ 286              		.thumb
+ 287              		.thumb_func
+ 289              	Adafruit_BNO055_GetTemp:
+ 290              	.LFB140:
+  66:rover/ECAL/Src/Adafruit_BNO055.c **** 
+  67:rover/ECAL/Src/Adafruit_BNO055.c **** int8_t Adafruit_BNO055_GetTemp(void)
+  68:rover/ECAL/Src/Adafruit_BNO055.c **** {
+ 291              		.loc 1 68 1 view -0
+ 292              		.cfi_startproc
+ 293              		@ args = 0, pretend = 0, frame = 8
+ 294              		@ frame_needed = 0, uses_anonymous_args = 0
+ 295 0000 00B5     		push	{lr}
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s 			page 8
+
+
+ 296              	.LCFI7:
+ 297              		.cfi_def_cfa_offset 4
+ 298              		.cfi_offset 14, -4
+ 299 0002 87B0     		sub	sp, sp, #28
+ 300              	.LCFI8:
+ 301              		.cfi_def_cfa_offset 32
+  69:rover/ECAL/Src/Adafruit_BNO055.c ****   int8_t temp;
+ 302              		.loc 1 69 3 view .LVU52
+  70:rover/ECAL/Src/Adafruit_BNO055.c ****   HAL_I2C_Mem_Read(GlobalConfig , _address , BNO055_TEMP_ADDR , 1 , &temp , 1 , HAL_MAX_DELAY);
+ 303              		.loc 1 70 3 view .LVU53
+ 304 0004 4FF0FF33 		mov	r3, #-1
+ 305 0008 0293     		str	r3, [sp, #8]
+ 306 000a 0123     		movs	r3, #1
+ 307 000c 0193     		str	r3, [sp, #4]
+ 308 000e 0DF11702 		add	r2, sp, #23
+ 309 0012 0092     		str	r2, [sp]
+ 310 0014 3422     		movs	r2, #52
+ 311 0016 0549     		ldr	r1, .L20
+ 312 0018 0978     		ldrb	r1, [r1]	@ zero_extendqisi2
+ 313 001a 0548     		ldr	r0, .L20+4
+ 314 001c 0068     		ldr	r0, [r0]
+ 315 001e FFF7FEFF 		bl	HAL_I2C_Mem_Read
+ 316              	.LVL22:
+  71:rover/ECAL/Src/Adafruit_BNO055.c ****   return temp;
+ 317              		.loc 1 71 3 view .LVU54
+  72:rover/ECAL/Src/Adafruit_BNO055.c **** }
+ 318              		.loc 1 72 1 is_stmt 0 view .LVU55
+ 319 0022 9DF91700 		ldrsb	r0, [sp, #23]
+ 320 0026 07B0     		add	sp, sp, #28
+ 321              	.LCFI9:
+ 322              		.cfi_def_cfa_offset 4
+ 323              		@ sp needed
+ 324 0028 5DF804FB 		ldr	pc, [sp], #4
+ 325              	.L21:
+ 326              		.align	2
+ 327              	.L20:
+ 328 002c 00000000 		.word	_address
+ 329 0030 00000000 		.word	GlobalConfig
+ 330              		.cfi_endproc
+ 331              	.LFE140:
+ 333              		.section	.text.Adafruit_BNO055_SetExtCrystalUse,"ax",%progbits
+ 334              		.align	1
+ 335              		.global	Adafruit_BNO055_SetExtCrystalUse
+ 336              		.syntax unified
+ 337              		.thumb
+ 338              		.thumb_func
+ 340              	Adafruit_BNO055_SetExtCrystalUse:
+ 341              	.LVL23:
+ 342              	.LFB141:
+  73:rover/ECAL/Src/Adafruit_BNO055.c **** 
+  74:rover/ECAL/Src/Adafruit_BNO055.c **** void Adafruit_BNO055_SetExtCrystalUse(uint8_t usextal)
+  75:rover/ECAL/Src/Adafruit_BNO055.c **** {
+ 343              		.loc 1 75 1 is_stmt 1 view -0
+ 344              		.cfi_startproc
+ 345              		@ args = 0, pretend = 0, frame = 8
+ 346              		@ frame_needed = 0, uses_anonymous_args = 0
+ 347              		.loc 1 75 1 is_stmt 0 view .LVU57
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s 			page 9
+
+
+ 348 0000 30B5     		push	{r4, r5, lr}
+ 349              	.LCFI10:
+ 350              		.cfi_def_cfa_offset 12
+ 351              		.cfi_offset 4, -12
+ 352              		.cfi_offset 5, -8
+ 353              		.cfi_offset 14, -4
+ 354 0002 87B0     		sub	sp, sp, #28
+ 355              	.LCFI11:
+ 356              		.cfi_def_cfa_offset 40
+ 357 0004 0446     		mov	r4, r0
+  76:rover/ECAL/Src/Adafruit_BNO055.c ****   adafruit_bno055_opmode_t modeback = _mode;
+ 358              		.loc 1 76 3 is_stmt 1 view .LVU58
+ 359              		.loc 1 76 28 is_stmt 0 view .LVU59
+ 360 0006 254B     		ldr	r3, .L26
+ 361 0008 1D78     		ldrb	r5, [r3]	@ zero_extendqisi2
+ 362              	.LVL24:
+  77:rover/ECAL/Src/Adafruit_BNO055.c ****   uint8_t Data; 
+ 363              		.loc 1 77 3 is_stmt 1 view .LVU60
+  78:rover/ECAL/Src/Adafruit_BNO055.c ****   /* Switch to config mode (just in case since this is the default) */
+  79:rover/ECAL/Src/Adafruit_BNO055.c ****   Adafruit_BNO055_SetMode(OPERATION_MODE_CONFIG);
+ 364              		.loc 1 79 3 view .LVU61
+ 365 000a 0020     		movs	r0, #0
+ 366              	.LVL25:
+ 367              		.loc 1 79 3 is_stmt 0 view .LVU62
+ 368 000c FFF7FEFF 		bl	Adafruit_BNO055_SetMode
+ 369              	.LVL26:
+  80:rover/ECAL/Src/Adafruit_BNO055.c ****   HAL_Delay(25);
+ 370              		.loc 1 80 3 is_stmt 1 view .LVU63
+ 371 0010 1920     		movs	r0, #25
+ 372 0012 FFF7FEFF 		bl	HAL_Delay
+ 373              	.LVL27:
+  81:rover/ECAL/Src/Adafruit_BNO055.c ****   
+  82:rover/ECAL/Src/Adafruit_BNO055.c ****   Data = 0;
+ 374              		.loc 1 82 3 view .LVU64
+ 375              		.loc 1 82 8 is_stmt 0 view .LVU65
+ 376 0016 0023     		movs	r3, #0
+ 377 0018 8DF81730 		strb	r3, [sp, #23]
+  83:rover/ECAL/Src/Adafruit_BNO055.c ****   HAL_I2C_Mem_Write(GlobalConfig , _address , BNO055_PAGE_ID_ADDR , 1 , &Data , 1 , HAL_MAX_DELAY);
+ 378              		.loc 1 83 3 is_stmt 1 view .LVU66
+ 379 001c 4FF0FF33 		mov	r3, #-1
+ 380 0020 0293     		str	r3, [sp, #8]
+ 381 0022 0123     		movs	r3, #1
+ 382 0024 0193     		str	r3, [sp, #4]
+ 383 0026 0DF11702 		add	r2, sp, #23
+ 384 002a 0092     		str	r2, [sp]
+ 385 002c 0722     		movs	r2, #7
+ 386 002e 1C49     		ldr	r1, .L26+4
+ 387 0030 0978     		ldrb	r1, [r1]	@ zero_extendqisi2
+ 388 0032 1C48     		ldr	r0, .L26+8
+ 389 0034 0068     		ldr	r0, [r0]
+ 390 0036 FFF7FEFF 		bl	HAL_I2C_Mem_Write
+ 391              	.LVL28:
+  84:rover/ECAL/Src/Adafruit_BNO055.c ****   
+  85:rover/ECAL/Src/Adafruit_BNO055.c ****   if (usextal)
+ 392              		.loc 1 85 3 view .LVU67
+ 393              		.loc 1 85 6 is_stmt 0 view .LVU68
+ 394 003a E4B1     		cbz	r4, .L23
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s 			page 10
+
+
+  86:rover/ECAL/Src/Adafruit_BNO055.c ****   {
+  87:rover/ECAL/Src/Adafruit_BNO055.c ****     Data = 0x80;
+ 395              		.loc 1 87 5 is_stmt 1 view .LVU69
+ 396              		.loc 1 87 10 is_stmt 0 view .LVU70
+ 397 003c 8023     		movs	r3, #128
+ 398 003e 8DF81730 		strb	r3, [sp, #23]
+  88:rover/ECAL/Src/Adafruit_BNO055.c **** 	HAL_I2C_Mem_Write(GlobalConfig , _address , BNO055_SYS_TRIGGER_ADDR , 1 , &Data , 1 , HAL_MAX_DELA
+ 399              		.loc 1 88 2 is_stmt 1 view .LVU71
+ 400 0042 4FF0FF33 		mov	r3, #-1
+ 401 0046 0293     		str	r3, [sp, #8]
+ 402 0048 0123     		movs	r3, #1
+ 403 004a 0193     		str	r3, [sp, #4]
+ 404 004c 0DF11702 		add	r2, sp, #23
+ 405 0050 0092     		str	r2, [sp]
+ 406 0052 3F22     		movs	r2, #63
+ 407 0054 1249     		ldr	r1, .L26+4
+ 408 0056 0978     		ldrb	r1, [r1]	@ zero_extendqisi2
+ 409 0058 1248     		ldr	r0, .L26+8
+ 410 005a 0068     		ldr	r0, [r0]
+ 411 005c FFF7FEFF 		bl	HAL_I2C_Mem_Write
+ 412              	.LVL29:
+ 413              	.L24:
+  89:rover/ECAL/Src/Adafruit_BNO055.c ****   }
+  90:rover/ECAL/Src/Adafruit_BNO055.c ****   else
+  91:rover/ECAL/Src/Adafruit_BNO055.c ****   {
+  92:rover/ECAL/Src/Adafruit_BNO055.c ****     Data = 0x00;
+  93:rover/ECAL/Src/Adafruit_BNO055.c **** 	HAL_I2C_Mem_Write(GlobalConfig , _address , BNO055_SYS_TRIGGER_ADDR , 1 , &Data , 1 , HAL_MAX_DELA
+  94:rover/ECAL/Src/Adafruit_BNO055.c ****   }
+  95:rover/ECAL/Src/Adafruit_BNO055.c ****   HAL_Delay(10);
+ 414              		.loc 1 95 3 view .LVU72
+ 415 0060 0A20     		movs	r0, #10
+ 416 0062 FFF7FEFF 		bl	HAL_Delay
+ 417              	.LVL30:
+  96:rover/ECAL/Src/Adafruit_BNO055.c ****   /* Set the requested operating mode (see section 3.3) */
+  97:rover/ECAL/Src/Adafruit_BNO055.c ****   Adafruit_BNO055_SetMode(modeback);
+ 418              		.loc 1 97 3 view .LVU73
+ 419 0066 2846     		mov	r0, r5
+ 420 0068 FFF7FEFF 		bl	Adafruit_BNO055_SetMode
+ 421              	.LVL31:
+  98:rover/ECAL/Src/Adafruit_BNO055.c ****   HAL_Delay(20);
+ 422              		.loc 1 98 3 view .LVU74
+ 423 006c 1420     		movs	r0, #20
+ 424 006e FFF7FEFF 		bl	HAL_Delay
+ 425              	.LVL32:
+  99:rover/ECAL/Src/Adafruit_BNO055.c **** }
+ 426              		.loc 1 99 1 is_stmt 0 view .LVU75
+ 427 0072 07B0     		add	sp, sp, #28
+ 428              	.LCFI12:
+ 429              		.cfi_remember_state
+ 430              		.cfi_def_cfa_offset 12
+ 431              		@ sp needed
+ 432 0074 30BD     		pop	{r4, r5, pc}
+ 433              	.LVL33:
+ 434              	.L23:
+ 435              	.LCFI13:
+ 436              		.cfi_restore_state
+  92:rover/ECAL/Src/Adafruit_BNO055.c **** 	HAL_I2C_Mem_Write(GlobalConfig , _address , BNO055_SYS_TRIGGER_ADDR , 1 , &Data , 1 , HAL_MAX_DELA
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s 			page 11
+
+
+ 437              		.loc 1 92 5 is_stmt 1 view .LVU76
+  92:rover/ECAL/Src/Adafruit_BNO055.c **** 	HAL_I2C_Mem_Write(GlobalConfig , _address , BNO055_SYS_TRIGGER_ADDR , 1 , &Data , 1 , HAL_MAX_DELA
+ 438              		.loc 1 92 10 is_stmt 0 view .LVU77
+ 439 0076 0023     		movs	r3, #0
+ 440 0078 8DF81730 		strb	r3, [sp, #23]
+  93:rover/ECAL/Src/Adafruit_BNO055.c ****   }
+ 441              		.loc 1 93 2 is_stmt 1 view .LVU78
+ 442 007c 4FF0FF33 		mov	r3, #-1
+ 443 0080 0293     		str	r3, [sp, #8]
+ 444 0082 0123     		movs	r3, #1
+ 445 0084 0193     		str	r3, [sp, #4]
+ 446 0086 0DF11702 		add	r2, sp, #23
+ 447 008a 0092     		str	r2, [sp]
+ 448 008c 3F22     		movs	r2, #63
+ 449 008e 0449     		ldr	r1, .L26+4
+ 450 0090 0978     		ldrb	r1, [r1]	@ zero_extendqisi2
+ 451 0092 0448     		ldr	r0, .L26+8
+ 452 0094 0068     		ldr	r0, [r0]
+ 453 0096 FFF7FEFF 		bl	HAL_I2C_Mem_Write
+ 454              	.LVL34:
+ 455 009a E1E7     		b	.L24
+ 456              	.L27:
+ 457              		.align	2
+ 458              	.L26:
+ 459 009c 00000000 		.word	_mode
+ 460 00a0 00000000 		.word	_address
+ 461 00a4 00000000 		.word	GlobalConfig
+ 462              		.cfi_endproc
+ 463              	.LFE141:
+ 465              		.section	.text.Adafruit_BNO055_GetCalibration,"ax",%progbits
+ 466              		.align	1
+ 467              		.global	Adafruit_BNO055_GetCalibration
+ 468              		.syntax unified
+ 469              		.thumb
+ 470              		.thumb_func
+ 472              	Adafruit_BNO055_GetCalibration:
+ 473              	.LVL35:
+ 474              	.LFB142:
+ 100:rover/ECAL/Src/Adafruit_BNO055.c **** 
+ 101:rover/ECAL/Src/Adafruit_BNO055.c **** void Adafruit_BNO055_GetCalibration(uint8_t *sys, uint8_t *gyro, uint8_t *accel, uint8_t *mag) 
+ 102:rover/ECAL/Src/Adafruit_BNO055.c **** {	
+ 475              		.loc 1 102 1 view -0
+ 476              		.cfi_startproc
+ 477              		@ args = 0, pretend = 0, frame = 8
+ 478              		@ frame_needed = 0, uses_anonymous_args = 0
+ 479              		.loc 1 102 1 is_stmt 0 view .LVU80
+ 480 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 481              	.LCFI14:
+ 482              		.cfi_def_cfa_offset 20
+ 483              		.cfi_offset 4, -20
+ 484              		.cfi_offset 5, -16
+ 485              		.cfi_offset 6, -12
+ 486              		.cfi_offset 7, -8
+ 487              		.cfi_offset 14, -4
+ 488 0002 87B0     		sub	sp, sp, #28
+ 489              	.LCFI15:
+ 490              		.cfi_def_cfa_offset 48
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s 			page 12
+
+
+ 491 0004 0746     		mov	r7, r0
+ 492 0006 0E46     		mov	r6, r1
+ 493 0008 1546     		mov	r5, r2
+ 494 000a 1C46     		mov	r4, r3
+ 103:rover/ECAL/Src/Adafruit_BNO055.c ****   uint8_t calData;
+ 495              		.loc 1 103 3 is_stmt 1 view .LVU81
+ 104:rover/ECAL/Src/Adafruit_BNO055.c ****   HAL_I2C_Mem_Read(GlobalConfig , _address , BNO055_CALIB_STAT_ADDR , 1 , &calData , 1 , HAL_MAX_DE
+ 496              		.loc 1 104 3 view .LVU82
+ 497 000c 4FF0FF33 		mov	r3, #-1
+ 498              	.LVL36:
+ 499              		.loc 1 104 3 is_stmt 0 view .LVU83
+ 500 0010 0293     		str	r3, [sp, #8]
+ 501 0012 0123     		movs	r3, #1
+ 502 0014 0193     		str	r3, [sp, #4]
+ 503 0016 0DF11702 		add	r2, sp, #23
+ 504              	.LVL37:
+ 505              		.loc 1 104 3 view .LVU84
+ 506 001a 0092     		str	r2, [sp]
+ 507 001c 3522     		movs	r2, #53
+ 508 001e 0F49     		ldr	r1, .L34
+ 509              	.LVL38:
+ 510              		.loc 1 104 3 view .LVU85
+ 511 0020 0978     		ldrb	r1, [r1]	@ zero_extendqisi2
+ 512 0022 0F48     		ldr	r0, .L34+4
+ 513              	.LVL39:
+ 514              		.loc 1 104 3 view .LVU86
+ 515 0024 0068     		ldr	r0, [r0]
+ 516 0026 FFF7FEFF 		bl	HAL_I2C_Mem_Read
+ 517              	.LVL40:
+ 105:rover/ECAL/Src/Adafruit_BNO055.c **** 
+ 106:rover/ECAL/Src/Adafruit_BNO055.c ****   if (sys != NULL) 
+ 518              		.loc 1 106 3 is_stmt 1 view .LVU87
+ 519              		.loc 1 106 6 is_stmt 0 view .LVU88
+ 520 002a 1FB1     		cbz	r7, .L29
+ 107:rover/ECAL/Src/Adafruit_BNO055.c ****   {
+ 108:rover/ECAL/Src/Adafruit_BNO055.c ****     *sys = (calData >> 6) & 0x03;
+ 521              		.loc 1 108 5 is_stmt 1 view .LVU89
+ 522              		.loc 1 108 10 is_stmt 0 view .LVU90
+ 523 002c 9DF81730 		ldrb	r3, [sp, #23]	@ zero_extendqisi2
+ 524 0030 9B09     		lsrs	r3, r3, #6
+ 525 0032 3B70     		strb	r3, [r7]
+ 526              	.L29:
+ 109:rover/ECAL/Src/Adafruit_BNO055.c ****   }
+ 110:rover/ECAL/Src/Adafruit_BNO055.c ****   if (gyro != NULL)
+ 527              		.loc 1 110 3 is_stmt 1 view .LVU91
+ 528              		.loc 1 110 6 is_stmt 0 view .LVU92
+ 529 0034 26B1     		cbz	r6, .L30
+ 111:rover/ECAL/Src/Adafruit_BNO055.c ****   {
+ 112:rover/ECAL/Src/Adafruit_BNO055.c ****     *gyro = (calData >> 4) & 0x03;
+ 530              		.loc 1 112 5 is_stmt 1 view .LVU93
+ 531              		.loc 1 112 28 is_stmt 0 view .LVU94
+ 532 0036 9DF81730 		ldrb	r3, [sp, #23]	@ zero_extendqisi2
+ 533 003a C3F30113 		ubfx	r3, r3, #4, #2
+ 534              		.loc 1 112 11 view .LVU95
+ 535 003e 3370     		strb	r3, [r6]
+ 536              	.L30:
+ 113:rover/ECAL/Src/Adafruit_BNO055.c ****   }
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s 			page 13
+
+
+ 114:rover/ECAL/Src/Adafruit_BNO055.c ****   if (accel != NULL)
+ 537              		.loc 1 114 3 is_stmt 1 view .LVU96
+ 538              		.loc 1 114 6 is_stmt 0 view .LVU97
+ 539 0040 25B1     		cbz	r5, .L31
+ 115:rover/ECAL/Src/Adafruit_BNO055.c ****   {
+ 116:rover/ECAL/Src/Adafruit_BNO055.c ****     *accel = (calData >> 2) & 0x03;
+ 540              		.loc 1 116 5 is_stmt 1 view .LVU98
+ 541              		.loc 1 116 29 is_stmt 0 view .LVU99
+ 542 0042 9DF81730 		ldrb	r3, [sp, #23]	@ zero_extendqisi2
+ 543 0046 C3F38103 		ubfx	r3, r3, #2, #2
+ 544              		.loc 1 116 12 view .LVU100
+ 545 004a 2B70     		strb	r3, [r5]
+ 546              	.L31:
+ 117:rover/ECAL/Src/Adafruit_BNO055.c ****   }
+ 118:rover/ECAL/Src/Adafruit_BNO055.c ****   if (mag != NULL)
+ 547              		.loc 1 118 3 is_stmt 1 view .LVU101
+ 548              		.loc 1 118 6 is_stmt 0 view .LVU102
+ 549 004c 24B1     		cbz	r4, .L28
+ 119:rover/ECAL/Src/Adafruit_BNO055.c ****   {
+ 120:rover/ECAL/Src/Adafruit_BNO055.c ****     *mag = calData & 0x03;
+ 550              		.loc 1 120 5 is_stmt 1 view .LVU103
+ 551              		.loc 1 120 20 is_stmt 0 view .LVU104
+ 552 004e 9DF81730 		ldrb	r3, [sp, #23]	@ zero_extendqisi2
+ 553 0052 03F00303 		and	r3, r3, #3
+ 554              		.loc 1 120 10 view .LVU105
+ 555 0056 2370     		strb	r3, [r4]
+ 556              	.L28:
+ 121:rover/ECAL/Src/Adafruit_BNO055.c ****   }
+ 122:rover/ECAL/Src/Adafruit_BNO055.c **** }
+ 557              		.loc 1 122 1 view .LVU106
+ 558 0058 07B0     		add	sp, sp, #28
+ 559              	.LCFI16:
+ 560              		.cfi_def_cfa_offset 20
+ 561              		@ sp needed
+ 562 005a F0BD     		pop	{r4, r5, r6, r7, pc}
+ 563              	.LVL41:
+ 564              	.L35:
+ 565              		.loc 1 122 1 view .LVU107
+ 566              		.align	2
+ 567              	.L34:
+ 568 005c 00000000 		.word	_address
+ 569 0060 00000000 		.word	GlobalConfig
+ 570              		.cfi_endproc
+ 571              	.LFE142:
+ 573              		.global	__aeabi_i2d
+ 574              		.global	__aeabi_dmul
+ 575              		.section	.text.Adafruit_BNO055_GetQuat,"ax",%progbits
+ 576              		.align	1
+ 577              		.global	Adafruit_BNO055_GetQuat
+ 578              		.syntax unified
+ 579              		.thumb
+ 580              		.thumb_func
+ 582              	Adafruit_BNO055_GetQuat:
+ 583              	.LVL42:
+ 584              	.LFB143:
+ 123:rover/ECAL/Src/Adafruit_BNO055.c **** 
+ 124:rover/ECAL/Src/Adafruit_BNO055.c **** void Adafruit_BNO055_GetQuat(Quaternion *quat)
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s 			page 14
+
+
+ 125:rover/ECAL/Src/Adafruit_BNO055.c **** {
+ 585              		.loc 1 125 1 is_stmt 1 view -0
+ 586              		.cfi_startproc
+ 587              		@ args = 0, pretend = 0, frame = 8
+ 588              		@ frame_needed = 0, uses_anonymous_args = 0
+ 589              		.loc 1 125 1 is_stmt 0 view .LVU109
+ 590 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 591              	.LCFI17:
+ 592              		.cfi_def_cfa_offset 20
+ 593              		.cfi_offset 4, -20
+ 594              		.cfi_offset 5, -16
+ 595              		.cfi_offset 6, -12
+ 596              		.cfi_offset 7, -8
+ 597              		.cfi_offset 14, -4
+ 598 0002 87B0     		sub	sp, sp, #28
+ 599              	.LCFI18:
+ 600              		.cfi_def_cfa_offset 48
+ 601 0004 0746     		mov	r7, r0
+ 126:rover/ECAL/Src/Adafruit_BNO055.c ****   uint8_t buffer[8];
+ 602              		.loc 1 126 3 is_stmt 1 view .LVU110
+ 127:rover/ECAL/Src/Adafruit_BNO055.c ****   memset(buffer, 0, 8);
+ 603              		.loc 1 127 3 view .LVU111
+ 604 0006 04AB     		add	r3, sp, #16
+ 605 0008 0022     		movs	r2, #0
+ 606 000a 0492     		str	r2, [sp, #16]
+ 607 000c 0592     		str	r2, [sp, #20]
+ 128:rover/ECAL/Src/Adafruit_BNO055.c **** 
+ 129:rover/ECAL/Src/Adafruit_BNO055.c ****   int16_t xt, yt, zt, wt;
+ 608              		.loc 1 129 3 view .LVU112
+ 130:rover/ECAL/Src/Adafruit_BNO055.c ****   xt = yt = zt = wt = 0;
+ 609              		.loc 1 130 3 view .LVU113
+ 610              	.LVL43:
+ 131:rover/ECAL/Src/Adafruit_BNO055.c **** 
+ 132:rover/ECAL/Src/Adafruit_BNO055.c ****   /* Read quat data (8 bytes) */
+ 133:rover/ECAL/Src/Adafruit_BNO055.c ****   HAL_I2C_Mem_Read(GlobalConfig , _address , BNO055_QUATERNION_DATA_W_LSB_ADDR , 1 , buffer , 8 , H
+ 611              		.loc 1 133 3 view .LVU114
+ 612 000e 4FF0FF32 		mov	r2, #-1
+ 613 0012 0292     		str	r2, [sp, #8]
+ 614 0014 0822     		movs	r2, #8
+ 615 0016 0192     		str	r2, [sp, #4]
+ 616 0018 0093     		str	r3, [sp]
+ 617 001a 0123     		movs	r3, #1
+ 618 001c 2022     		movs	r2, #32
+ 619 001e 2349     		ldr	r1, .L38
+ 620 0020 0978     		ldrb	r1, [r1]	@ zero_extendqisi2
+ 621 0022 2348     		ldr	r0, .L38+4
+ 622              	.LVL44:
+ 623              		.loc 1 133 3 is_stmt 0 view .LVU115
+ 624 0024 0068     		ldr	r0, [r0]
+ 625 0026 FFF7FEFF 		bl	HAL_I2C_Mem_Read
+ 626              	.LVL45:
+ 134:rover/ECAL/Src/Adafruit_BNO055.c ****   wt = (((uint16_t)buffer[1]) << 8) | ((uint16_t)buffer[0]);
+ 627              		.loc 1 134 3 is_stmt 1 view .LVU116
+ 628              		.loc 1 134 26 is_stmt 0 view .LVU117
+ 629 002a 9DF81130 		ldrb	r3, [sp, #17]	@ zero_extendqisi2
+ 630              		.loc 1 134 37 view .LVU118
+ 631 002e 1B02     		lsls	r3, r3, #8
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s 			page 15
+
+
+ 632 0030 1BB2     		sxth	r3, r3
+ 633              		.loc 1 134 56 view .LVU119
+ 634 0032 9DF81000 		ldrb	r0, [sp, #16]	@ zero_extendqisi2
+ 635              	.LVL46:
+ 135:rover/ECAL/Src/Adafruit_BNO055.c ****   xt = (((uint16_t)buffer[3]) << 8) | ((uint16_t)buffer[2]);
+ 636              		.loc 1 135 3 is_stmt 1 view .LVU120
+ 637              		.loc 1 135 26 is_stmt 0 view .LVU121
+ 638 0036 9DF81360 		ldrb	r6, [sp, #19]	@ zero_extendqisi2
+ 639              		.loc 1 135 37 view .LVU122
+ 640 003a 3602     		lsls	r6, r6, #8
+ 641 003c 36B2     		sxth	r6, r6
+ 642              		.loc 1 135 56 view .LVU123
+ 643 003e 9DF81220 		ldrb	r2, [sp, #18]	@ zero_extendqisi2
+ 644              		.loc 1 135 6 view .LVU124
+ 645 0042 1643     		orrs	r6, r6, r2
+ 646              	.LVL47:
+ 136:rover/ECAL/Src/Adafruit_BNO055.c ****   yt = (((uint16_t)buffer[5]) << 8) | ((uint16_t)buffer[4]);
+ 647              		.loc 1 136 3 is_stmt 1 view .LVU125
+ 648              		.loc 1 136 26 is_stmt 0 view .LVU126
+ 649 0044 9DF81550 		ldrb	r5, [sp, #21]	@ zero_extendqisi2
+ 650              		.loc 1 136 37 view .LVU127
+ 651 0048 2D02     		lsls	r5, r5, #8
+ 652 004a 2DB2     		sxth	r5, r5
+ 653              		.loc 1 136 56 view .LVU128
+ 654 004c 9DF81420 		ldrb	r2, [sp, #20]	@ zero_extendqisi2
+ 655              		.loc 1 136 6 view .LVU129
+ 656 0050 1543     		orrs	r5, r5, r2
+ 657              	.LVL48:
+ 137:rover/ECAL/Src/Adafruit_BNO055.c ****   zt = (((uint16_t)buffer[7]) << 8) | ((uint16_t)buffer[6]);
+ 658              		.loc 1 137 3 is_stmt 1 view .LVU130
+ 659              		.loc 1 137 26 is_stmt 0 view .LVU131
+ 660 0052 9DF81740 		ldrb	r4, [sp, #23]	@ zero_extendqisi2
+ 661              		.loc 1 137 37 view .LVU132
+ 662 0056 2402     		lsls	r4, r4, #8
+ 663 0058 24B2     		sxth	r4, r4
+ 664              		.loc 1 137 56 view .LVU133
+ 665 005a 9DF81620 		ldrb	r2, [sp, #22]	@ zero_extendqisi2
+ 666              		.loc 1 137 6 view .LVU134
+ 667 005e 1443     		orrs	r4, r4, r2
+ 668              	.LVL49:
+ 138:rover/ECAL/Src/Adafruit_BNO055.c ****   /*!
+ 139:rover/ECAL/Src/Adafruit_BNO055.c ****    * Assign to Quaternion
+ 140:rover/ECAL/Src/Adafruit_BNO055.c ****    * See
+ 141:rover/ECAL/Src/Adafruit_BNO055.c ****    * https://cdn-shop.adafruit.com/datasheets/BST_BNO055_DS000_12.pdf
+ 142:rover/ECAL/Src/Adafruit_BNO055.c ****    * 3.6.5.5 Orientation (Quaternion)
+ 143:rover/ECAL/Src/Adafruit_BNO055.c ****    */
+ 144:rover/ECAL/Src/Adafruit_BNO055.c ****   const double scale = (1.0 / (1 << 14));
+ 669              		.loc 1 144 3 is_stmt 1 view .LVU135
+ 145:rover/ECAL/Src/Adafruit_BNO055.c ****   
+ 146:rover/ECAL/Src/Adafruit_BNO055.c ****   quat->w = scale * wt;
+ 670              		.loc 1 146 3 view .LVU136
+ 671              		.loc 1 146 19 is_stmt 0 view .LVU137
+ 672 0060 1843     		orrs	r0, r0, r3
+ 673              	.LVL50:
+ 674              		.loc 1 146 19 view .LVU138
+ 675 0062 FFF7FEFF 		bl	__aeabi_i2d
+ 676              	.LVL51:
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s 			page 16
+
+
+ 677              		.loc 1 146 19 view .LVU139
+ 678 0066 0022     		movs	r2, #0
+ 679 0068 124B     		ldr	r3, .L38+8
+ 680 006a FFF7FEFF 		bl	__aeabi_dmul
+ 681              	.LVL52:
+ 682              		.loc 1 146 11 view .LVU140
+ 683 006e C7E90001 		strd	r0, [r7]
+ 147:rover/ECAL/Src/Adafruit_BNO055.c ****   quat->x = scale * xt;
+ 684              		.loc 1 147 3 is_stmt 1 view .LVU141
+ 685              		.loc 1 147 19 is_stmt 0 view .LVU142
+ 686 0072 3046     		mov	r0, r6
+ 687 0074 FFF7FEFF 		bl	__aeabi_i2d
+ 688              	.LVL53:
+ 689 0078 0022     		movs	r2, #0
+ 690 007a 0E4B     		ldr	r3, .L38+8
+ 691 007c FFF7FEFF 		bl	__aeabi_dmul
+ 692              	.LVL54:
+ 693              		.loc 1 147 11 view .LVU143
+ 694 0080 C7E90201 		strd	r0, [r7, #8]
+ 148:rover/ECAL/Src/Adafruit_BNO055.c ****   quat->y = scale * yt;
+ 695              		.loc 1 148 3 is_stmt 1 view .LVU144
+ 696              		.loc 1 148 19 is_stmt 0 view .LVU145
+ 697 0084 2846     		mov	r0, r5
+ 698 0086 FFF7FEFF 		bl	__aeabi_i2d
+ 699              	.LVL55:
+ 700 008a 0022     		movs	r2, #0
+ 701 008c 094B     		ldr	r3, .L38+8
+ 702 008e FFF7FEFF 		bl	__aeabi_dmul
+ 703              	.LVL56:
+ 704              		.loc 1 148 11 view .LVU146
+ 705 0092 C7E90401 		strd	r0, [r7, #16]
+ 149:rover/ECAL/Src/Adafruit_BNO055.c ****   quat->z = scale * zt;
+ 706              		.loc 1 149 3 is_stmt 1 view .LVU147
+ 707              		.loc 1 149 19 is_stmt 0 view .LVU148
+ 708 0096 2046     		mov	r0, r4
+ 709 0098 FFF7FEFF 		bl	__aeabi_i2d
+ 710              	.LVL57:
+ 711 009c 0022     		movs	r2, #0
+ 712 009e 054B     		ldr	r3, .L38+8
+ 713 00a0 FFF7FEFF 		bl	__aeabi_dmul
+ 714              	.LVL58:
+ 715              		.loc 1 149 11 view .LVU149
+ 716 00a4 C7E90601 		strd	r0, [r7, #24]
+ 150:rover/ECAL/Src/Adafruit_BNO055.c ****  
+ 151:rover/ECAL/Src/Adafruit_BNO055.c **** }
+ 717              		.loc 1 151 1 view .LVU150
+ 718 00a8 07B0     		add	sp, sp, #28
+ 719              	.LCFI19:
+ 720              		.cfi_def_cfa_offset 20
+ 721              		@ sp needed
+ 722 00aa F0BD     		pop	{r4, r5, r6, r7, pc}
+ 723              	.LVL59:
+ 724              	.L39:
+ 725              		.loc 1 151 1 view .LVU151
+ 726              		.align	2
+ 727              	.L38:
+ 728 00ac 00000000 		.word	_address
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s 			page 17
+
+
+ 729 00b0 00000000 		.word	GlobalConfig
+ 730 00b4 0000103F 		.word	1058013184
+ 731              		.cfi_endproc
+ 732              	.LFE143:
+ 734              		.global	__aeabi_ddiv
+ 735              		.section	.text.Adafruit_BNO055_GetVector,"ax",%progbits
+ 736              		.align	1
+ 737              		.global	Adafruit_BNO055_GetVector
+ 738              		.syntax unified
+ 739              		.thumb
+ 740              		.thumb_func
+ 742              	Adafruit_BNO055_GetVector:
+ 743              	.LVL60:
+ 744              	.LFB144:
+ 152:rover/ECAL/Src/Adafruit_BNO055.c **** 
+ 153:rover/ECAL/Src/Adafruit_BNO055.c **** void Adafruit_BNO055_GetVector(adafruit_vector_type_t vector_type , double* xyz)
+ 154:rover/ECAL/Src/Adafruit_BNO055.c **** {
+ 745              		.loc 1 154 1 is_stmt 1 view -0
+ 746              		.cfi_startproc
+ 747              		@ args = 0, pretend = 0, frame = 8
+ 748              		@ frame_needed = 0, uses_anonymous_args = 0
+ 749              		.loc 1 154 1 is_stmt 0 view .LVU153
+ 750 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 751              	.LCFI20:
+ 752              		.cfi_def_cfa_offset 20
+ 753              		.cfi_offset 4, -20
+ 754              		.cfi_offset 5, -16
+ 755              		.cfi_offset 6, -12
+ 756              		.cfi_offset 7, -8
+ 757              		.cfi_offset 14, -4
+ 758 0002 87B0     		sub	sp, sp, #28
+ 759              	.LCFI21:
+ 760              		.cfi_def_cfa_offset 48
+ 761 0004 0446     		mov	r4, r0
+ 762 0006 0D46     		mov	r5, r1
+ 155:rover/ECAL/Src/Adafruit_BNO055.c ****  
+ 156:rover/ECAL/Src/Adafruit_BNO055.c ****   uint8_t buffer[6];
+ 763              		.loc 1 156 3 is_stmt 1 view .LVU154
+ 157:rover/ECAL/Src/Adafruit_BNO055.c ****   memset(buffer, 0, 6);
+ 764              		.loc 1 157 3 view .LVU155
+ 765 0008 04AB     		add	r3, sp, #16
+ 766 000a 0022     		movs	r2, #0
+ 767 000c 0492     		str	r2, [sp, #16]
+ 768 000e ADF81420 		strh	r2, [sp, #20]	@ movhi
+ 158:rover/ECAL/Src/Adafruit_BNO055.c **** 
+ 159:rover/ECAL/Src/Adafruit_BNO055.c ****   int16_t x, y, z;
+ 769              		.loc 1 159 3 view .LVU156
+ 160:rover/ECAL/Src/Adafruit_BNO055.c ****   x = y = z = 0;
+ 770              		.loc 1 160 3 view .LVU157
+ 771              	.LVL61:
+ 161:rover/ECAL/Src/Adafruit_BNO055.c **** 
+ 162:rover/ECAL/Src/Adafruit_BNO055.c ****   /* Read vector data (6 bytes) */
+ 163:rover/ECAL/Src/Adafruit_BNO055.c ****   HAL_I2C_Mem_Read(GlobalConfig , _address , (adafruit_bno055_reg_t)vector_type , 1 , buffer , 6 , 
+ 772              		.loc 1 163 3 view .LVU158
+ 773 0012 4FF0FF32 		mov	r2, #-1
+ 774 0016 0292     		str	r2, [sp, #8]
+ 775 0018 0622     		movs	r2, #6
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s 			page 18
+
+
+ 776 001a 0192     		str	r2, [sp, #4]
+ 777 001c 0093     		str	r3, [sp]
+ 778 001e 0123     		movs	r3, #1
+ 779 0020 0246     		mov	r2, r0
+ 780 0022 6C49     		ldr	r1, .L51
+ 781              	.LVL62:
+ 782              		.loc 1 163 3 is_stmt 0 view .LVU159
+ 783 0024 0978     		ldrb	r1, [r1]	@ zero_extendqisi2
+ 784 0026 6C48     		ldr	r0, .L51+4
+ 785              	.LVL63:
+ 786              		.loc 1 163 3 view .LVU160
+ 787 0028 0068     		ldr	r0, [r0]
+ 788 002a FFF7FEFF 		bl	HAL_I2C_Mem_Read
+ 789              	.LVL64:
+ 164:rover/ECAL/Src/Adafruit_BNO055.c **** 
+ 165:rover/ECAL/Src/Adafruit_BNO055.c ****   x = ((int16_t)buffer[0]) | (((int16_t)buffer[1]) << 8);
+ 790              		.loc 1 165 3 is_stmt 1 view .LVU161
+ 791              		.loc 1 165 23 is_stmt 0 view .LVU162
+ 792 002e 9DF81000 		ldrb	r0, [sp, #16]	@ zero_extendqisi2
+ 793              		.loc 1 165 47 view .LVU163
+ 794 0032 9DF81130 		ldrb	r3, [sp, #17]	@ zero_extendqisi2
+ 795              		.loc 1 165 28 view .LVU164
+ 796 0036 1B02     		lsls	r3, r3, #8
+ 797 0038 1BB2     		sxth	r3, r3
+ 798              		.loc 1 165 5 view .LVU165
+ 799 003a 1843     		orrs	r0, r0, r3
+ 800              	.LVL65:
+ 166:rover/ECAL/Src/Adafruit_BNO055.c ****   y = ((int16_t)buffer[2]) | (((int16_t)buffer[3]) << 8);
+ 801              		.loc 1 166 3 is_stmt 1 view .LVU166
+ 802              		.loc 1 166 23 is_stmt 0 view .LVU167
+ 803 003c 9DF81260 		ldrb	r6, [sp, #18]	@ zero_extendqisi2
+ 804              		.loc 1 166 47 view .LVU168
+ 805 0040 9DF81330 		ldrb	r3, [sp, #19]	@ zero_extendqisi2
+ 806              		.loc 1 166 28 view .LVU169
+ 807 0044 1B02     		lsls	r3, r3, #8
+ 808 0046 1BB2     		sxth	r3, r3
+ 809              		.loc 1 166 5 view .LVU170
+ 810 0048 1E43     		orrs	r6, r6, r3
+ 811              	.LVL66:
+ 167:rover/ECAL/Src/Adafruit_BNO055.c ****   z = ((int16_t)buffer[4]) | (((int16_t)buffer[5]) << 8);
+ 812              		.loc 1 167 3 is_stmt 1 view .LVU171
+ 813              		.loc 1 167 23 is_stmt 0 view .LVU172
+ 814 004a 9DF81420 		ldrb	r2, [sp, #20]	@ zero_extendqisi2
+ 815              		.loc 1 167 47 view .LVU173
+ 816 004e 9DF81530 		ldrb	r3, [sp, #21]	@ zero_extendqisi2
+ 817              		.loc 1 167 28 view .LVU174
+ 818 0052 1B02     		lsls	r3, r3, #8
+ 819 0054 1BB2     		sxth	r3, r3
+ 820              		.loc 1 167 5 view .LVU175
+ 821 0056 42EA0307 		orr	r7, r2, r3
+ 822              	.LVL67:
+ 168:rover/ECAL/Src/Adafruit_BNO055.c **** 
+ 169:rover/ECAL/Src/Adafruit_BNO055.c ****   /*!
+ 170:rover/ECAL/Src/Adafruit_BNO055.c ****    * Convert the value to an appropriate range (section 3.6.4)
+ 171:rover/ECAL/Src/Adafruit_BNO055.c ****    * and assign the value to the Vector type
+ 172:rover/ECAL/Src/Adafruit_BNO055.c ****    */
+ 173:rover/ECAL/Src/Adafruit_BNO055.c ****   switch (vector_type)
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s 			page 19
+
+
+ 823              		.loc 1 173 3 is_stmt 1 view .LVU176
+ 824 005a 083C     		subs	r4, r4, #8
+ 825              	.LVL68:
+ 826              		.loc 1 173 3 is_stmt 0 view .LVU177
+ 827 005c 262C     		cmp	r4, #38
+ 828 005e 2FD8     		bhi	.L40
+ 829 0060 DFE804F0 		tbb	[pc, r4]
+ 830              	.L43:
+ 831 0064 66       		.byte	(.L48-.L43)/2
+ 832 0065 2E       		.byte	(.L40-.L43)/2
+ 833 0066 2E       		.byte	(.L40-.L43)/2
+ 834 0067 2E       		.byte	(.L40-.L43)/2
+ 835 0068 2E       		.byte	(.L40-.L43)/2
+ 836 0069 2E       		.byte	(.L40-.L43)/2
+ 837 006a 14       		.byte	(.L47-.L43)/2
+ 838 006b 2E       		.byte	(.L40-.L43)/2
+ 839 006c 2E       		.byte	(.L40-.L43)/2
+ 840 006d 2E       		.byte	(.L40-.L43)/2
+ 841 006e 2E       		.byte	(.L40-.L43)/2
+ 842 006f 2E       		.byte	(.L40-.L43)/2
+ 843 0070 30       		.byte	(.L46-.L43)/2
+ 844 0071 2E       		.byte	(.L40-.L43)/2
+ 845 0072 2E       		.byte	(.L40-.L43)/2
+ 846 0073 2E       		.byte	(.L40-.L43)/2
+ 847 0074 2E       		.byte	(.L40-.L43)/2
+ 848 0075 2E       		.byte	(.L40-.L43)/2
+ 849 0076 4B       		.byte	(.L45-.L43)/2
+ 850 0077 2E       		.byte	(.L40-.L43)/2
+ 851 0078 2E       		.byte	(.L40-.L43)/2
+ 852 0079 2E       		.byte	(.L40-.L43)/2
+ 853 007a 2E       		.byte	(.L40-.L43)/2
+ 854 007b 2E       		.byte	(.L40-.L43)/2
+ 855 007c 2E       		.byte	(.L40-.L43)/2
+ 856 007d 2E       		.byte	(.L40-.L43)/2
+ 857 007e 2E       		.byte	(.L40-.L43)/2
+ 858 007f 2E       		.byte	(.L40-.L43)/2
+ 859 0080 2E       		.byte	(.L40-.L43)/2
+ 860 0081 2E       		.byte	(.L40-.L43)/2
+ 861 0082 2E       		.byte	(.L40-.L43)/2
+ 862 0083 2E       		.byte	(.L40-.L43)/2
+ 863 0084 81       		.byte	(.L44-.L43)/2
+ 864 0085 2E       		.byte	(.L40-.L43)/2
+ 865 0086 2E       		.byte	(.L40-.L43)/2
+ 866 0087 2E       		.byte	(.L40-.L43)/2
+ 867 0088 2E       		.byte	(.L40-.L43)/2
+ 868 0089 2E       		.byte	(.L40-.L43)/2
+ 869 008a 9C       		.byte	(.L42-.L43)/2
+ 870 008b 00       		.p2align 1
+ 871              	.L47:
+ 174:rover/ECAL/Src/Adafruit_BNO055.c ****   {
+ 175:rover/ECAL/Src/Adafruit_BNO055.c ****   case VECTOR_MAGNETOMETER:
+ 176:rover/ECAL/Src/Adafruit_BNO055.c ****     /* 1uT = 16 LSB */
+ 177:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[0] = ((double)x) / 16.0;
+ 872              		.loc 1 177 5 is_stmt 1 view .LVU178
+ 873              		.loc 1 177 15 is_stmt 0 view .LVU179
+ 874 008c FFF7FEFF 		bl	__aeabi_i2d
+ 875              	.LVL69:
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s 			page 20
+
+
+ 876              		.loc 1 177 26 view .LVU180
+ 877 0090 0022     		movs	r2, #0
+ 878 0092 524B     		ldr	r3, .L51+8
+ 879 0094 FFF7FEFF 		bl	__aeabi_dmul
+ 880              	.LVL70:
+ 881              		.loc 1 177 12 view .LVU181
+ 882 0098 C5E90001 		strd	r0, [r5]
+ 178:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[1] = ((double)y) / 16.0;
+ 883              		.loc 1 178 5 is_stmt 1 view .LVU182
+ 884              		.loc 1 178 15 is_stmt 0 view .LVU183
+ 885 009c 3046     		mov	r0, r6
+ 886 009e FFF7FEFF 		bl	__aeabi_i2d
+ 887              	.LVL71:
+ 888              		.loc 1 178 26 view .LVU184
+ 889 00a2 0022     		movs	r2, #0
+ 890 00a4 4D4B     		ldr	r3, .L51+8
+ 891 00a6 FFF7FEFF 		bl	__aeabi_dmul
+ 892              	.LVL72:
+ 893              		.loc 1 178 12 view .LVU185
+ 894 00aa C5E90201 		strd	r0, [r5, #8]
+ 179:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[2] = ((double)z) / 16.0;
+ 895              		.loc 1 179 5 is_stmt 1 view .LVU186
+ 896              		.loc 1 179 15 is_stmt 0 view .LVU187
+ 897 00ae 3846     		mov	r0, r7
+ 898 00b0 FFF7FEFF 		bl	__aeabi_i2d
+ 899              	.LVL73:
+ 900              		.loc 1 179 26 view .LVU188
+ 901 00b4 0022     		movs	r2, #0
+ 902 00b6 494B     		ldr	r3, .L51+8
+ 903 00b8 FFF7FEFF 		bl	__aeabi_dmul
+ 904              	.LVL74:
+ 905              		.loc 1 179 12 view .LVU189
+ 906 00bc C5E90401 		strd	r0, [r5, #16]
+ 180:rover/ECAL/Src/Adafruit_BNO055.c ****     break;
+ 907              		.loc 1 180 5 is_stmt 1 view .LVU190
+ 908              	.L40:
+ 181:rover/ECAL/Src/Adafruit_BNO055.c ****   case VECTOR_GYROSCOPE:
+ 182:rover/ECAL/Src/Adafruit_BNO055.c ****     /* 1dps = 16 LSB */
+ 183:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[0] = ((double)x) / 16.0;
+ 184:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[1] = ((double)y) / 16.0;
+ 185:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[2] = ((double)z) / 16.0;
+ 186:rover/ECAL/Src/Adafruit_BNO055.c ****     break;
+ 187:rover/ECAL/Src/Adafruit_BNO055.c ****   case VECTOR_EULER:
+ 188:rover/ECAL/Src/Adafruit_BNO055.c ****     /* 1 degree = 16 LSB */
+ 189:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[0] = ((double)x) / 16.0;
+ 190:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[1] = ((double)y) / 16.0;
+ 191:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[2] = ((double)z) / 16.0;
+ 192:rover/ECAL/Src/Adafruit_BNO055.c ****     break;
+ 193:rover/ECAL/Src/Adafruit_BNO055.c ****   case VECTOR_ACCELEROMETER:
+ 194:rover/ECAL/Src/Adafruit_BNO055.c ****     /* 1m/s^2 = 100 LSB */
+ 195:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[0] = ((double)x) / 100.0;
+ 196:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[1] = ((double)y) / 100.0;
+ 197:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[2] = ((double)z) / 100.0;
+ 198:rover/ECAL/Src/Adafruit_BNO055.c ****     break;
+ 199:rover/ECAL/Src/Adafruit_BNO055.c ****   case VECTOR_LINEARACCEL:
+ 200:rover/ECAL/Src/Adafruit_BNO055.c ****     /* 1m/s^2 = 100 LSB */
+ 201:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[0] = ((double)x) / 100.0;
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s 			page 21
+
+
+ 202:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[1] = ((double)y) / 100.0;
+ 203:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[2] = ((double)z) / 100.0;
+ 204:rover/ECAL/Src/Adafruit_BNO055.c ****     break;
+ 205:rover/ECAL/Src/Adafruit_BNO055.c ****   case VECTOR_GRAVITY:
+ 206:rover/ECAL/Src/Adafruit_BNO055.c ****     /* 1m/s^2 = 100 LSB */
+ 207:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[0] = ((double)x) / 100.0;
+ 208:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[1] = ((double)y) / 100.0;
+ 209:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[2] = ((double)z) / 100.0;
+ 210:rover/ECAL/Src/Adafruit_BNO055.c ****     break;
+ 211:rover/ECAL/Src/Adafruit_BNO055.c ****   }
+ 212:rover/ECAL/Src/Adafruit_BNO055.c **** 
+ 213:rover/ECAL/Src/Adafruit_BNO055.c **** }
+ 909              		.loc 1 213 1 is_stmt 0 view .LVU191
+ 910 00c0 07B0     		add	sp, sp, #28
+ 911              	.LCFI22:
+ 912              		.cfi_remember_state
+ 913              		.cfi_def_cfa_offset 20
+ 914              		@ sp needed
+ 915 00c2 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 916              	.LVL75:
+ 917              	.L46:
+ 918              	.LCFI23:
+ 919              		.cfi_restore_state
+ 183:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[1] = ((double)y) / 16.0;
+ 920              		.loc 1 183 5 is_stmt 1 view .LVU192
+ 183:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[1] = ((double)y) / 16.0;
+ 921              		.loc 1 183 15 is_stmt 0 view .LVU193
+ 922 00c4 FFF7FEFF 		bl	__aeabi_i2d
+ 923              	.LVL76:
+ 183:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[1] = ((double)y) / 16.0;
+ 924              		.loc 1 183 26 view .LVU194
+ 925 00c8 0022     		movs	r2, #0
+ 926 00ca 444B     		ldr	r3, .L51+8
+ 927 00cc FFF7FEFF 		bl	__aeabi_dmul
+ 928              	.LVL77:
+ 183:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[1] = ((double)y) / 16.0;
+ 929              		.loc 1 183 12 view .LVU195
+ 930 00d0 C5E90001 		strd	r0, [r5]
+ 184:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[2] = ((double)z) / 16.0;
+ 931              		.loc 1 184 5 is_stmt 1 view .LVU196
+ 184:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[2] = ((double)z) / 16.0;
+ 932              		.loc 1 184 15 is_stmt 0 view .LVU197
+ 933 00d4 3046     		mov	r0, r6
+ 934 00d6 FFF7FEFF 		bl	__aeabi_i2d
+ 935              	.LVL78:
+ 184:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[2] = ((double)z) / 16.0;
+ 936              		.loc 1 184 26 view .LVU198
+ 937 00da 0022     		movs	r2, #0
+ 938 00dc 3F4B     		ldr	r3, .L51+8
+ 939 00de FFF7FEFF 		bl	__aeabi_dmul
+ 940              	.LVL79:
+ 184:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[2] = ((double)z) / 16.0;
+ 941              		.loc 1 184 12 view .LVU199
+ 942 00e2 C5E90201 		strd	r0, [r5, #8]
+ 185:rover/ECAL/Src/Adafruit_BNO055.c ****     break;
+ 943              		.loc 1 185 5 is_stmt 1 view .LVU200
+ 185:rover/ECAL/Src/Adafruit_BNO055.c ****     break;
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s 			page 22
+
+
+ 944              		.loc 1 185 15 is_stmt 0 view .LVU201
+ 945 00e6 3846     		mov	r0, r7
+ 946 00e8 FFF7FEFF 		bl	__aeabi_i2d
+ 947              	.LVL80:
+ 185:rover/ECAL/Src/Adafruit_BNO055.c ****     break;
+ 948              		.loc 1 185 26 view .LVU202
+ 949 00ec 0022     		movs	r2, #0
+ 950 00ee 3B4B     		ldr	r3, .L51+8
+ 951 00f0 FFF7FEFF 		bl	__aeabi_dmul
+ 952              	.LVL81:
+ 185:rover/ECAL/Src/Adafruit_BNO055.c ****     break;
+ 953              		.loc 1 185 12 view .LVU203
+ 954 00f4 C5E90401 		strd	r0, [r5, #16]
+ 186:rover/ECAL/Src/Adafruit_BNO055.c ****   case VECTOR_EULER:
+ 955              		.loc 1 186 5 is_stmt 1 view .LVU204
+ 956 00f8 E2E7     		b	.L40
+ 957              	.LVL82:
+ 958              	.L45:
+ 189:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[1] = ((double)y) / 16.0;
+ 959              		.loc 1 189 5 view .LVU205
+ 189:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[1] = ((double)y) / 16.0;
+ 960              		.loc 1 189 15 is_stmt 0 view .LVU206
+ 961 00fa FFF7FEFF 		bl	__aeabi_i2d
+ 962              	.LVL83:
+ 189:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[1] = ((double)y) / 16.0;
+ 963              		.loc 1 189 26 view .LVU207
+ 964 00fe 0022     		movs	r2, #0
+ 965 0100 364B     		ldr	r3, .L51+8
+ 966 0102 FFF7FEFF 		bl	__aeabi_dmul
+ 967              	.LVL84:
+ 189:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[1] = ((double)y) / 16.0;
+ 968              		.loc 1 189 12 view .LVU208
+ 969 0106 C5E90001 		strd	r0, [r5]
+ 190:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[2] = ((double)z) / 16.0;
+ 970              		.loc 1 190 5 is_stmt 1 view .LVU209
+ 190:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[2] = ((double)z) / 16.0;
+ 971              		.loc 1 190 15 is_stmt 0 view .LVU210
+ 972 010a 3046     		mov	r0, r6
+ 973 010c FFF7FEFF 		bl	__aeabi_i2d
+ 974              	.LVL85:
+ 190:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[2] = ((double)z) / 16.0;
+ 975              		.loc 1 190 26 view .LVU211
+ 976 0110 0022     		movs	r2, #0
+ 977 0112 324B     		ldr	r3, .L51+8
+ 978 0114 FFF7FEFF 		bl	__aeabi_dmul
+ 979              	.LVL86:
+ 190:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[2] = ((double)z) / 16.0;
+ 980              		.loc 1 190 12 view .LVU212
+ 981 0118 C5E90201 		strd	r0, [r5, #8]
+ 191:rover/ECAL/Src/Adafruit_BNO055.c ****     break;
+ 982              		.loc 1 191 5 is_stmt 1 view .LVU213
+ 191:rover/ECAL/Src/Adafruit_BNO055.c ****     break;
+ 983              		.loc 1 191 15 is_stmt 0 view .LVU214
+ 984 011c 3846     		mov	r0, r7
+ 985 011e FFF7FEFF 		bl	__aeabi_i2d
+ 986              	.LVL87:
+ 191:rover/ECAL/Src/Adafruit_BNO055.c ****     break;
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s 			page 23
+
+
+ 987              		.loc 1 191 26 view .LVU215
+ 988 0122 0022     		movs	r2, #0
+ 989 0124 2D4B     		ldr	r3, .L51+8
+ 990 0126 FFF7FEFF 		bl	__aeabi_dmul
+ 991              	.LVL88:
+ 191:rover/ECAL/Src/Adafruit_BNO055.c ****     break;
+ 992              		.loc 1 191 12 view .LVU216
+ 993 012a C5E90401 		strd	r0, [r5, #16]
+ 192:rover/ECAL/Src/Adafruit_BNO055.c ****   case VECTOR_ACCELEROMETER:
+ 994              		.loc 1 192 5 is_stmt 1 view .LVU217
+ 995 012e C7E7     		b	.L40
+ 996              	.LVL89:
+ 997              	.L48:
+ 195:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[1] = ((double)y) / 100.0;
+ 998              		.loc 1 195 5 view .LVU218
+ 195:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[1] = ((double)y) / 100.0;
+ 999              		.loc 1 195 15 is_stmt 0 view .LVU219
+ 1000 0130 FFF7FEFF 		bl	__aeabi_i2d
+ 1001              	.LVL90:
+ 195:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[1] = ((double)y) / 100.0;
+ 1002              		.loc 1 195 26 view .LVU220
+ 1003 0134 0022     		movs	r2, #0
+ 1004 0136 2A4B     		ldr	r3, .L51+12
+ 1005 0138 FFF7FEFF 		bl	__aeabi_ddiv
+ 1006              	.LVL91:
+ 195:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[1] = ((double)y) / 100.0;
+ 1007              		.loc 1 195 12 view .LVU221
+ 1008 013c C5E90001 		strd	r0, [r5]
+ 196:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[2] = ((double)z) / 100.0;
+ 1009              		.loc 1 196 5 is_stmt 1 view .LVU222
+ 196:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[2] = ((double)z) / 100.0;
+ 1010              		.loc 1 196 15 is_stmt 0 view .LVU223
+ 1011 0140 3046     		mov	r0, r6
+ 1012 0142 FFF7FEFF 		bl	__aeabi_i2d
+ 1013              	.LVL92:
+ 196:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[2] = ((double)z) / 100.0;
+ 1014              		.loc 1 196 26 view .LVU224
+ 1015 0146 0022     		movs	r2, #0
+ 1016 0148 254B     		ldr	r3, .L51+12
+ 1017 014a FFF7FEFF 		bl	__aeabi_ddiv
+ 1018              	.LVL93:
+ 196:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[2] = ((double)z) / 100.0;
+ 1019              		.loc 1 196 12 view .LVU225
+ 1020 014e C5E90201 		strd	r0, [r5, #8]
+ 197:rover/ECAL/Src/Adafruit_BNO055.c ****     break;
+ 1021              		.loc 1 197 5 is_stmt 1 view .LVU226
+ 197:rover/ECAL/Src/Adafruit_BNO055.c ****     break;
+ 1022              		.loc 1 197 15 is_stmt 0 view .LVU227
+ 1023 0152 3846     		mov	r0, r7
+ 1024 0154 FFF7FEFF 		bl	__aeabi_i2d
+ 1025              	.LVL94:
+ 197:rover/ECAL/Src/Adafruit_BNO055.c ****     break;
+ 1026              		.loc 1 197 26 view .LVU228
+ 1027 0158 0022     		movs	r2, #0
+ 1028 015a 214B     		ldr	r3, .L51+12
+ 1029 015c FFF7FEFF 		bl	__aeabi_ddiv
+ 1030              	.LVL95:
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s 			page 24
+
+
+ 197:rover/ECAL/Src/Adafruit_BNO055.c ****     break;
+ 1031              		.loc 1 197 12 view .LVU229
+ 1032 0160 C5E90401 		strd	r0, [r5, #16]
+ 198:rover/ECAL/Src/Adafruit_BNO055.c ****   case VECTOR_LINEARACCEL:
+ 1033              		.loc 1 198 5 is_stmt 1 view .LVU230
+ 1034 0164 ACE7     		b	.L40
+ 1035              	.LVL96:
+ 1036              	.L44:
+ 201:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[1] = ((double)y) / 100.0;
+ 1037              		.loc 1 201 5 view .LVU231
+ 201:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[1] = ((double)y) / 100.0;
+ 1038              		.loc 1 201 15 is_stmt 0 view .LVU232
+ 1039 0166 FFF7FEFF 		bl	__aeabi_i2d
+ 1040              	.LVL97:
+ 201:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[1] = ((double)y) / 100.0;
+ 1041              		.loc 1 201 26 view .LVU233
+ 1042 016a 0022     		movs	r2, #0
+ 1043 016c 1C4B     		ldr	r3, .L51+12
+ 1044 016e FFF7FEFF 		bl	__aeabi_ddiv
+ 1045              	.LVL98:
+ 201:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[1] = ((double)y) / 100.0;
+ 1046              		.loc 1 201 12 view .LVU234
+ 1047 0172 C5E90001 		strd	r0, [r5]
+ 202:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[2] = ((double)z) / 100.0;
+ 1048              		.loc 1 202 5 is_stmt 1 view .LVU235
+ 202:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[2] = ((double)z) / 100.0;
+ 1049              		.loc 1 202 15 is_stmt 0 view .LVU236
+ 1050 0176 3046     		mov	r0, r6
+ 1051 0178 FFF7FEFF 		bl	__aeabi_i2d
+ 1052              	.LVL99:
+ 202:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[2] = ((double)z) / 100.0;
+ 1053              		.loc 1 202 26 view .LVU237
+ 1054 017c 0022     		movs	r2, #0
+ 1055 017e 184B     		ldr	r3, .L51+12
+ 1056 0180 FFF7FEFF 		bl	__aeabi_ddiv
+ 1057              	.LVL100:
+ 202:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[2] = ((double)z) / 100.0;
+ 1058              		.loc 1 202 12 view .LVU238
+ 1059 0184 C5E90201 		strd	r0, [r5, #8]
+ 203:rover/ECAL/Src/Adafruit_BNO055.c ****     break;
+ 1060              		.loc 1 203 5 is_stmt 1 view .LVU239
+ 203:rover/ECAL/Src/Adafruit_BNO055.c ****     break;
+ 1061              		.loc 1 203 15 is_stmt 0 view .LVU240
+ 1062 0188 3846     		mov	r0, r7
+ 1063 018a FFF7FEFF 		bl	__aeabi_i2d
+ 1064              	.LVL101:
+ 203:rover/ECAL/Src/Adafruit_BNO055.c ****     break;
+ 1065              		.loc 1 203 26 view .LVU241
+ 1066 018e 0022     		movs	r2, #0
+ 1067 0190 134B     		ldr	r3, .L51+12
+ 1068 0192 FFF7FEFF 		bl	__aeabi_ddiv
+ 1069              	.LVL102:
+ 203:rover/ECAL/Src/Adafruit_BNO055.c ****     break;
+ 1070              		.loc 1 203 12 view .LVU242
+ 1071 0196 C5E90401 		strd	r0, [r5, #16]
+ 204:rover/ECAL/Src/Adafruit_BNO055.c ****   case VECTOR_GRAVITY:
+ 1072              		.loc 1 204 5 is_stmt 1 view .LVU243
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s 			page 25
+
+
+ 1073 019a 91E7     		b	.L40
+ 1074              	.LVL103:
+ 1075              	.L42:
+ 207:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[1] = ((double)y) / 100.0;
+ 1076              		.loc 1 207 5 view .LVU244
+ 207:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[1] = ((double)y) / 100.0;
+ 1077              		.loc 1 207 15 is_stmt 0 view .LVU245
+ 1078 019c FFF7FEFF 		bl	__aeabi_i2d
+ 1079              	.LVL104:
+ 207:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[1] = ((double)y) / 100.0;
+ 1080              		.loc 1 207 26 view .LVU246
+ 1081 01a0 0022     		movs	r2, #0
+ 1082 01a2 0F4B     		ldr	r3, .L51+12
+ 1083 01a4 FFF7FEFF 		bl	__aeabi_ddiv
+ 1084              	.LVL105:
+ 207:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[1] = ((double)y) / 100.0;
+ 1085              		.loc 1 207 12 view .LVU247
+ 1086 01a8 C5E90001 		strd	r0, [r5]
+ 208:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[2] = ((double)z) / 100.0;
+ 1087              		.loc 1 208 5 is_stmt 1 view .LVU248
+ 208:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[2] = ((double)z) / 100.0;
+ 1088              		.loc 1 208 15 is_stmt 0 view .LVU249
+ 1089 01ac 3046     		mov	r0, r6
+ 1090 01ae FFF7FEFF 		bl	__aeabi_i2d
+ 1091              	.LVL106:
+ 208:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[2] = ((double)z) / 100.0;
+ 1092              		.loc 1 208 26 view .LVU250
+ 1093 01b2 0022     		movs	r2, #0
+ 1094 01b4 0A4B     		ldr	r3, .L51+12
+ 1095 01b6 FFF7FEFF 		bl	__aeabi_ddiv
+ 1096              	.LVL107:
+ 208:rover/ECAL/Src/Adafruit_BNO055.c ****     xyz[2] = ((double)z) / 100.0;
+ 1097              		.loc 1 208 12 view .LVU251
+ 1098 01ba C5E90201 		strd	r0, [r5, #8]
+ 209:rover/ECAL/Src/Adafruit_BNO055.c ****     break;
+ 1099              		.loc 1 209 5 is_stmt 1 view .LVU252
+ 209:rover/ECAL/Src/Adafruit_BNO055.c ****     break;
+ 1100              		.loc 1 209 15 is_stmt 0 view .LVU253
+ 1101 01be 3846     		mov	r0, r7
+ 1102 01c0 FFF7FEFF 		bl	__aeabi_i2d
+ 1103              	.LVL108:
+ 209:rover/ECAL/Src/Adafruit_BNO055.c ****     break;
+ 1104              		.loc 1 209 26 view .LVU254
+ 1105 01c4 0022     		movs	r2, #0
+ 1106 01c6 064B     		ldr	r3, .L51+12
+ 1107 01c8 FFF7FEFF 		bl	__aeabi_ddiv
+ 1108              	.LVL109:
+ 209:rover/ECAL/Src/Adafruit_BNO055.c ****     break;
+ 1109              		.loc 1 209 12 view .LVU255
+ 1110 01cc C5E90401 		strd	r0, [r5, #16]
+ 210:rover/ECAL/Src/Adafruit_BNO055.c ****   }
+ 1111              		.loc 1 210 5 is_stmt 1 view .LVU256
+ 1112              		.loc 1 213 1 is_stmt 0 view .LVU257
+ 1113 01d0 76E7     		b	.L40
+ 1114              	.L52:
+ 1115 01d2 00BF     		.align	2
+ 1116              	.L51:
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s 			page 26
+
+
+ 1117 01d4 00000000 		.word	_address
+ 1118 01d8 00000000 		.word	GlobalConfig
+ 1119 01dc 0000B03F 		.word	1068498944
+ 1120 01e0 00005940 		.word	1079574528
+ 1121              		.cfi_endproc
+ 1122              	.LFE144:
+ 1124              		.global	__aeabi_f2d
+ 1125              		.global	__aeabi_d2f
+ 1126              		.section	.text.Adafruit_BNO055_UpdateEuler,"ax",%progbits
+ 1127              		.align	1
+ 1128              		.global	Adafruit_BNO055_UpdateEuler
+ 1129              		.syntax unified
+ 1130              		.thumb
+ 1131              		.thumb_func
+ 1133              	Adafruit_BNO055_UpdateEuler:
+ 1134              	.LVL110:
+ 1135              	.LFB145:
+ 214:rover/ECAL/Src/Adafruit_BNO055.c **** void Adafruit_BNO055_UpdateEuler(float qw, float qx, float qy, float qz , float Angels[])
+ 215:rover/ECAL/Src/Adafruit_BNO055.c **** {
+ 1136              		.loc 1 215 1 is_stmt 1 view -0
+ 1137              		.cfi_startproc
+ 1138              		@ args = 0, pretend = 0, frame = 0
+ 1139              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1140              		.loc 1 215 1 is_stmt 0 view .LVU259
+ 1141 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 1142              	.LCFI24:
+ 1143              		.cfi_def_cfa_offset 24
+ 1144              		.cfi_offset 4, -24
+ 1145              		.cfi_offset 5, -20
+ 1146              		.cfi_offset 6, -16
+ 1147              		.cfi_offset 7, -12
+ 1148              		.cfi_offset 8, -8
+ 1149              		.cfi_offset 14, -4
+ 1150 0004 2DED048B 		vpush.64	{d8, d9}
+ 1151              	.LCFI25:
+ 1152              		.cfi_def_cfa_offset 40
+ 1153              		.cfi_offset 80, -40
+ 1154              		.cfi_offset 81, -36
+ 1155              		.cfi_offset 82, -32
+ 1156              		.cfi_offset 83, -28
+ 1157 0008 0546     		mov	r5, r0
+ 216:rover/ECAL/Src/Adafruit_BNO055.c ****     // Define output variables from updated quaternion---these are Tait-Bryan angles, commonly used
+ 217:rover/ECAL/Src/Adafruit_BNO055.c ****     // In this coordinate system, the positive z-axis is down toward Earth.
+ 218:rover/ECAL/Src/Adafruit_BNO055.c ****     // Yaw is the angle between Sensor x-axis and Earth magnetic North (or true North if corrected 
+ 219:rover/ECAL/Src/Adafruit_BNO055.c ****     // Pitch is angle between sensor x-axis and Earth ground plane, toward the Earth is positive, u
+ 220:rover/ECAL/Src/Adafruit_BNO055.c ****     // Roll is angle between sensor y-axis and Earth ground plane, y-axis up is positive roll.
+ 221:rover/ECAL/Src/Adafruit_BNO055.c ****     // These arise from the definition of the homogeneous rotation matrix constructed from quaterni
+ 222:rover/ECAL/Src/Adafruit_BNO055.c ****     // Tait-Bryan angles as well as Euler angles are non-commutative; that is, the get the correct 
+ 223:rover/ECAL/Src/Adafruit_BNO055.c ****     // applied in the correct order which for this configuration is yaw, pitch, and then roll.
+ 224:rover/ECAL/Src/Adafruit_BNO055.c ****     // For more see http://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles wh
+ 225:rover/ECAL/Src/Adafruit_BNO055.c ****     float a12, a22, a31, a32, a33;  // rotation matrix coefficients for Euler angles and gravity co
+ 1158              		.loc 1 225 5 is_stmt 1 view .LVU260
+ 226:rover/ECAL/Src/Adafruit_BNO055.c ****     a12 = 2.0f * (qx * qy + qw * qz);
+ 1159              		.loc 1 226 5 view .LVU261
+ 1160              		.loc 1 226 22 is_stmt 0 view .LVU262
+ 1161 000a 60EE818A 		vmul.f32	s17, s1, s2
+ 1162              		.loc 1 226 32 view .LVU263
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s 			page 27
+
+
+ 1163 000e 60EE217A 		vmul.f32	s15, s0, s3
+ 1164              		.loc 1 226 27 view .LVU264
+ 1165 0012 78EEA78A 		vadd.f32	s17, s17, s15
+ 1166              		.loc 1 226 9 view .LVU265
+ 1167 0016 78EEA88A 		vadd.f32	s17, s17, s17
+ 1168              	.LVL111:
+ 227:rover/ECAL/Src/Adafruit_BNO055.c ****     a22 = qw * qw + qx * qx - qy * qy - qz * qz;
+ 1169              		.loc 1 227 5 is_stmt 1 view .LVU266
+ 1170              		.loc 1 227 14 is_stmt 0 view .LVU267
+ 1171 001a 20EE007A 		vmul.f32	s14, s0, s0
+ 1172              		.loc 1 227 24 view .LVU268
+ 1173 001e 20EEA05A 		vmul.f32	s10, s1, s1
+ 1174              		.loc 1 227 19 view .LVU269
+ 1175 0022 37EE059A 		vadd.f32	s18, s14, s10
+ 1176              		.loc 1 227 34 view .LVU270
+ 1177 0026 61EE015A 		vmul.f32	s11, s2, s2
+ 1178              		.loc 1 227 29 view .LVU271
+ 1179 002a 39EE659A 		vsub.f32	s18, s18, s11
+ 1180              		.loc 1 227 44 view .LVU272
+ 1181 002e 21EEA16A 		vmul.f32	s12, s3, s3
+ 1182              		.loc 1 227 9 view .LVU273
+ 1183 0032 39EE469A 		vsub.f32	s18, s18, s12
+ 1184              	.LVL112:
+ 228:rover/ECAL/Src/Adafruit_BNO055.c ****     a31 = 2.0f * (qw * qx + qy * qz);
+ 1185              		.loc 1 228 5 is_stmt 1 view .LVU274
+ 1186              		.loc 1 228 22 is_stmt 0 view .LVU275
+ 1187 0036 60EE806A 		vmul.f32	s13, s1, s0
+ 1188              		.loc 1 228 32 view .LVU276
+ 1189 003a 61EE217A 		vmul.f32	s15, s2, s3
+ 1190              		.loc 1 228 27 view .LVU277
+ 1191 003e 76EEA76A 		vadd.f32	s13, s13, s15
+ 1192              	.LVL113:
+ 229:rover/ECAL/Src/Adafruit_BNO055.c ****     a32 = 2.0f * (qx * qz - qw * qy);
+ 1193              		.loc 1 229 5 is_stmt 1 view .LVU278
+ 1194              		.loc 1 229 22 is_stmt 0 view .LVU279
+ 1195 0042 60EEA17A 		vmul.f32	s15, s1, s3
+ 1196              		.loc 1 229 32 view .LVU280
+ 1197 0046 21EE001A 		vmul.f32	s2, s2, s0
+ 1198              	.LVL114:
+ 1199              		.loc 1 229 27 view .LVU281
+ 1200 004a 77EEC17A 		vsub.f32	s15, s15, s2
+ 1201              		.loc 1 229 9 view .LVU282
+ 1202 004e 37EEA78A 		vadd.f32	s16, s15, s15
+ 1203              	.LVL115:
+ 230:rover/ECAL/Src/Adafruit_BNO055.c ****     a33 = qw * qw - qx * qx - qy * qy + qz * qz;
+ 1204              		.loc 1 230 5 is_stmt 1 view .LVU283
+ 1205              		.loc 1 230 19 is_stmt 0 view .LVU284
+ 1206 0052 37EE457A 		vsub.f32	s14, s14, s10
+ 1207              		.loc 1 230 29 view .LVU285
+ 1208 0056 37EE657A 		vsub.f32	s14, s14, s11
+ 1209              	.LVL116:
+ 231:rover/ECAL/Src/Adafruit_BNO055.c ****     euler[0] = atan2f(a31, a33);
+ 1210              		.loc 1 231 5 is_stmt 1 view .LVU286
+ 1211              		.loc 1 231 16 is_stmt 0 view .LVU287
+ 1212 005a 76EE070A 		vadd.f32	s1, s12, s14
+ 1213              	.LVL117:
+ 1214              		.loc 1 231 16 view .LVU288
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s 			page 28
+
+
+ 1215 005e 36EEA60A 		vadd.f32	s0, s13, s13
+ 1216              	.LVL118:
+ 1217              		.loc 1 231 16 view .LVU289
+ 1218 0062 FFF7FEFF 		bl	atan2f
+ 1219              	.LVL119:
+ 1220              		.loc 1 231 16 view .LVU290
+ 1221 0066 10EE108A 		vmov	r8, s0
+ 1222              		.loc 1 231 14 discriminator 1 view .LVU291
+ 1223 006a 354C     		ldr	r4, .L62+8
+ 1224 006c 84ED000A 		vstr.32	s0, [r4]
+ 232:rover/ECAL/Src/Adafruit_BNO055.c ****     euler[1] = -asinf(a32);
+ 1225              		.loc 1 232 5 is_stmt 1 view .LVU292
+ 1226              		.loc 1 232 17 is_stmt 0 view .LVU293
+ 1227 0070 B0EE480A 		vmov.f32	s0, s16
+ 1228 0074 FFF7FEFF 		bl	asinf
+ 1229              	.LVL120:
+ 1230              		.loc 1 232 16 discriminator 1 view .LVU294
+ 1231 0078 F1EE407A 		vneg.f32	s15, s0
+ 1232 007c 17EE907A 		vmov	r7, s15
+ 1233              		.loc 1 232 14 discriminator 1 view .LVU295
+ 1234 0080 C4ED017A 		vstr.32	s15, [r4, #4]
+ 233:rover/ECAL/Src/Adafruit_BNO055.c ****     euler[2] = atan2f(a12, a22);
+ 1235              		.loc 1 233 5 is_stmt 1 view .LVU296
+ 1236              		.loc 1 233 16 is_stmt 0 view .LVU297
+ 1237 0084 F0EE490A 		vmov.f32	s1, s18
+ 1238 0088 B0EE680A 		vmov.f32	s0, s17
+ 1239 008c FFF7FEFF 		bl	atan2f
+ 1240              	.LVL121:
+ 1241 0090 10EE106A 		vmov	r6, s0
+ 1242              		.loc 1 233 14 discriminator 1 view .LVU298
+ 1243 0094 84ED020A 		vstr.32	s0, [r4, #8]
+ 234:rover/ECAL/Src/Adafruit_BNO055.c ****     euler[0] *= 180.0f / PI;
+ 1244              		.loc 1 234 5 is_stmt 1 view .LVU299
+ 1245              		.loc 1 234 10 is_stmt 0 view .LVU300
+ 1246 0098 4046     		mov	r0, r8	@ float
+ 1247 009a FFF7FEFF 		bl	__aeabi_f2d
+ 1248              	.LVL122:
+ 1249              		.loc 1 234 14 view .LVU301
+ 1250 009e 26A3     		adr	r3, .L62
+ 1251 00a0 D3E90023 		ldrd	r2, [r3]
+ 1252 00a4 FFF7FEFF 		bl	__aeabi_dmul
+ 1253              	.LVL123:
+ 1254 00a8 FFF7FEFF 		bl	__aeabi_d2f
+ 1255              	.LVL124:
+ 1256 00ac 08EE900A 		vmov	s17, r0
+ 1257              	.LVL125:
+ 1258              		.loc 1 234 14 view .LVU302
+ 1259 00b0 2060     		str	r0, [r4]	@ float
+ 235:rover/ECAL/Src/Adafruit_BNO055.c ****     euler[1] *= 180.0f / PI;
+ 1260              		.loc 1 235 5 is_stmt 1 view .LVU303
+ 1261              		.loc 1 235 10 is_stmt 0 view .LVU304
+ 1262 00b2 3846     		mov	r0, r7	@ float
+ 1263 00b4 FFF7FEFF 		bl	__aeabi_f2d
+ 1264              	.LVL126:
+ 1265              		.loc 1 235 14 view .LVU305
+ 1266 00b8 1FA3     		adr	r3, .L62
+ 1267 00ba D3E90023 		ldrd	r2, [r3]
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s 			page 29
+
+
+ 1268 00be FFF7FEFF 		bl	__aeabi_dmul
+ 1269              	.LVL127:
+ 1270 00c2 FFF7FEFF 		bl	__aeabi_d2f
+ 1271              	.LVL128:
+ 1272 00c6 08EE100A 		vmov	s16, r0
+ 1273              	.LVL129:
+ 1274              		.loc 1 235 14 view .LVU306
+ 1275 00ca 6060     		str	r0, [r4, #4]	@ float
+ 236:rover/ECAL/Src/Adafruit_BNO055.c ****     euler[2] *= 180.0f / PI;
+ 1276              		.loc 1 236 5 is_stmt 1 view .LVU307
+ 1277              		.loc 1 236 10 is_stmt 0 view .LVU308
+ 1278 00cc 3046     		mov	r0, r6	@ float
+ 1279 00ce FFF7FEFF 		bl	__aeabi_f2d
+ 1280              	.LVL130:
+ 1281              		.loc 1 236 14 view .LVU309
+ 1282 00d2 19A3     		adr	r3, .L62
+ 1283 00d4 D3E90023 		ldrd	r2, [r3]
+ 1284 00d8 FFF7FEFF 		bl	__aeabi_dmul
+ 1285              	.LVL131:
+ 1286 00dc FFF7FEFF 		bl	__aeabi_d2f
+ 1287              	.LVL132:
+ 1288 00e0 07EE900A 		vmov	s15, r0
+ 1289 00e4 A060     		str	r0, [r4, #8]	@ float
+ 237:rover/ECAL/Src/Adafruit_BNO055.c **** 		
+ 238:rover/ECAL/Src/Adafruit_BNO055.c ****   if (euler[2] >= +180.f)
+ 1290              		.loc 1 238 3 is_stmt 1 view .LVU310
+ 1291              		.loc 1 238 6 is_stmt 0 view .LVU311
+ 1292 00e6 9FED177A 		vldr.32	s14, .L62+12
+ 1293 00ea F4EEC77A 		vcmpe.f32	s15, s14
+ 1294 00ee F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 1295 00f2 10DB     		blt	.L60
+ 239:rover/ECAL/Src/Adafruit_BNO055.c **** 	{
+ 240:rover/ECAL/Src/Adafruit_BNO055.c **** 		euler[2] -= 360.f;
+ 1296              		.loc 1 240 3 is_stmt 1 view .LVU312
+ 1297              		.loc 1 240 12 is_stmt 0 view .LVU313
+ 1298 00f4 9FED147A 		vldr.32	s14, .L62+16
+ 1299 00f8 77EEC77A 		vsub.f32	s15, s15, s14
+ 1300 00fc C4ED027A 		vstr.32	s15, [r4, #8]
+ 1301              	.L56:
+ 241:rover/ECAL/Src/Adafruit_BNO055.c **** 	}
+ 242:rover/ECAL/Src/Adafruit_BNO055.c ****   else if(euler[2] < -180.f)
+ 243:rover/ECAL/Src/Adafruit_BNO055.c **** 	{
+ 244:rover/ECAL/Src/Adafruit_BNO055.c **** 	  euler[2] += 360.f;
+ 245:rover/ECAL/Src/Adafruit_BNO055.c **** 	}
+ 246:rover/ECAL/Src/Adafruit_BNO055.c **** 	else
+ 247:rover/ECAL/Src/Adafruit_BNO055.c **** 	{
+ 248:rover/ECAL/Src/Adafruit_BNO055.c **** 		
+ 249:rover/ECAL/Src/Adafruit_BNO055.c **** 	}
+ 1302              		.loc 1 249 2 is_stmt 1 view .LVU314
+ 250:rover/ECAL/Src/Adafruit_BNO055.c **** 	
+ 251:rover/ECAL/Src/Adafruit_BNO055.c **** 	Angels[0] = euler[0];
+ 1303              		.loc 1 251 2 view .LVU315
+ 1304              		.loc 1 251 12 is_stmt 0 view .LVU316
+ 1305 0100 C5ED008A 		vstr.32	s17, [r5]
+ 252:rover/ECAL/Src/Adafruit_BNO055.c **** 	Angels[1] = euler[1];
+ 1306              		.loc 1 252 2 is_stmt 1 view .LVU317
+ 1307              		.loc 1 252 12 is_stmt 0 view .LVU318
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s 			page 30
+
+
+ 1308 0104 85ED018A 		vstr.32	s16, [r5, #4]
+ 253:rover/ECAL/Src/Adafruit_BNO055.c **** 	Angels[2] = euler[2];
+ 1309              		.loc 1 253 2 is_stmt 1 view .LVU319
+ 1310              		.loc 1 253 19 is_stmt 0 view .LVU320
+ 1311 0108 0D4B     		ldr	r3, .L62+8
+ 1312 010a 9B68     		ldr	r3, [r3, #8]	@ float
+ 1313              		.loc 1 253 12 view .LVU321
+ 1314 010c AB60     		str	r3, [r5, #8]	@ float
+ 254:rover/ECAL/Src/Adafruit_BNO055.c **** 	
+ 255:rover/ECAL/Src/Adafruit_BNO055.c **** }
+ 1315              		.loc 1 255 1 view .LVU322
+ 1316 010e BDEC048B 		vldm	sp!, {d8-d9}
+ 1317              	.LCFI26:
+ 1318              		.cfi_remember_state
+ 1319              		.cfi_restore 82
+ 1320              		.cfi_restore 83
+ 1321              		.cfi_restore 80
+ 1322              		.cfi_restore 81
+ 1323              		.cfi_def_cfa_offset 24
+ 1324              	.LVL133:
+ 1325              		.loc 1 255 1 view .LVU323
+ 1326 0112 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 1327              	.LVL134:
+ 1328              	.L60:
+ 1329              	.LCFI27:
+ 1330              		.cfi_restore_state
+ 242:rover/ECAL/Src/Adafruit_BNO055.c **** 	{
+ 1331              		.loc 1 242 8 is_stmt 1 view .LVU324
+ 242:rover/ECAL/Src/Adafruit_BNO055.c **** 	{
+ 1332              		.loc 1 242 10 is_stmt 0 view .LVU325
+ 1333 0116 9FED0D7A 		vldr.32	s14, .L62+20
+ 1334 011a F4EEC77A 		vcmpe.f32	s15, s14
+ 1335 011e F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 1336 0122 EDD5     		bpl	.L56
+ 244:rover/ECAL/Src/Adafruit_BNO055.c **** 	}
+ 1337              		.loc 1 244 4 is_stmt 1 view .LVU326
+ 244:rover/ECAL/Src/Adafruit_BNO055.c **** 	}
+ 1338              		.loc 1 244 13 is_stmt 0 view .LVU327
+ 1339 0124 9FED087A 		vldr.32	s14, .L62+16
+ 1340 0128 77EE877A 		vadd.f32	s15, s15, s14
+ 1341 012c 044B     		ldr	r3, .L62+8
+ 1342 012e C3ED027A 		vstr.32	s15, [r3, #8]
+ 1343 0132 E5E7     		b	.L56
+ 1344              	.L63:
+ 1345 0134 AFF30080 		.align	3
+ 1346              	.L62:
+ 1347 0138 E5BF631A 		.word	442744805
+ 1348 013c DCA54C40 		.word	1078765020
+ 1349 0140 00000000 		.word	euler
+ 1350 0144 00003443 		.word	1127481344
+ 1351 0148 0000B443 		.word	1135869952
+ 1352 014c 000034C3 		.word	-1020002304
+ 1353              		.cfi_endproc
+ 1354              	.LFE145:
+ 1356              		.global	Co
+ 1357              		.section	.bss.Co,"aw",%nobits
+ 1360              	Co:
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s 			page 31
+
+
+ 1361 0000 00       		.space	1
+ 1362              		.section	.bss.GlobalConfig,"aw",%nobits
+ 1363              		.align	2
+ 1366              	GlobalConfig:
+ 1367 0000 00000000 		.space	4
+ 1368              		.global	_mode
+ 1369              		.section	.bss._mode,"aw",%nobits
+ 1372              	_mode:
+ 1373 0000 00       		.space	1
+ 1374              		.global	_sensorID
+ 1375              		.section	.bss._sensorID,"aw",%nobits
+ 1376              		.align	2
+ 1379              	_sensorID:
+ 1380 0000 00000000 		.space	4
+ 1381              		.global	_address
+ 1382              		.section	.bss._address,"aw",%nobits
+ 1385              	_address:
+ 1386 0000 00       		.space	1
+ 1387              		.section	.bss.euler,"aw",%nobits
+ 1388              		.align	2
+ 1391              	euler:
+ 1392 0000 00000000 		.space	12
+ 1392      00000000 
+ 1392      00000000 
+ 1393              		.text
+ 1394              	.Letext0:
+ 1395              		.file 2 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 1396              		.file 3 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 1397              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f401xc.h"
+ 1398              		.file 5 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 1399              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 1400              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 1401              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.h"
+ 1402              		.file 9 "rover/ECAL/Src/../Inc/Adafruit_BNO055.h"
+ 1403              		.file 10 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltoo
+ 1404              		.file 11 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltoo
+ 1405              		.file 12 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltoo
+ 1406              		.file 13 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ 1407              		.file 14 "<built-in>"
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s 			page 32
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 Adafruit_BNO055.c
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:21     .text.Adafruit_BNO055_Init:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:27     .text.Adafruit_BNO055_Init:00000000 Adafruit_BNO055_Init
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:52     .text.Adafruit_BNO055_Init:00000010 $d
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:1379   .bss._sensorID:00000000 _sensorID
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:1385   .bss._address:00000000 _address
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:1366   .bss.GlobalConfig:00000000 GlobalConfig
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:59     .text.Adafruit_BNO055_SetMode:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:65     .text.Adafruit_BNO055_SetMode:00000000 Adafruit_BNO055_SetMode
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:112    .text.Adafruit_BNO055_SetMode:00000030 $d
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:1372   .bss._mode:00000000 _mode
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:119    .rodata.Adafruit_BNO055_Begin.str1.4:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:126    .text.Adafruit_BNO055_Begin:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:132    .text.Adafruit_BNO055_Begin:00000000 Adafruit_BNO055_Begin
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:275    .text.Adafruit_BNO055_Begin:000000b0 $d
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:283    .text.Adafruit_BNO055_GetTemp:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:289    .text.Adafruit_BNO055_GetTemp:00000000 Adafruit_BNO055_GetTemp
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:328    .text.Adafruit_BNO055_GetTemp:0000002c $d
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:334    .text.Adafruit_BNO055_SetExtCrystalUse:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:340    .text.Adafruit_BNO055_SetExtCrystalUse:00000000 Adafruit_BNO055_SetExtCrystalUse
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:459    .text.Adafruit_BNO055_SetExtCrystalUse:0000009c $d
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:466    .text.Adafruit_BNO055_GetCalibration:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:472    .text.Adafruit_BNO055_GetCalibration:00000000 Adafruit_BNO055_GetCalibration
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:568    .text.Adafruit_BNO055_GetCalibration:0000005c $d
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:576    .text.Adafruit_BNO055_GetQuat:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:582    .text.Adafruit_BNO055_GetQuat:00000000 Adafruit_BNO055_GetQuat
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:728    .text.Adafruit_BNO055_GetQuat:000000ac $d
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:736    .text.Adafruit_BNO055_GetVector:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:742    .text.Adafruit_BNO055_GetVector:00000000 Adafruit_BNO055_GetVector
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:831    .text.Adafruit_BNO055_GetVector:00000064 $d
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:1117   .text.Adafruit_BNO055_GetVector:000001d4 $d
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:1127   .text.Adafruit_BNO055_UpdateEuler:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:1133   .text.Adafruit_BNO055_UpdateEuler:00000000 Adafruit_BNO055_UpdateEuler
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:1347   .text.Adafruit_BNO055_UpdateEuler:00000138 $d
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:1391   .bss.euler:00000000 euler
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:1360   .bss.Co:00000000 Co
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:1361   .bss.Co:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:1363   .bss.GlobalConfig:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:1373   .bss._mode:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:1376   .bss._sensorID:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:1386   .bss._address:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:1388   .bss.euler:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:870    .text.Adafruit_BNO055_GetVector:0000008b $d
+C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s:870    .text.Adafruit_BNO055_GetVector:0000008c $t
+
+UNDEFINED SYMBOLS
+HAL_I2C_Mem_Write
+HAL_Delay
+HAL_I2C_Mem_Read
+printf
+puts
+__aeabi_i2d
+__aeabi_dmul
+__aeabi_ddiv
+__aeabi_f2d
+__aeabi_d2f
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cckrXgWw.s 			page 33
+
+
+atan2f
+asinf

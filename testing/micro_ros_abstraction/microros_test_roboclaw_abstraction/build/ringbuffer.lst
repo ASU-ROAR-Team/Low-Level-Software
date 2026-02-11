@@ -1,0 +1,785 @@
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc7tTHoc.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"ringbuffer.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "rover/ECAL/Src/ringbuffer.c"
+  20              		.section	.text.ring_buffer_is_empty,"ax",%progbits
+  21              		.align	1
+  22              		.global	ring_buffer_is_empty
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	ring_buffer_is_empty:
+  28              	.LVL0:
+  29              	.LFB0:
+  30              		.file 2 "rover/ECAL/Inc/ringbuffer.h"
+   1:rover/ECAL/Inc/ringbuffer.h **** /*
+   2:rover/ECAL/Inc/ringbuffer.h ****  * ringbuffer.h
+   3:rover/ECAL/Inc/ringbuffer.h ****  *
+   4:rover/ECAL/Inc/ringbuffer.h ****  *  Created on: April 27, 2025
+   5:rover/ECAL/Inc/ringbuffer.h ****  *      Author: Adham
+   6:rover/ECAL/Inc/ringbuffer.h ****  */
+   7:rover/ECAL/Inc/ringbuffer.h **** 
+   8:rover/ECAL/Inc/ringbuffer.h **** #include <inttypes.h>
+   9:rover/ECAL/Inc/ringbuffer.h **** 
+  10:rover/ECAL/Inc/ringbuffer.h **** 
+  11:rover/ECAL/Inc/ringbuffer.h **** #ifndef RINGBUFFER_H_
+  12:rover/ECAL/Inc/ringbuffer.h **** #define RINGBUFFER_H_
+  13:rover/ECAL/Inc/ringbuffer.h **** 
+  14:rover/ECAL/Inc/ringbuffer.h **** #define RING_BUFFER_SIZE 512
+  15:rover/ECAL/Inc/ringbuffer.h **** #define RING_BUFFER_MASK (RING_BUFFER_SIZE-1)
+  16:rover/ECAL/Inc/ringbuffer.h **** 
+  17:rover/ECAL/Inc/ringbuffer.h **** #if (RING_BUFFER_SIZE & (RING_BUFFER_SIZE - 1)) != 0
+  18:rover/ECAL/Inc/ringbuffer.h **** #error "BUFFER SIZE MISSMATCH"
+  19:rover/ECAL/Inc/ringbuffer.h **** #endif
+  20:rover/ECAL/Inc/ringbuffer.h **** 
+  21:rover/ECAL/Inc/ringbuffer.h **** /**virtual address size types of the buffer*/
+  22:rover/ECAL/Inc/ringbuffer.h **** typedef uint16_t ring_buffer_size_t;
+  23:rover/ECAL/Inc/ringbuffer.h **** 
+  24:rover/ECAL/Inc/ringbuffer.h **** typedef struct _ring_buffer_t {
+  25:rover/ECAL/Inc/ringbuffer.h ****   /** Buffer memory. */
+  26:rover/ECAL/Inc/ringbuffer.h ****   uint8_t buffer[RING_BUFFER_SIZE];
+  27:rover/ECAL/Inc/ringbuffer.h ****   /** Index of tail. */
+  28:rover/ECAL/Inc/ringbuffer.h ****   ring_buffer_size_t tail_index;
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc7tTHoc.s 			page 2
+
+
+  29:rover/ECAL/Inc/ringbuffer.h ****   /** Index of head. */
+  30:rover/ECAL/Inc/ringbuffer.h ****   ring_buffer_size_t head_index;
+  31:rover/ECAL/Inc/ringbuffer.h **** 
+  32:rover/ECAL/Inc/ringbuffer.h ****   /**debug features. */
+  33:rover/ECAL/Inc/ringbuffer.h ****   uint32_t byte_enqueue_hit;
+  34:rover/ECAL/Inc/ringbuffer.h ****   uint32_t byte_dequeue_hit;
+  35:rover/ECAL/Inc/ringbuffer.h **** 
+  36:rover/ECAL/Inc/ringbuffer.h **** }ring_buffer_t;
+  37:rover/ECAL/Inc/ringbuffer.h **** 
+  38:rover/ECAL/Inc/ringbuffer.h **** /**
+  39:rover/ECAL/Inc/ringbuffer.h ****  * Initializes the ring buffer pointed to by <em>buffer</em>.
+  40:rover/ECAL/Inc/ringbuffer.h ****  * This function can also be used to empty/reset the buffer.
+  41:rover/ECAL/Inc/ringbuffer.h ****  * @param buffer The ring buffer to initialize.
+  42:rover/ECAL/Inc/ringbuffer.h ****  */
+  43:rover/ECAL/Inc/ringbuffer.h **** void ring_buffer_init(ring_buffer_t *buffer);
+  44:rover/ECAL/Inc/ringbuffer.h **** 
+  45:rover/ECAL/Inc/ringbuffer.h **** /**
+  46:rover/ECAL/Inc/ringbuffer.h ****  * Adds a byte to a ring buffer.
+  47:rover/ECAL/Inc/ringbuffer.h ****  * @param buffer The buffer in which the data should be placed.
+  48:rover/ECAL/Inc/ringbuffer.h ****  * @param data The byte to place.
+  49:rover/ECAL/Inc/ringbuffer.h ****  */
+  50:rover/ECAL/Inc/ringbuffer.h **** void ring_buffer_queue(ring_buffer_t *buffer, uint8_t data);
+  51:rover/ECAL/Inc/ringbuffer.h **** 
+  52:rover/ECAL/Inc/ringbuffer.h **** /**
+  53:rover/ECAL/Inc/ringbuffer.h ****  * Adds an array of bytes to a ring buffer.
+  54:rover/ECAL/Inc/ringbuffer.h ****  * @param buffer The buffer in which the data should be placed.
+  55:rover/ECAL/Inc/ringbuffer.h ****  * @param data A pointer to the array of bytes to place in the queue.
+  56:rover/ECAL/Inc/ringbuffer.h ****  * @param size The size of the array.
+  57:rover/ECAL/Inc/ringbuffer.h ****  */
+  58:rover/ECAL/Inc/ringbuffer.h **** void ring_buffer_queue_arr(ring_buffer_t *buffer, uint8_t *data, ring_buffer_size_t size);
+  59:rover/ECAL/Inc/ringbuffer.h **** 
+  60:rover/ECAL/Inc/ringbuffer.h **** /**
+  61:rover/ECAL/Inc/ringbuffer.h ****  * Returns the oldest byte in a ring buffer.
+  62:rover/ECAL/Inc/ringbuffer.h ****  * @param buffer The buffer from which the data should be returned.
+  63:rover/ECAL/Inc/ringbuffer.h ****  * @param data A pointer to the location at which the data should be placed.
+  64:rover/ECAL/Inc/ringbuffer.h ****  * @return 1 if data was returned; 0 otherwise.
+  65:rover/ECAL/Inc/ringbuffer.h ****  */
+  66:rover/ECAL/Inc/ringbuffer.h **** uint8_t ring_buffer_dequeue(ring_buffer_t *buffer, uint8_t *data);
+  67:rover/ECAL/Inc/ringbuffer.h **** 
+  68:rover/ECAL/Inc/ringbuffer.h **** /**
+  69:rover/ECAL/Inc/ringbuffer.h ****  * Returns the <em>len</em> oldest bytes in a ring buffer.
+  70:rover/ECAL/Inc/ringbuffer.h ****  * @param buffer The buffer from which the data should be returned.
+  71:rover/ECAL/Inc/ringbuffer.h ****  * @param data A pointer to the array at which the data should be placed.
+  72:rover/ECAL/Inc/ringbuffer.h ****  * @param len The maximum number of bytes to return.
+  73:rover/ECAL/Inc/ringbuffer.h ****  * @return The number of bytes returned.
+  74:rover/ECAL/Inc/ringbuffer.h ****  */
+  75:rover/ECAL/Inc/ringbuffer.h **** uint8_t ring_buffer_dequeue_arr(ring_buffer_t *buffer, uint8_t *data, ring_buffer_size_t len);
+  76:rover/ECAL/Inc/ringbuffer.h **** /**
+  77:rover/ECAL/Inc/ringbuffer.h ****  * Peeks a ring buffer, i.e. returns an element without removing it.
+  78:rover/ECAL/Inc/ringbuffer.h ****  * @param buffer The buffer from which the data should be returned.
+  79:rover/ECAL/Inc/ringbuffer.h ****  * @param data A pointer to the location at which the data should be placed.
+  80:rover/ECAL/Inc/ringbuffer.h ****  * @param index The index to peek.
+  81:rover/ECAL/Inc/ringbuffer.h ****  * @return 1 if data was returned; 0 otherwise.
+  82:rover/ECAL/Inc/ringbuffer.h ****  */
+  83:rover/ECAL/Inc/ringbuffer.h **** ring_buffer_size_t ring_buffer_peek(ring_buffer_t *buffer, uint8_t *data, ring_buffer_size_t index)
+  84:rover/ECAL/Inc/ringbuffer.h **** 
+  85:rover/ECAL/Inc/ringbuffer.h **** 
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc7tTHoc.s 			page 3
+
+
+  86:rover/ECAL/Inc/ringbuffer.h **** /**
+  87:rover/ECAL/Inc/ringbuffer.h ****  * Returns whether a ring buffer is empty.
+  88:rover/ECAL/Inc/ringbuffer.h ****  * @param buffer The buffer for which it should be returned whether it is empty.
+  89:rover/ECAL/Inc/ringbuffer.h ****  * @return 1 if empty; 0 otherwise.
+  90:rover/ECAL/Inc/ringbuffer.h ****  */
+  91:rover/ECAL/Inc/ringbuffer.h **** inline uint8_t ring_buffer_is_empty(ring_buffer_t *buffer) {
+  31              		.loc 2 91 60 view -0
+  32              		.cfi_startproc
+  33              		@ args = 0, pretend = 0, frame = 0
+  34              		@ frame_needed = 0, uses_anonymous_args = 0
+  35              		@ link register save eliminated.
+  92:rover/ECAL/Inc/ringbuffer.h ****   return (buffer->head_index == buffer->tail_index);
+  36              		.loc 2 92 3 view .LVU1
+  37              		.loc 2 92 17 is_stmt 0 view .LVU2
+  38 0000 B0F80222 		ldrh	r2, [r0, #514]
+  39              		.loc 2 92 39 view .LVU3
+  40 0004 B0F80002 		ldrh	r0, [r0, #512]
+  41              	.LVL1:
+  93:rover/ECAL/Inc/ringbuffer.h **** }
+  42              		.loc 2 93 1 view .LVU4
+  43 0008 8242     		cmp	r2, r0
+  44 000a 14BF     		ite	ne
+  45 000c 0020     		movne	r0, #0
+  46 000e 0120     		moveq	r0, #1
+  47 0010 7047     		bx	lr
+  48              		.cfi_endproc
+  49              	.LFE0:
+  51              		.section	.text.ring_buffer_is_full,"ax",%progbits
+  52              		.align	1
+  53              		.global	ring_buffer_is_full
+  54              		.syntax unified
+  55              		.thumb
+  56              		.thumb_func
+  58              	ring_buffer_is_full:
+  59              	.LVL2:
+  60              	.LFB1:
+  94:rover/ECAL/Inc/ringbuffer.h **** 
+  95:rover/ECAL/Inc/ringbuffer.h **** /**
+  96:rover/ECAL/Inc/ringbuffer.h ****  * Returns whether a ring buffer is full.
+  97:rover/ECAL/Inc/ringbuffer.h ****  * @param buffer The buffer for which it should be returned whether it is full.
+  98:rover/ECAL/Inc/ringbuffer.h ****  * @return 1 if full; 0 otherwise.
+  99:rover/ECAL/Inc/ringbuffer.h ****  */
+ 100:rover/ECAL/Inc/ringbuffer.h **** inline uint8_t ring_buffer_is_full(ring_buffer_t *buffer) {
+  61              		.loc 2 100 59 is_stmt 1 view -0
+  62              		.cfi_startproc
+  63              		@ args = 0, pretend = 0, frame = 0
+  64              		@ frame_needed = 0, uses_anonymous_args = 0
+  65              		@ link register save eliminated.
+ 101:rover/ECAL/Inc/ringbuffer.h ****   return ((buffer->head_index - buffer->tail_index) & RING_BUFFER_MASK) == RING_BUFFER_MASK;
+  66              		.loc 2 101 3 view .LVU6
+  67              		.loc 2 101 18 is_stmt 0 view .LVU7
+  68 0000 B0F80232 		ldrh	r3, [r0, #514]
+  69              		.loc 2 101 39 view .LVU8
+  70 0004 B0F80022 		ldrh	r2, [r0, #512]
+  71              		.loc 2 101 53 view .LVU9
+  72 0008 9B1A     		subs	r3, r3, r2
+  73              		.loc 2 101 73 view .LVU10
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc7tTHoc.s 			page 4
+
+
+  74 000a C3F30803 		ubfx	r3, r3, #0, #9
+ 102:rover/ECAL/Inc/ringbuffer.h **** }
+  75              		.loc 2 102 1 view .LVU11
+  76 000e 40F2FF10 		movw	r0, #511
+  77              	.LVL3:
+  78              		.loc 2 102 1 view .LVU12
+  79 0012 8342     		cmp	r3, r0
+  80 0014 14BF     		ite	ne
+  81 0016 0020     		movne	r0, #0
+  82 0018 0120     		moveq	r0, #1
+  83 001a 7047     		bx	lr
+  84              		.cfi_endproc
+  85              	.LFE1:
+  87              		.section	.text.ring_buffer_num_items,"ax",%progbits
+  88              		.align	1
+  89              		.global	ring_buffer_num_items
+  90              		.syntax unified
+  91              		.thumb
+  92              		.thumb_func
+  94              	ring_buffer_num_items:
+  95              	.LVL4:
+  96              	.LFB2:
+ 103:rover/ECAL/Inc/ringbuffer.h **** 
+ 104:rover/ECAL/Inc/ringbuffer.h **** /**
+ 105:rover/ECAL/Inc/ringbuffer.h ****  * Returns the number of items in a ring buffer.
+ 106:rover/ECAL/Inc/ringbuffer.h ****  * @param buffer The buffer for which the number of items should be returned.
+ 107:rover/ECAL/Inc/ringbuffer.h ****  * @return The number of items in the ring buffer.
+ 108:rover/ECAL/Inc/ringbuffer.h ****  */
+ 109:rover/ECAL/Inc/ringbuffer.h **** inline uint8_t ring_buffer_num_items(ring_buffer_t *buffer) {
+  97              		.loc 2 109 61 is_stmt 1 view -0
+  98              		.cfi_startproc
+  99              		@ args = 0, pretend = 0, frame = 0
+ 100              		@ frame_needed = 0, uses_anonymous_args = 0
+ 101              		@ link register save eliminated.
+ 110:rover/ECAL/Inc/ringbuffer.h ****   return ((buffer->head_index - buffer->tail_index) & RING_BUFFER_MASK);
+ 102              		.loc 2 110 3 view .LVU14
+ 103              		.loc 2 110 18 is_stmt 0 view .LVU15
+ 104 0000 B0F80232 		ldrh	r3, [r0, #514]
+ 105              		.loc 2 110 39 view .LVU16
+ 106 0004 B0F80022 		ldrh	r2, [r0, #512]
+ 107              		.loc 2 110 53 view .LVU17
+ 108 0008 981A     		subs	r0, r3, r2
+ 109              	.LVL5:
+ 111:rover/ECAL/Inc/ringbuffer.h **** }
+ 110              		.loc 2 111 1 view .LVU18
+ 111 000a C0B2     		uxtb	r0, r0
+ 112 000c 7047     		bx	lr
+ 113              		.cfi_endproc
+ 114              	.LFE2:
+ 116              		.section	.text.ring_buffer_init,"ax",%progbits
+ 117              		.align	1
+ 118              		.global	ring_buffer_init
+ 119              		.syntax unified
+ 120              		.thumb
+ 121              		.thumb_func
+ 123              	ring_buffer_init:
+ 124              	.LVL6:
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc7tTHoc.s 			page 5
+
+
+ 125              	.LFB3:
+   1:rover/ECAL/Src/ringbuffer.c **** /*
+   2:rover/ECAL/Src/ringbuffer.c ****  * ringbuffer.c
+   3:rover/ECAL/Src/ringbuffer.c ****  *
+   4:rover/ECAL/Src/ringbuffer.c ****  *  Created on: April 27, 2025
+   5:rover/ECAL/Src/ringbuffer.c ****  *      Author: Adham
+   6:rover/ECAL/Src/ringbuffer.c ****  */
+   7:rover/ECAL/Src/ringbuffer.c **** #include "ringbuffer.h"
+   8:rover/ECAL/Src/ringbuffer.c **** 
+   9:rover/ECAL/Src/ringbuffer.c **** /**
+  10:rover/ECAL/Src/ringbuffer.c ****  * @file
+  11:rover/ECAL/Src/ringbuffer.c ****  * Implementation of ring buffer functions.
+  12:rover/ECAL/Src/ringbuffer.c ****  */
+  13:rover/ECAL/Src/ringbuffer.c **** 
+  14:rover/ECAL/Src/ringbuffer.c **** void ring_buffer_init(ring_buffer_t *buffer) {
+ 126              		.loc 1 14 46 is_stmt 1 view -0
+ 127              		.cfi_startproc
+ 128              		@ args = 0, pretend = 0, frame = 0
+ 129              		@ frame_needed = 0, uses_anonymous_args = 0
+ 130              		@ link register save eliminated.
+  15:rover/ECAL/Src/ringbuffer.c ****   buffer->tail_index = 0;
+ 131              		.loc 1 15 3 view .LVU20
+ 132              		.loc 1 15 22 is_stmt 0 view .LVU21
+ 133 0000 0023     		movs	r3, #0
+ 134 0002 A0F80032 		strh	r3, [r0, #512]	@ movhi
+  16:rover/ECAL/Src/ringbuffer.c ****   buffer->head_index = 0;
+ 135              		.loc 1 16 3 is_stmt 1 view .LVU22
+ 136              		.loc 1 16 22 is_stmt 0 view .LVU23
+ 137 0006 A0F80232 		strh	r3, [r0, #514]	@ movhi
+  17:rover/ECAL/Src/ringbuffer.c **** 
+  18:rover/ECAL/Src/ringbuffer.c ****   /** debug features initialize. */
+  19:rover/ECAL/Src/ringbuffer.c ****   buffer->byte_enqueue_hit = 0;
+ 138              		.loc 1 19 3 is_stmt 1 view .LVU24
+ 139              		.loc 1 19 28 is_stmt 0 view .LVU25
+ 140 000a C0F80432 		str	r3, [r0, #516]
+  20:rover/ECAL/Src/ringbuffer.c ****   buffer->byte_dequeue_hit = 0;
+ 141              		.loc 1 20 3 is_stmt 1 view .LVU26
+ 142              		.loc 1 20 28 is_stmt 0 view .LVU27
+ 143 000e C0F80832 		str	r3, [r0, #520]
+  21:rover/ECAL/Src/ringbuffer.c **** }
+ 144              		.loc 1 21 1 view .LVU28
+ 145 0012 7047     		bx	lr
+ 146              		.cfi_endproc
+ 147              	.LFE3:
+ 149              		.section	.text.ring_buffer_queue,"ax",%progbits
+ 150              		.align	1
+ 151              		.global	ring_buffer_queue
+ 152              		.syntax unified
+ 153              		.thumb
+ 154              		.thumb_func
+ 156              	ring_buffer_queue:
+ 157              	.LVL7:
+ 158              	.LFB4:
+  22:rover/ECAL/Src/ringbuffer.c **** 
+  23:rover/ECAL/Src/ringbuffer.c **** void ring_buffer_queue(ring_buffer_t *buffer, uint8_t data) {
+ 159              		.loc 1 23 61 is_stmt 1 view -0
+ 160              		.cfi_startproc
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc7tTHoc.s 			page 6
+
+
+ 161              		@ args = 0, pretend = 0, frame = 0
+ 162              		@ frame_needed = 0, uses_anonymous_args = 0
+ 163              		.loc 1 23 61 is_stmt 0 view .LVU30
+ 164 0000 00B5     		push	{lr}
+ 165              	.LCFI0:
+ 166              		.cfi_def_cfa_offset 4
+ 167              		.cfi_offset 14, -4
+  24:rover/ECAL/Src/ringbuffer.c ****   /* Is buffer full? */
+  25:rover/ECAL/Src/ringbuffer.c ****   if(ring_buffer_is_full(buffer)) {
+ 168              		.loc 1 25 3 is_stmt 1 view .LVU31
+ 169              	.LVL8:
+ 170              	.LBB10:
+ 171              	.LBI10:
+ 100:rover/ECAL/Inc/ringbuffer.h ****   return ((buffer->head_index - buffer->tail_index) & RING_BUFFER_MASK) == RING_BUFFER_MASK;
+ 172              		.loc 2 100 16 view .LVU32
+ 173              	.LBB11:
+ 101:rover/ECAL/Inc/ringbuffer.h **** }
+ 174              		.loc 2 101 3 view .LVU33
+ 101:rover/ECAL/Inc/ringbuffer.h **** }
+ 175              		.loc 2 101 18 is_stmt 0 view .LVU34
+ 176 0002 B0F80232 		ldrh	r3, [r0, #514]
+ 101:rover/ECAL/Inc/ringbuffer.h **** }
+ 177              		.loc 2 101 39 view .LVU35
+ 178 0006 B0F800C2 		ldrh	ip, [r0, #512]
+ 101:rover/ECAL/Inc/ringbuffer.h **** }
+ 179              		.loc 2 101 53 view .LVU36
+ 180 000a A3EB0C02 		sub	r2, r3, ip
+ 181              	.LVL9:
+ 101:rover/ECAL/Inc/ringbuffer.h **** }
+ 182              		.loc 2 101 53 view .LVU37
+ 183              	.LBE11:
+ 184              	.LBE10:
+ 185              		.loc 1 25 5 discriminator 1 view .LVU38
+ 186 000e C2F30802 		ubfx	r2, r2, #0, #9
+ 187 0012 40F2FF1E 		movw	lr, #511
+ 188 0016 7245     		cmp	r2, lr
+ 189 0018 0CD0     		beq	.L8
+ 190              	.L6:
+  26:rover/ECAL/Src/ringbuffer.c ****     /* Is going to overwrite the oldest byte */
+  27:rover/ECAL/Src/ringbuffer.c ****     /* Increase tail index */
+  28:rover/ECAL/Src/ringbuffer.c ****     buffer->tail_index = ((buffer->tail_index + 1) & RING_BUFFER_MASK);
+  29:rover/ECAL/Src/ringbuffer.c ****   }
+  30:rover/ECAL/Src/ringbuffer.c **** 
+  31:rover/ECAL/Src/ringbuffer.c ****   /* Place data in buffer */
+  32:rover/ECAL/Src/ringbuffer.c ****   buffer->buffer[buffer->head_index] = data;
+ 191              		.loc 1 32 3 is_stmt 1 view .LVU39
+ 192              		.loc 1 32 38 is_stmt 0 view .LVU40
+ 193 001a C154     		strb	r1, [r0, r3]
+  33:rover/ECAL/Src/ringbuffer.c ****   buffer->head_index = ((buffer->head_index + 1) & RING_BUFFER_MASK);
+ 194              		.loc 1 33 3 is_stmt 1 view .LVU41
+ 195              		.loc 1 33 45 is_stmt 0 view .LVU42
+ 196 001c 0133     		adds	r3, r3, #1
+ 197              		.loc 1 33 50 view .LVU43
+ 198 001e C3F30803 		ubfx	r3, r3, #0, #9
+ 199              		.loc 1 33 22 view .LVU44
+ 200 0022 A0F80232 		strh	r3, [r0, #514]	@ movhi
+  34:rover/ECAL/Src/ringbuffer.c **** 
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc7tTHoc.s 			page 7
+
+
+  35:rover/ECAL/Src/ringbuffer.c ****   /** debug features update. */
+  36:rover/ECAL/Src/ringbuffer.c ****   buffer->byte_enqueue_hit ++;
+ 201              		.loc 1 36 3 is_stmt 1 view .LVU45
+ 202              		.loc 1 36 9 is_stmt 0 view .LVU46
+ 203 0026 D0F80432 		ldr	r3, [r0, #516]
+ 204              		.loc 1 36 28 view .LVU47
+ 205 002a 0133     		adds	r3, r3, #1
+ 206 002c C0F80432 		str	r3, [r0, #516]
+  37:rover/ECAL/Src/ringbuffer.c **** 
+  38:rover/ECAL/Src/ringbuffer.c **** }
+ 207              		.loc 1 38 1 view .LVU48
+ 208 0030 5DF804FB 		ldr	pc, [sp], #4
+ 209              	.L8:
+  28:rover/ECAL/Src/ringbuffer.c ****   }
+ 210              		.loc 1 28 5 is_stmt 1 view .LVU49
+  28:rover/ECAL/Src/ringbuffer.c ****   }
+ 211              		.loc 1 28 47 is_stmt 0 view .LVU50
+ 212 0034 0CF1010C 		add	ip, ip, #1
+  28:rover/ECAL/Src/ringbuffer.c ****   }
+ 213              		.loc 1 28 52 view .LVU51
+ 214 0038 CCF3080C 		ubfx	ip, ip, #0, #9
+  28:rover/ECAL/Src/ringbuffer.c ****   }
+ 215              		.loc 1 28 24 view .LVU52
+ 216 003c A0F800C2 		strh	ip, [r0, #512]	@ movhi
+ 217 0040 EBE7     		b	.L6
+ 218              		.cfi_endproc
+ 219              	.LFE4:
+ 221              		.section	.text.ring_buffer_queue_arr,"ax",%progbits
+ 222              		.align	1
+ 223              		.global	ring_buffer_queue_arr
+ 224              		.syntax unified
+ 225              		.thumb
+ 226              		.thumb_func
+ 228              	ring_buffer_queue_arr:
+ 229              	.LVL10:
+ 230              	.LFB5:
+  39:rover/ECAL/Src/ringbuffer.c **** 
+  40:rover/ECAL/Src/ringbuffer.c **** void ring_buffer_queue_arr(ring_buffer_t *buffer, uint8_t *data, ring_buffer_size_t size) {
+ 231              		.loc 1 40 91 is_stmt 1 view -0
+ 232              		.cfi_startproc
+ 233              		@ args = 0, pretend = 0, frame = 0
+ 234              		@ frame_needed = 0, uses_anonymous_args = 0
+ 235              		.loc 1 40 91 is_stmt 0 view .LVU54
+ 236 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 237              	.LCFI1:
+ 238              		.cfi_def_cfa_offset 24
+ 239              		.cfi_offset 3, -24
+ 240              		.cfi_offset 4, -20
+ 241              		.cfi_offset 5, -16
+ 242              		.cfi_offset 6, -12
+ 243              		.cfi_offset 7, -8
+ 244              		.cfi_offset 14, -4
+ 245 0002 0746     		mov	r7, r0
+ 246 0004 0E46     		mov	r6, r1
+ 247 0006 1546     		mov	r5, r2
+  41:rover/ECAL/Src/ringbuffer.c ****   /* Add bytes; one by one */
+  42:rover/ECAL/Src/ringbuffer.c ****   ring_buffer_size_t i;
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc7tTHoc.s 			page 8
+
+
+ 248              		.loc 1 42 3 is_stmt 1 view .LVU55
+  43:rover/ECAL/Src/ringbuffer.c ****   for(i = 0; i < size; i++) {
+ 249              		.loc 1 43 3 view .LVU56
+ 250              	.LVL11:
+ 251              		.loc 1 43 9 is_stmt 0 view .LVU57
+ 252 0008 0024     		movs	r4, #0
+ 253              		.loc 1 43 3 view .LVU58
+ 254 000a 05E0     		b	.L10
+ 255              	.LVL12:
+ 256              	.L11:
+  44:rover/ECAL/Src/ringbuffer.c ****     ring_buffer_queue(buffer, data[i]);
+ 257              		.loc 1 44 5 is_stmt 1 view .LVU59
+ 258 000c 315D     		ldrb	r1, [r6, r4]	@ zero_extendqisi2
+ 259 000e 3846     		mov	r0, r7
+ 260 0010 FFF7FEFF 		bl	ring_buffer_queue
+ 261              	.LVL13:
+  43:rover/ECAL/Src/ringbuffer.c ****   for(i = 0; i < size; i++) {
+ 262              		.loc 1 43 25 discriminator 3 view .LVU60
+ 263 0014 0134     		adds	r4, r4, #1
+ 264              	.LVL14:
+  43:rover/ECAL/Src/ringbuffer.c ****   for(i = 0; i < size; i++) {
+ 265              		.loc 1 43 25 is_stmt 0 discriminator 3 view .LVU61
+ 266 0016 A4B2     		uxth	r4, r4
+ 267              	.LVL15:
+ 268              	.L10:
+  43:rover/ECAL/Src/ringbuffer.c ****   for(i = 0; i < size; i++) {
+ 269              		.loc 1 43 16 is_stmt 1 discriminator 1 view .LVU62
+ 270 0018 AC42     		cmp	r4, r5
+ 271 001a F7D3     		bcc	.L11
+  45:rover/ECAL/Src/ringbuffer.c ****   }
+  46:rover/ECAL/Src/ringbuffer.c **** }
+ 272              		.loc 1 46 1 is_stmt 0 view .LVU63
+ 273 001c F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 274              		.loc 1 46 1 view .LVU64
+ 275              		.cfi_endproc
+ 276              	.LFE5:
+ 278              		.section	.text.ring_buffer_dequeue,"ax",%progbits
+ 279              		.align	1
+ 280              		.global	ring_buffer_dequeue
+ 281              		.syntax unified
+ 282              		.thumb
+ 283              		.thumb_func
+ 285              	ring_buffer_dequeue:
+ 286              	.LVL16:
+ 287              	.LFB6:
+  47:rover/ECAL/Src/ringbuffer.c **** 
+  48:rover/ECAL/Src/ringbuffer.c **** uint8_t ring_buffer_dequeue(ring_buffer_t *buffer, uint8_t *data) {
+ 288              		.loc 1 48 67 is_stmt 1 view -0
+ 289              		.cfi_startproc
+ 290              		@ args = 0, pretend = 0, frame = 0
+ 291              		@ frame_needed = 0, uses_anonymous_args = 0
+ 292              		@ link register save eliminated.
+  49:rover/ECAL/Src/ringbuffer.c ****   if(ring_buffer_is_empty(buffer)) {
+ 293              		.loc 1 49 3 view .LVU66
+ 294              	.LBB12:
+ 295              	.LBI12:
+  91:rover/ECAL/Inc/ringbuffer.h ****   return (buffer->head_index == buffer->tail_index);
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc7tTHoc.s 			page 9
+
+
+ 296              		.loc 2 91 16 view .LVU67
+ 297              	.LBB13:
+  92:rover/ECAL/Inc/ringbuffer.h **** }
+ 298              		.loc 2 92 3 view .LVU68
+  92:rover/ECAL/Inc/ringbuffer.h **** }
+ 299              		.loc 2 92 17 is_stmt 0 view .LVU69
+ 300 0000 B0F80222 		ldrh	r2, [r0, #514]
+  92:rover/ECAL/Inc/ringbuffer.h **** }
+ 301              		.loc 2 92 39 view .LVU70
+ 302 0004 B0F80032 		ldrh	r3, [r0, #512]
+ 303              	.LVL17:
+  92:rover/ECAL/Inc/ringbuffer.h **** }
+ 304              		.loc 2 92 39 view .LVU71
+ 305              	.LBE13:
+ 306              	.LBE12:
+ 307              		.loc 1 49 5 discriminator 1 view .LVU72
+ 308 0008 9A42     		cmp	r2, r3
+ 309 000a 0FD0     		beq	.L15
+  50:rover/ECAL/Src/ringbuffer.c ****     /* No items */
+  51:rover/ECAL/Src/ringbuffer.c ****     return 0;
+  52:rover/ECAL/Src/ringbuffer.c ****   }
+  53:rover/ECAL/Src/ringbuffer.c **** 
+  54:rover/ECAL/Src/ringbuffer.c ****   *data = buffer->buffer[buffer->tail_index];
+ 310              		.loc 1 54 3 is_stmt 1 view .LVU73
+ 311              		.loc 1 54 25 is_stmt 0 view .LVU74
+ 312 000c C35C     		ldrb	r3, [r0, r3]	@ zero_extendqisi2
+ 313              		.loc 1 54 9 view .LVU75
+ 314 000e 0B70     		strb	r3, [r1]
+  55:rover/ECAL/Src/ringbuffer.c ****   buffer->tail_index = ((buffer->tail_index + 1) & RING_BUFFER_MASK);
+ 315              		.loc 1 55 3 is_stmt 1 view .LVU76
+ 316              		.loc 1 55 32 is_stmt 0 view .LVU77
+ 317 0010 B0F80032 		ldrh	r3, [r0, #512]
+ 318              		.loc 1 55 45 view .LVU78
+ 319 0014 0133     		adds	r3, r3, #1
+ 320              		.loc 1 55 50 view .LVU79
+ 321 0016 C3F30803 		ubfx	r3, r3, #0, #9
+ 322              		.loc 1 55 22 view .LVU80
+ 323 001a A0F80032 		strh	r3, [r0, #512]	@ movhi
+  56:rover/ECAL/Src/ringbuffer.c **** 
+  57:rover/ECAL/Src/ringbuffer.c ****   /** debug features update. */
+  58:rover/ECAL/Src/ringbuffer.c ****   buffer->byte_dequeue_hit ++;
+ 324              		.loc 1 58 3 is_stmt 1 view .LVU81
+ 325              		.loc 1 58 9 is_stmt 0 view .LVU82
+ 326 001e D0F80832 		ldr	r3, [r0, #520]
+ 327              		.loc 1 58 28 view .LVU83
+ 328 0022 0133     		adds	r3, r3, #1
+ 329 0024 C0F80832 		str	r3, [r0, #520]
+  59:rover/ECAL/Src/ringbuffer.c **** 
+  60:rover/ECAL/Src/ringbuffer.c ****   return 1;
+ 330              		.loc 1 60 3 is_stmt 1 view .LVU84
+ 331              		.loc 1 60 10 is_stmt 0 view .LVU85
+ 332 0028 0120     		movs	r0, #1
+ 333              	.LVL18:
+ 334              		.loc 1 60 10 view .LVU86
+ 335 002a 7047     		bx	lr
+ 336              	.LVL19:
+ 337              	.L15:
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc7tTHoc.s 			page 10
+
+
+  51:rover/ECAL/Src/ringbuffer.c ****   }
+ 338              		.loc 1 51 12 view .LVU87
+ 339 002c 0020     		movs	r0, #0
+ 340              	.LVL20:
+  61:rover/ECAL/Src/ringbuffer.c **** }
+ 341              		.loc 1 61 1 view .LVU88
+ 342 002e 7047     		bx	lr
+ 343              		.cfi_endproc
+ 344              	.LFE6:
+ 346              		.section	.text.ring_buffer_dequeue_arr,"ax",%progbits
+ 347              		.align	1
+ 348              		.global	ring_buffer_dequeue_arr
+ 349              		.syntax unified
+ 350              		.thumb
+ 351              		.thumb_func
+ 353              	ring_buffer_dequeue_arr:
+ 354              	.LVL21:
+ 355              	.LFB7:
+  62:rover/ECAL/Src/ringbuffer.c **** 
+  63:rover/ECAL/Src/ringbuffer.c **** uint8_t ring_buffer_dequeue_arr(ring_buffer_t *buffer, uint8_t *data, ring_buffer_size_t len) {
+ 356              		.loc 1 63 95 is_stmt 1 view -0
+ 357              		.cfi_startproc
+ 358              		@ args = 0, pretend = 0, frame = 0
+ 359              		@ frame_needed = 0, uses_anonymous_args = 0
+ 360              		.loc 1 63 95 is_stmt 0 view .LVU90
+ 361 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 362              	.LCFI2:
+ 363              		.cfi_def_cfa_offset 24
+ 364              		.cfi_offset 3, -24
+ 365              		.cfi_offset 4, -20
+ 366              		.cfi_offset 5, -16
+ 367              		.cfi_offset 6, -12
+ 368              		.cfi_offset 7, -8
+ 369              		.cfi_offset 14, -4
+ 370 0002 1746     		mov	r7, r2
+  64:rover/ECAL/Src/ringbuffer.c ****   if(ring_buffer_is_empty(buffer)) {
+ 371              		.loc 1 64 3 is_stmt 1 view .LVU91
+ 372              	.LVL22:
+ 373              	.LBB14:
+ 374              	.LBI14:
+  91:rover/ECAL/Inc/ringbuffer.h ****   return (buffer->head_index == buffer->tail_index);
+ 375              		.loc 2 91 16 view .LVU92
+ 376              	.LBB15:
+  92:rover/ECAL/Inc/ringbuffer.h **** }
+ 377              		.loc 2 92 3 view .LVU93
+  92:rover/ECAL/Inc/ringbuffer.h **** }
+ 378              		.loc 2 92 17 is_stmt 0 view .LVU94
+ 379 0004 B0F80222 		ldrh	r2, [r0, #514]
+ 380              	.LVL23:
+  92:rover/ECAL/Inc/ringbuffer.h **** }
+ 381              		.loc 2 92 39 view .LVU95
+ 382 0008 B0F80032 		ldrh	r3, [r0, #512]
+ 383              	.LVL24:
+  92:rover/ECAL/Inc/ringbuffer.h **** }
+ 384              		.loc 2 92 39 view .LVU96
+ 385              	.LBE15:
+ 386              	.LBE14:
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc7tTHoc.s 			page 11
+
+
+ 387              		.loc 1 64 5 discriminator 1 view .LVU97
+ 388 000c 9A42     		cmp	r2, r3
+ 389 000e 10D0     		beq	.L21
+ 390 0010 0646     		mov	r6, r0
+ 391 0012 0D46     		mov	r5, r1
+  65:rover/ECAL/Src/ringbuffer.c ****     /* No items */
+  66:rover/ECAL/Src/ringbuffer.c ****     return 0;
+  67:rover/ECAL/Src/ringbuffer.c ****   }
+  68:rover/ECAL/Src/ringbuffer.c **** 
+  69:rover/ECAL/Src/ringbuffer.c ****   uint8_t *data_ptr = data;
+  70:rover/ECAL/Src/ringbuffer.c ****   ring_buffer_size_t cnt = 0;
+ 392              		.loc 1 70 22 view .LVU98
+ 393 0014 0024     		movs	r4, #0
+ 394 0016 02E0     		b	.L18
+ 395              	.LVL25:
+ 396              	.L20:
+  71:rover/ECAL/Src/ringbuffer.c ****   while((cnt < len) && ring_buffer_dequeue(buffer, data_ptr)) {
+  72:rover/ECAL/Src/ringbuffer.c ****     cnt++;
+ 397              		.loc 1 72 5 is_stmt 1 view .LVU99
+ 398              		.loc 1 72 8 is_stmt 0 view .LVU100
+ 399 0018 0134     		adds	r4, r4, #1
+ 400              	.LVL26:
+ 401              		.loc 1 72 8 view .LVU101
+ 402 001a A4B2     		uxth	r4, r4
+ 403              	.LVL27:
+  73:rover/ECAL/Src/ringbuffer.c ****     data_ptr++;
+ 404              		.loc 1 73 5 is_stmt 1 view .LVU102
+ 405              		.loc 1 73 13 is_stmt 0 view .LVU103
+ 406 001c 0135     		adds	r5, r5, #1
+ 407              	.LVL28:
+ 408              	.L18:
+  71:rover/ECAL/Src/ringbuffer.c ****   while((cnt < len) && ring_buffer_dequeue(buffer, data_ptr)) {
+ 409              		.loc 1 71 21 is_stmt 1 view .LVU104
+ 410 001e BC42     		cmp	r4, r7
+ 411 0020 05D2     		bcs	.L19
+  71:rover/ECAL/Src/ringbuffer.c ****   while((cnt < len) && ring_buffer_dequeue(buffer, data_ptr)) {
+ 412              		.loc 1 71 24 is_stmt 0 discriminator 1 view .LVU105
+ 413 0022 2946     		mov	r1, r5
+ 414 0024 3046     		mov	r0, r6
+ 415 0026 FFF7FEFF 		bl	ring_buffer_dequeue
+ 416              	.LVL29:
+  71:rover/ECAL/Src/ringbuffer.c ****   while((cnt < len) && ring_buffer_dequeue(buffer, data_ptr)) {
+ 417              		.loc 1 71 21 discriminator 1 view .LVU106
+ 418 002a 0028     		cmp	r0, #0
+ 419 002c F4D1     		bne	.L20
+ 420              	.L19:
+  74:rover/ECAL/Src/ringbuffer.c ****   }
+  75:rover/ECAL/Src/ringbuffer.c ****   return cnt;
+ 421              		.loc 1 75 3 is_stmt 1 view .LVU107
+ 422              		.loc 1 75 10 is_stmt 0 view .LVU108
+ 423 002e E0B2     		uxtb	r0, r4
+ 424              	.LVL30:
+ 425              	.L17:
+  76:rover/ECAL/Src/ringbuffer.c **** }
+ 426              		.loc 1 76 1 view .LVU109
+ 427 0030 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 428              	.LVL31:
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc7tTHoc.s 			page 12
+
+
+ 429              	.L21:
+  66:rover/ECAL/Src/ringbuffer.c ****   }
+ 430              		.loc 1 66 12 view .LVU110
+ 431 0032 0020     		movs	r0, #0
+ 432              	.LVL32:
+  66:rover/ECAL/Src/ringbuffer.c ****   }
+ 433              		.loc 1 66 12 view .LVU111
+ 434 0034 FCE7     		b	.L17
+ 435              		.cfi_endproc
+ 436              	.LFE7:
+ 438              		.section	.text.ring_buffer_peek,"ax",%progbits
+ 439              		.align	1
+ 440              		.global	ring_buffer_peek
+ 441              		.syntax unified
+ 442              		.thumb
+ 443              		.thumb_func
+ 445              	ring_buffer_peek:
+ 446              	.LVL33:
+ 447              	.LFB8:
+  77:rover/ECAL/Src/ringbuffer.c **** 
+  78:rover/ECAL/Src/ringbuffer.c **** ring_buffer_size_t ring_buffer_peek(ring_buffer_t *buffer, uint8_t *data, ring_buffer_size_t index)
+ 448              		.loc 1 78 101 is_stmt 1 view -0
+ 449              		.cfi_startproc
+ 450              		@ args = 0, pretend = 0, frame = 0
+ 451              		@ frame_needed = 0, uses_anonymous_args = 0
+ 452              		@ link register save eliminated.
+  79:rover/ECAL/Src/ringbuffer.c ****   if(index >= ring_buffer_num_items(buffer)) {
+ 453              		.loc 1 79 3 view .LVU113
+ 454              	.LBB16:
+ 455              	.LBI16:
+ 109:rover/ECAL/Inc/ringbuffer.h ****   return ((buffer->head_index - buffer->tail_index) & RING_BUFFER_MASK);
+ 456              		.loc 2 109 16 view .LVU114
+ 457              	.LBB17:
+ 110:rover/ECAL/Inc/ringbuffer.h **** }
+ 458              		.loc 2 110 3 view .LVU115
+ 110:rover/ECAL/Inc/ringbuffer.h **** }
+ 459              		.loc 2 110 18 is_stmt 0 view .LVU116
+ 460 0000 B0F80232 		ldrh	r3, [r0, #514]
+ 110:rover/ECAL/Inc/ringbuffer.h **** }
+ 461              		.loc 2 110 39 view .LVU117
+ 462 0004 B0F800C2 		ldrh	ip, [r0, #512]
+ 110:rover/ECAL/Inc/ringbuffer.h **** }
+ 463              		.loc 2 110 53 view .LVU118
+ 464 0008 A3EB0C03 		sub	r3, r3, ip
+ 465 000c DBB2     		uxtb	r3, r3
+ 466              	.LVL34:
+ 110:rover/ECAL/Inc/ringbuffer.h **** }
+ 467              		.loc 2 110 53 view .LVU119
+ 468              	.LBE17:
+ 469              	.LBE16:
+ 470              		.loc 1 79 5 discriminator 1 view .LVU120
+ 471 000e 9342     		cmp	r3, r2
+ 472 0010 06D9     		bls	.L25
+  80:rover/ECAL/Src/ringbuffer.c ****     /* No items at index */
+  81:rover/ECAL/Src/ringbuffer.c ****     return 0;
+  82:rover/ECAL/Src/ringbuffer.c ****   }
+  83:rover/ECAL/Src/ringbuffer.c **** 
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc7tTHoc.s 			page 13
+
+
+  84:rover/ECAL/Src/ringbuffer.c ****   /* Add index to pointer */
+  85:rover/ECAL/Src/ringbuffer.c ****   ring_buffer_size_t data_index = ((buffer->tail_index + index) & RING_BUFFER_MASK);
+ 473              		.loc 1 85 3 is_stmt 1 view .LVU121
+ 474              		.loc 1 85 65 is_stmt 0 view .LVU122
+ 475 0012 6244     		add	r2, r2, ip
+ 476              	.LVL35:
+ 477              		.loc 1 85 22 view .LVU123
+ 478 0014 C2F30802 		ubfx	r2, r2, #0, #9
+ 479              	.LVL36:
+  86:rover/ECAL/Src/ringbuffer.c ****   *data = buffer->buffer[data_index];
+ 480              		.loc 1 86 3 is_stmt 1 view .LVU124
+ 481              		.loc 1 86 25 is_stmt 0 view .LVU125
+ 482 0018 835C     		ldrb	r3, [r0, r2]	@ zero_extendqisi2
+ 483              		.loc 1 86 9 view .LVU126
+ 484 001a 0B70     		strb	r3, [r1]
+  87:rover/ECAL/Src/ringbuffer.c ****   return 1;
+ 485              		.loc 1 87 3 is_stmt 1 view .LVU127
+ 486              		.loc 1 87 10 is_stmt 0 view .LVU128
+ 487 001c 0120     		movs	r0, #1
+ 488              	.LVL37:
+ 489              		.loc 1 87 10 view .LVU129
+ 490 001e 7047     		bx	lr
+ 491              	.LVL38:
+ 492              	.L25:
+  81:rover/ECAL/Src/ringbuffer.c ****   }
+ 493              		.loc 1 81 12 view .LVU130
+ 494 0020 0020     		movs	r0, #0
+ 495              	.LVL39:
+  88:rover/ECAL/Src/ringbuffer.c **** }
+ 496              		.loc 1 88 1 view .LVU131
+ 497 0022 7047     		bx	lr
+ 498              		.cfi_endproc
+ 499              	.LFE8:
+ 501              		.text
+ 502              	.Letext0:
+ 503              		.file 3 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 504              		.file 4 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc7tTHoc.s 			page 14
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 ringbuffer.c
+C:\Users\bavly\AppData\Local\Temp\cc7tTHoc.s:21     .text.ring_buffer_is_empty:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cc7tTHoc.s:27     .text.ring_buffer_is_empty:00000000 ring_buffer_is_empty
+C:\Users\bavly\AppData\Local\Temp\cc7tTHoc.s:52     .text.ring_buffer_is_full:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cc7tTHoc.s:58     .text.ring_buffer_is_full:00000000 ring_buffer_is_full
+C:\Users\bavly\AppData\Local\Temp\cc7tTHoc.s:88     .text.ring_buffer_num_items:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cc7tTHoc.s:94     .text.ring_buffer_num_items:00000000 ring_buffer_num_items
+C:\Users\bavly\AppData\Local\Temp\cc7tTHoc.s:117    .text.ring_buffer_init:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cc7tTHoc.s:123    .text.ring_buffer_init:00000000 ring_buffer_init
+C:\Users\bavly\AppData\Local\Temp\cc7tTHoc.s:150    .text.ring_buffer_queue:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cc7tTHoc.s:156    .text.ring_buffer_queue:00000000 ring_buffer_queue
+C:\Users\bavly\AppData\Local\Temp\cc7tTHoc.s:222    .text.ring_buffer_queue_arr:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cc7tTHoc.s:228    .text.ring_buffer_queue_arr:00000000 ring_buffer_queue_arr
+C:\Users\bavly\AppData\Local\Temp\cc7tTHoc.s:279    .text.ring_buffer_dequeue:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cc7tTHoc.s:285    .text.ring_buffer_dequeue:00000000 ring_buffer_dequeue
+C:\Users\bavly\AppData\Local\Temp\cc7tTHoc.s:347    .text.ring_buffer_dequeue_arr:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cc7tTHoc.s:353    .text.ring_buffer_dequeue_arr:00000000 ring_buffer_dequeue_arr
+C:\Users\bavly\AppData\Local\Temp\cc7tTHoc.s:439    .text.ring_buffer_peek:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cc7tTHoc.s:445    .text.ring_buffer_peek:00000000 ring_buffer_peek
+
+NO UNDEFINED SYMBOLS

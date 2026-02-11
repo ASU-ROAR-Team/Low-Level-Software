@@ -1,0 +1,231 @@
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccyZClMH.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"app_tasks.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "rover/App/Src/app_tasks.c"
+  20              		.section	.text.App_Motor_Task,"ax",%progbits
+  21              		.align	1
+  22              		.global	App_Motor_Task
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	App_Motor_Task:
+  28              	.LFB142:
+   1:rover/App/Src/app_tasks.c **** #include "app_tasks.h"
+   2:rover/App/Src/app_tasks.c **** #include "FreeRTOS.h"
+   3:rover/App/Src/app_tasks.c **** #include "task.h"
+   4:rover/App/Src/app_tasks.c **** 
+   5:rover/App/Src/app_tasks.c **** #include "roboclaw.h"   // ECAL layer
+   6:rover/App/Src/app_tasks.c **** 
+   7:rover/App/Src/app_tasks.c **** void App_Tasks_Create(void)
+   8:rover/App/Src/app_tasks.c **** {
+   9:rover/App/Src/app_tasks.c ****     xTaskCreate(App_Motor_Task,
+  10:rover/App/Src/app_tasks.c ****                 "Motor_Task",
+  11:rover/App/Src/app_tasks.c ****                 2048,
+  12:rover/App/Src/app_tasks.c ****                 NULL,
+  13:rover/App/Src/app_tasks.c ****                 2,
+  14:rover/App/Src/app_tasks.c ****                 NULL);
+  15:rover/App/Src/app_tasks.c **** 
+  16:rover/App/Src/app_tasks.c ****     xTaskCreate(App_Sensor_Task,
+  17:rover/App/Src/app_tasks.c ****                 "Sensor_Task",
+  18:rover/App/Src/app_tasks.c ****                 2048,
+  19:rover/App/Src/app_tasks.c ****                 NULL,
+  20:rover/App/Src/app_tasks.c ****                 2,
+  21:rover/App/Src/app_tasks.c ****                 NULL);
+  22:rover/App/Src/app_tasks.c **** }
+  23:rover/App/Src/app_tasks.c **** 
+  24:rover/App/Src/app_tasks.c **** /* ---------------- TASKS ---------------- */
+  25:rover/App/Src/app_tasks.c **** 
+  26:rover/App/Src/app_tasks.c **** void App_Motor_Task(void *argument)
+  27:rover/App/Src/app_tasks.c **** {
+  29              		.loc 1 27 1 view -0
+  30              		.cfi_startproc
+  31              		@ Volatile: function does not return.
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccyZClMH.s 			page 2
+
+
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              	.LVL0:
+  35              		.loc 1 27 1 is_stmt 0 view .LVU1
+  36 0000 08B5     		push	{r3, lr}
+  37              	.LCFI0:
+  38              		.cfi_def_cfa_offset 8
+  39              		.cfi_offset 3, -8
+  40              		.cfi_offset 14, -4
+  41              	.LVL1:
+  42              	.L2:
+  28:rover/App/Src/app_tasks.c **** 
+  29:rover/App/Src/app_tasks.c ****     while (1)
+  43              		.loc 1 29 5 is_stmt 1 view .LVU2
+  30:rover/App/Src/app_tasks.c ****     {
+  31:rover/App/Src/app_tasks.c ****     	//roboclaw code
+  32:rover/App/Src/app_tasks.c ****         vTaskDelay(pdMS_TO_TICKS(20));
+  44              		.loc 1 32 9 discriminator 1 view .LVU3
+  45 0002 1420     		movs	r0, #20
+  46 0004 FFF7FEFF 		bl	vTaskDelay
+  47              	.LVL2:
+  29:rover/App/Src/app_tasks.c ****     {
+  48              		.loc 1 29 11 view .LVU4
+  49 0008 FBE7     		b	.L2
+  50              		.cfi_endproc
+  51              	.LFE142:
+  53              		.section	.text.App_Sensor_Task,"ax",%progbits
+  54              		.align	1
+  55              		.global	App_Sensor_Task
+  56              		.syntax unified
+  57              		.thumb
+  58              		.thumb_func
+  60              	App_Sensor_Task:
+  61              	.LFB143:
+  33:rover/App/Src/app_tasks.c ****     }
+  34:rover/App/Src/app_tasks.c **** }
+  35:rover/App/Src/app_tasks.c **** 
+  36:rover/App/Src/app_tasks.c **** void App_Sensor_Task(void *argument)
+  37:rover/App/Src/app_tasks.c **** {
+  62              		.loc 1 37 1 view -0
+  63              		.cfi_startproc
+  64              		@ Volatile: function does not return.
+  65              		@ args = 0, pretend = 0, frame = 0
+  66              		@ frame_needed = 0, uses_anonymous_args = 0
+  67              	.LVL3:
+  68              		.loc 1 37 1 is_stmt 0 view .LVU6
+  69 0000 08B5     		push	{r3, lr}
+  70              	.LCFI1:
+  71              		.cfi_def_cfa_offset 8
+  72              		.cfi_offset 3, -8
+  73              		.cfi_offset 14, -4
+  74              	.LVL4:
+  75              	.L5:
+  38:rover/App/Src/app_tasks.c ****     while (1)
+  76              		.loc 1 38 5 is_stmt 1 view .LVU7
+  39:rover/App/Src/app_tasks.c ****     {
+  40:rover/App/Src/app_tasks.c ****         /* read sensors */
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccyZClMH.s 			page 3
+
+
+  41:rover/App/Src/app_tasks.c ****         vTaskDelay(pdMS_TO_TICKS(50));
+  77              		.loc 1 41 9 discriminator 1 view .LVU8
+  78 0002 3220     		movs	r0, #50
+  79 0004 FFF7FEFF 		bl	vTaskDelay
+  80              	.LVL5:
+  38:rover/App/Src/app_tasks.c ****     while (1)
+  81              		.loc 1 38 11 view .LVU9
+  82 0008 FBE7     		b	.L5
+  83              		.cfi_endproc
+  84              	.LFE143:
+  86              		.section	.rodata.App_Tasks_Create.str1.4,"aMS",%progbits,1
+  87              		.align	2
+  88              	.LC0:
+  89 0000 4D6F746F 		.ascii	"Motor_Task\000"
+  89      725F5461 
+  89      736B00
+  90 000b 00       		.align	2
+  91              	.LC1:
+  92 000c 53656E73 		.ascii	"Sensor_Task\000"
+  92      6F725F54 
+  92      61736B00 
+  93              		.section	.text.App_Tasks_Create,"ax",%progbits
+  94              		.align	1
+  95              		.global	App_Tasks_Create
+  96              		.syntax unified
+  97              		.thumb
+  98              		.thumb_func
+ 100              	App_Tasks_Create:
+ 101              	.LFB141:
+   8:rover/App/Src/app_tasks.c ****     xTaskCreate(App_Motor_Task,
+ 102              		.loc 1 8 1 view -0
+ 103              		.cfi_startproc
+ 104              		@ args = 0, pretend = 0, frame = 0
+ 105              		@ frame_needed = 0, uses_anonymous_args = 0
+ 106 0000 30B5     		push	{r4, r5, lr}
+ 107              	.LCFI2:
+ 108              		.cfi_def_cfa_offset 12
+ 109              		.cfi_offset 4, -12
+ 110              		.cfi_offset 5, -8
+ 111              		.cfi_offset 14, -4
+ 112 0002 83B0     		sub	sp, sp, #12
+ 113              	.LCFI3:
+ 114              		.cfi_def_cfa_offset 24
+   9:rover/App/Src/app_tasks.c ****                 "Motor_Task",
+ 115              		.loc 1 9 5 view .LVU11
+ 116 0004 0024     		movs	r4, #0
+ 117 0006 0194     		str	r4, [sp, #4]
+ 118 0008 0225     		movs	r5, #2
+ 119 000a 0095     		str	r5, [sp]
+ 120 000c 2346     		mov	r3, r4
+ 121 000e 4FF40062 		mov	r2, #2048
+ 122 0012 0749     		ldr	r1, .L9
+ 123 0014 0748     		ldr	r0, .L9+4
+ 124 0016 FFF7FEFF 		bl	xTaskCreate
+ 125              	.LVL6:
+  16:rover/App/Src/app_tasks.c ****                 "Sensor_Task",
+ 126              		.loc 1 16 5 view .LVU12
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccyZClMH.s 			page 4
+
+
+ 127 001a 0194     		str	r4, [sp, #4]
+ 128 001c 0095     		str	r5, [sp]
+ 129 001e 2346     		mov	r3, r4
+ 130 0020 4FF40062 		mov	r2, #2048
+ 131 0024 0449     		ldr	r1, .L9+8
+ 132 0026 0548     		ldr	r0, .L9+12
+ 133 0028 FFF7FEFF 		bl	xTaskCreate
+ 134              	.LVL7:
+  22:rover/App/Src/app_tasks.c **** 
+ 135              		.loc 1 22 1 is_stmt 0 view .LVU13
+ 136 002c 03B0     		add	sp, sp, #12
+ 137              	.LCFI4:
+ 138              		.cfi_def_cfa_offset 12
+ 139              		@ sp needed
+ 140 002e 30BD     		pop	{r4, r5, pc}
+ 141              	.L10:
+ 142              		.align	2
+ 143              	.L9:
+ 144 0030 00000000 		.word	.LC0
+ 145 0034 00000000 		.word	App_Motor_Task
+ 146 0038 0C000000 		.word	.LC1
+ 147 003c 00000000 		.word	App_Sensor_Task
+ 148              		.cfi_endproc
+ 149              	.LFE141:
+ 151              		.text
+ 152              	.Letext0:
+ 153              		.file 2 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 154              		.file 3 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 155              		.file 4 "Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h"
+ 156              		.file 5 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h"
+ 157              		.file 6 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccyZClMH.s 			page 5
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 app_tasks.c
+C:\Users\bavly\AppData\Local\Temp\ccyZClMH.s:21     .text.App_Motor_Task:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccyZClMH.s:27     .text.App_Motor_Task:00000000 App_Motor_Task
+C:\Users\bavly\AppData\Local\Temp\ccyZClMH.s:54     .text.App_Sensor_Task:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccyZClMH.s:60     .text.App_Sensor_Task:00000000 App_Sensor_Task
+C:\Users\bavly\AppData\Local\Temp\ccyZClMH.s:87     .rodata.App_Tasks_Create.str1.4:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccyZClMH.s:94     .text.App_Tasks_Create:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccyZClMH.s:100    .text.App_Tasks_Create:00000000 App_Tasks_Create
+C:\Users\bavly\AppData\Local\Temp\ccyZClMH.s:144    .text.App_Tasks_Create:00000030 $d
+
+UNDEFINED SYMBOLS
+vTaskDelay
+xTaskCreate
