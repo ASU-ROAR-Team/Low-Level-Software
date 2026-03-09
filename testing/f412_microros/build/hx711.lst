@@ -1,0 +1,527 @@
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccRxkUPf.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"hx711.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "rover/ECAL/Src/hx711.c"
+  20              		.section	.text.HX711_DelayUs,"ax",%progbits
+  21              		.align	1
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	HX711_DelayUs:
+  27              	.LVL0:
+  28              	.LFB134:
+   1:rover/ECAL/Src/hx711.c **** /*
+   2:rover/ECAL/Src/hx711.c ****  * hx711.c
+   3:rover/ECAL/Src/hx711.c ****  *
+   4:rover/ECAL/Src/hx711.c ****  *  Created on: Feb 11, 2026
+   5:rover/ECAL/Src/hx711.c ****  *      Author: Hassan Khaled & Adel Raef
+   6:rover/ECAL/Src/hx711.c ****  */
+   7:rover/ECAL/Src/hx711.c **** 
+   8:rover/ECAL/Src/hx711.c **** 
+   9:rover/ECAL/Src/hx711.c **** #include "hx711.h"
+  10:rover/ECAL/Src/hx711.c **** 
+  11:rover/ECAL/Src/hx711.c **** /* Pin definitions */
+  12:rover/ECAL/Src/hx711.c **** #define DT_PIN   GPIO_PIN_8
+  13:rover/ECAL/Src/hx711.c **** #define DT_PORT  GPIOB
+  14:rover/ECAL/Src/hx711.c **** #define SCK_PIN  GPIO_PIN_9
+  15:rover/ECAL/Src/hx711.c **** #define SCK_PORT GPIOB
+  16:rover/ECAL/Src/hx711.c **** 
+  17:rover/ECAL/Src/hx711.c **** /* Private variables */
+  18:rover/ECAL/Src/hx711.c **** static TIM_HandleTypeDef *hx711_tim;
+  19:rover/ECAL/Src/hx711.c **** 
+  20:rover/ECAL/Src/hx711.c **** static int32_t hx711_tare = 0;
+  21:rover/ECAL/Src/hx711.c **** static float hx711_coefficient = 1.0f;
+  22:rover/ECAL/Src/hx711.c **** 
+  23:rover/ECAL/Src/hx711.c **** /* Private function */
+  24:rover/ECAL/Src/hx711.c **** static void HX711_DelayUs(uint16_t delay)
+  25:rover/ECAL/Src/hx711.c **** {
+  29              		.loc 1 25 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccRxkUPf.s 			page 2
+
+
+  26:rover/ECAL/Src/hx711.c ****     __HAL_TIM_SET_COUNTER(hx711_tim, 0);
+  34              		.loc 1 26 5 view .LVU1
+  35 0000 044B     		ldr	r3, .L3
+  36 0002 1A68     		ldr	r2, [r3]
+  37 0004 1368     		ldr	r3, [r2]
+  38 0006 0021     		movs	r1, #0
+  39 0008 5962     		str	r1, [r3, #36]
+  27:rover/ECAL/Src/hx711.c ****     while (__HAL_TIM_GET_COUNTER(hx711_tim) < delay);
+  40              		.loc 1 27 5 view .LVU2
+  41              	.L2:
+  42              		.loc 1 27 45 discriminator 1 view .LVU3
+  43              		.loc 1 27 12 is_stmt 0 discriminator 1 view .LVU4
+  44 000a 1368     		ldr	r3, [r2]
+  45 000c 5B6A     		ldr	r3, [r3, #36]
+  46              		.loc 1 27 45 discriminator 1 view .LVU5
+  47 000e 8342     		cmp	r3, r0
+  48 0010 FBD3     		bcc	.L2
+  28:rover/ECAL/Src/hx711.c **** }
+  49              		.loc 1 28 1 view .LVU6
+  50 0012 7047     		bx	lr
+  51              	.L4:
+  52              		.align	2
+  53              	.L3:
+  54 0014 00000000 		.word	hx711_tim
+  55              		.cfi_endproc
+  56              	.LFE134:
+  58              		.section	.text.HX711_ReadRaw,"ax",%progbits
+  59              		.align	1
+  60              		.syntax unified
+  61              		.thumb
+  62              		.thumb_func
+  64              	HX711_ReadRaw:
+  65              	.LFB135:
+  29:rover/ECAL/Src/hx711.c **** 
+  30:rover/ECAL/Src/hx711.c **** static int32_t HX711_ReadRaw(void)
+  31:rover/ECAL/Src/hx711.c **** {
+  66              		.loc 1 31 1 is_stmt 1 view -0
+  67              		.cfi_startproc
+  68              		@ args = 0, pretend = 0, frame = 0
+  69              		@ frame_needed = 0, uses_anonymous_args = 0
+  70 0000 70B5     		push	{r4, r5, r6, lr}
+  71              	.LCFI0:
+  72              		.cfi_def_cfa_offset 16
+  73              		.cfi_offset 4, -16
+  74              		.cfi_offset 5, -12
+  75              		.cfi_offset 6, -8
+  76              		.cfi_offset 14, -4
+  32:rover/ECAL/Src/hx711.c ****     uint32_t data = 0;
+  77              		.loc 1 32 5 view .LVU8
+  78              	.LVL1:
+  33:rover/ECAL/Src/hx711.c ****     uint32_t startTime = HAL_GetTick();
+  79              		.loc 1 33 5 view .LVU9
+  80              		.loc 1 33 26 is_stmt 0 view .LVU10
+  81 0002 FFF7FEFF 		bl	HAL_GetTick
+  82              	.LVL2:
+  83 0006 0446     		mov	r4, r0
+  84              	.LVL3:
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccRxkUPf.s 			page 3
+
+
+  34:rover/ECAL/Src/hx711.c **** 
+  35:rover/ECAL/Src/hx711.c ****     /* Wait until data ready */
+  36:rover/ECAL/Src/hx711.c ****     while(HAL_GPIO_ReadPin(DT_PORT, DT_PIN) == GPIO_PIN_SET)
+  85              		.loc 1 36 5 is_stmt 1 view .LVU11
+  86              	.L6:
+  87              		.loc 1 36 45 view .LVU12
+  88              		.loc 1 36 11 is_stmt 0 view .LVU13
+  89 0008 4FF48071 		mov	r1, #256
+  90 000c 2248     		ldr	r0, .L16
+  91 000e FFF7FEFF 		bl	HAL_GPIO_ReadPin
+  92              	.LVL4:
+  93              		.loc 1 36 45 discriminator 1 view .LVU14
+  94 0012 0128     		cmp	r0, #1
+  95 0014 06D1     		bne	.L14
+  37:rover/ECAL/Src/hx711.c ****     {
+  38:rover/ECAL/Src/hx711.c ****         if(HAL_GetTick() - startTime > 200)
+  96              		.loc 1 38 9 is_stmt 1 view .LVU15
+  97              		.loc 1 38 12 is_stmt 0 view .LVU16
+  98 0016 FFF7FEFF 		bl	HAL_GetTick
+  99              	.LVL5:
+ 100              		.loc 1 38 26 discriminator 1 view .LVU17
+ 101 001a 001B     		subs	r0, r0, r4
+ 102              		.loc 1 38 11 discriminator 1 view .LVU18
+ 103 001c C828     		cmp	r0, #200
+ 104 001e F3D9     		bls	.L6
+  39:rover/ECAL/Src/hx711.c ****             return 0;
+ 105              		.loc 1 39 20 view .LVU19
+ 106 0020 0020     		movs	r0, #0
+ 107 0022 38E0     		b	.L5
+ 108              	.L14:
+ 109              	.LBB2:
+  40:rover/ECAL/Src/hx711.c ****     }
+  41:rover/ECAL/Src/hx711.c **** 
+  42:rover/ECAL/Src/hx711.c ****     /* Read 24 bits */
+  43:rover/ECAL/Src/hx711.c ****     for(int8_t i = 0; i < 24; i++)
+ 110              		.loc 1 43 16 view .LVU20
+ 111 0024 0024     		movs	r4, #0
+ 112              	.LVL6:
+ 113              		.loc 1 43 16 view .LVU21
+ 114              	.LBE2:
+  32:rover/ECAL/Src/hx711.c ****     uint32_t startTime = HAL_GetTick();
+ 115              		.loc 1 32 14 view .LVU22
+ 116 0026 2646     		mov	r6, r4
+ 117 0028 01E0     		b	.L9
+ 118              	.LVL7:
+ 119              	.L10:
+ 120              	.LBB3:
+ 121              		.loc 1 43 32 is_stmt 1 discriminator 2 view .LVU23
+ 122 002a 0134     		adds	r4, r4, #1
+ 123              	.LVL8:
+ 124              		.loc 1 43 32 is_stmt 0 discriminator 2 view .LVU24
+ 125 002c 64B2     		sxtb	r4, r4
+ 126              	.LVL9:
+ 127              	.L9:
+ 128              		.loc 1 43 25 is_stmt 1 discriminator 1 view .LVU25
+ 129 002e 172C     		cmp	r4, #23
+ 130 0030 1CDC     		bgt	.L15
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccRxkUPf.s 			page 4
+
+
+  44:rover/ECAL/Src/hx711.c ****     {
+  45:rover/ECAL/Src/hx711.c ****         HAL_GPIO_WritePin(SCK_PORT, SCK_PIN, GPIO_PIN_SET);
+ 131              		.loc 1 45 9 view .LVU26
+ 132 0032 194D     		ldr	r5, .L16
+ 133 0034 0122     		movs	r2, #1
+ 134 0036 4FF40071 		mov	r1, #512
+ 135 003a 2846     		mov	r0, r5
+ 136 003c FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 137              	.LVL10:
+  46:rover/ECAL/Src/hx711.c ****         HX711_DelayUs(1);
+ 138              		.loc 1 46 9 view .LVU27
+ 139 0040 0120     		movs	r0, #1
+ 140 0042 FFF7FEFF 		bl	HX711_DelayUs
+ 141              	.LVL11:
+  47:rover/ECAL/Src/hx711.c **** 
+  48:rover/ECAL/Src/hx711.c ****         data <<= 1;
+ 142              		.loc 1 48 9 view .LVU28
+ 143              		.loc 1 48 14 is_stmt 0 view .LVU29
+ 144 0046 7600     		lsls	r6, r6, #1
+ 145              	.LVL12:
+  49:rover/ECAL/Src/hx711.c **** 
+  50:rover/ECAL/Src/hx711.c ****         HAL_GPIO_WritePin(SCK_PORT, SCK_PIN, GPIO_PIN_RESET);
+ 146              		.loc 1 50 9 is_stmt 1 view .LVU30
+ 147 0048 0022     		movs	r2, #0
+ 148 004a 4FF40071 		mov	r1, #512
+ 149 004e 2846     		mov	r0, r5
+ 150 0050 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 151              	.LVL13:
+  51:rover/ECAL/Src/hx711.c ****         HX711_DelayUs(1);
+ 152              		.loc 1 51 9 view .LVU31
+ 153 0054 0120     		movs	r0, #1
+ 154 0056 FFF7FEFF 		bl	HX711_DelayUs
+ 155              	.LVL14:
+  52:rover/ECAL/Src/hx711.c **** 
+  53:rover/ECAL/Src/hx711.c ****         if(HAL_GPIO_ReadPin(DT_PORT, DT_PIN) == GPIO_PIN_SET)
+ 156              		.loc 1 53 9 view .LVU32
+ 157              		.loc 1 53 12 is_stmt 0 view .LVU33
+ 158 005a 4FF48071 		mov	r1, #256
+ 159 005e 2846     		mov	r0, r5
+ 160 0060 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 161              	.LVL15:
+ 162              		.loc 1 53 11 discriminator 1 view .LVU34
+ 163 0064 0128     		cmp	r0, #1
+ 164 0066 E0D1     		bne	.L10
+  54:rover/ECAL/Src/hx711.c ****             data++;
+ 165              		.loc 1 54 13 is_stmt 1 view .LVU35
+ 166              		.loc 1 54 17 is_stmt 0 view .LVU36
+ 167 0068 0136     		adds	r6, r6, #1
+ 168              	.LVL16:
+ 169              		.loc 1 54 17 view .LVU37
+ 170 006a DEE7     		b	.L10
+ 171              	.L15:
+ 172              		.loc 1 54 17 view .LVU38
+ 173              	.LBE3:
+  55:rover/ECAL/Src/hx711.c ****     }
+  56:rover/ECAL/Src/hx711.c **** 
+  57:rover/ECAL/Src/hx711.c ****     /* Set gain = 128 (1 extra pulse) */
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccRxkUPf.s 			page 5
+
+
+  58:rover/ECAL/Src/hx711.c ****     HAL_GPIO_WritePin(SCK_PORT, SCK_PIN, GPIO_PIN_SET);
+ 174              		.loc 1 58 5 is_stmt 1 view .LVU39
+ 175 006c 0A4C     		ldr	r4, .L16
+ 176              	.LVL17:
+ 177              		.loc 1 58 5 is_stmt 0 view .LVU40
+ 178 006e 0122     		movs	r2, #1
+ 179 0070 4FF40071 		mov	r1, #512
+ 180 0074 2046     		mov	r0, r4
+ 181 0076 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 182              	.LVL18:
+  59:rover/ECAL/Src/hx711.c ****     HX711_DelayUs(1);
+ 183              		.loc 1 59 5 is_stmt 1 view .LVU41
+ 184 007a 0120     		movs	r0, #1
+ 185 007c FFF7FEFF 		bl	HX711_DelayUs
+ 186              	.LVL19:
+  60:rover/ECAL/Src/hx711.c ****     HAL_GPIO_WritePin(SCK_PORT, SCK_PIN, GPIO_PIN_RESET);
+ 187              		.loc 1 60 5 view .LVU42
+ 188 0080 0022     		movs	r2, #0
+ 189 0082 4FF40071 		mov	r1, #512
+ 190 0086 2046     		mov	r0, r4
+ 191 0088 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 192              	.LVL20:
+  61:rover/ECAL/Src/hx711.c ****     HX711_DelayUs(1);
+ 193              		.loc 1 61 5 view .LVU43
+ 194 008c 0120     		movs	r0, #1
+ 195 008e FFF7FEFF 		bl	HX711_DelayUs
+ 196              	.LVL21:
+  62:rover/ECAL/Src/hx711.c **** 
+  63:rover/ECAL/Src/hx711.c ****     /* Convert signed */
+  64:rover/ECAL/Src/hx711.c ****     data ^= 0x800000;
+ 197              		.loc 1 64 5 view .LVU44
+ 198              		.loc 1 64 10 is_stmt 0 view .LVU45
+ 199 0092 86F40000 		eor	r0, r6, #8388608
+ 200              	.LVL22:
+  65:rover/ECAL/Src/hx711.c **** 
+  66:rover/ECAL/Src/hx711.c ****     return (int32_t)data;
+ 201              		.loc 1 66 5 is_stmt 1 view .LVU46
+ 202              	.L5:
+  67:rover/ECAL/Src/hx711.c **** }
+ 203              		.loc 1 67 1 is_stmt 0 view .LVU47
+ 204 0096 70BD     		pop	{r4, r5, r6, pc}
+ 205              	.L17:
+ 206              		.align	2
+ 207              	.L16:
+ 208 0098 00040240 		.word	1073873920
+ 209              		.cfi_endproc
+ 210              	.LFE135:
+ 212              		.section	.text.HX711_Init,"ax",%progbits
+ 213              		.align	1
+ 214              		.global	HX711_Init
+ 215              		.syntax unified
+ 216              		.thumb
+ 217              		.thumb_func
+ 219              	HX711_Init:
+ 220              	.LVL23:
+ 221              	.LFB136:
+  68:rover/ECAL/Src/hx711.c **** 
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccRxkUPf.s 			page 6
+
+
+  69:rover/ECAL/Src/hx711.c **** /* ================= PUBLIC FUNCTIONS ================= */
+  70:rover/ECAL/Src/hx711.c **** 
+  71:rover/ECAL/Src/hx711.c **** void HX711_Init(TIM_HandleTypeDef *htim)
+  72:rover/ECAL/Src/hx711.c **** {
+ 222              		.loc 1 72 1 is_stmt 1 view -0
+ 223              		.cfi_startproc
+ 224              		@ args = 0, pretend = 0, frame = 0
+ 225              		@ frame_needed = 0, uses_anonymous_args = 0
+ 226              		.loc 1 72 1 is_stmt 0 view .LVU49
+ 227 0000 10B5     		push	{r4, lr}
+ 228              	.LCFI1:
+ 229              		.cfi_def_cfa_offset 8
+ 230              		.cfi_offset 4, -8
+ 231              		.cfi_offset 14, -4
+  73:rover/ECAL/Src/hx711.c ****     hx711_tim = htim;
+ 232              		.loc 1 73 5 is_stmt 1 view .LVU50
+ 233              		.loc 1 73 15 is_stmt 0 view .LVU51
+ 234 0002 0C4B     		ldr	r3, .L20
+ 235 0004 1860     		str	r0, [r3]
+  74:rover/ECAL/Src/hx711.c **** 
+  75:rover/ECAL/Src/hx711.c ****     HAL_TIM_Base_Start(hx711_tim);
+ 236              		.loc 1 75 5 is_stmt 1 view .LVU52
+ 237 0006 FFF7FEFF 		bl	HAL_TIM_Base_Start
+ 238              	.LVL24:
+  76:rover/ECAL/Src/hx711.c **** 
+  77:rover/ECAL/Src/hx711.c ****     /* HX711 reset sequence */
+  78:rover/ECAL/Src/hx711.c ****     HAL_GPIO_WritePin(SCK_PORT, SCK_PIN, GPIO_PIN_SET);
+ 239              		.loc 1 78 5 view .LVU53
+ 240 000a 0B4C     		ldr	r4, .L20+4
+ 241 000c 0122     		movs	r2, #1
+ 242 000e 4FF40071 		mov	r1, #512
+ 243 0012 2046     		mov	r0, r4
+ 244 0014 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 245              	.LVL25:
+  79:rover/ECAL/Src/hx711.c ****     HAL_Delay(10);
+ 246              		.loc 1 79 5 view .LVU54
+ 247 0018 0A20     		movs	r0, #10
+ 248 001a FFF7FEFF 		bl	HAL_Delay
+ 249              	.LVL26:
+  80:rover/ECAL/Src/hx711.c ****     HAL_GPIO_WritePin(SCK_PORT, SCK_PIN, GPIO_PIN_RESET);
+ 250              		.loc 1 80 5 view .LVU55
+ 251 001e 0022     		movs	r2, #0
+ 252 0020 4FF40071 		mov	r1, #512
+ 253 0024 2046     		mov	r0, r4
+ 254 0026 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 255              	.LVL27:
+  81:rover/ECAL/Src/hx711.c ****     HAL_Delay(10);
+ 256              		.loc 1 81 5 view .LVU56
+ 257 002a 0A20     		movs	r0, #10
+ 258 002c FFF7FEFF 		bl	HAL_Delay
+ 259              	.LVL28:
+  82:rover/ECAL/Src/hx711.c **** }
+ 260              		.loc 1 82 1 is_stmt 0 view .LVU57
+ 261 0030 10BD     		pop	{r4, pc}
+ 262              	.L21:
+ 263 0032 00BF     		.align	2
+ 264              	.L20:
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccRxkUPf.s 			page 7
+
+
+ 265 0034 00000000 		.word	hx711_tim
+ 266 0038 00040240 		.word	1073873920
+ 267              		.cfi_endproc
+ 268              	.LFE136:
+ 270              		.section	.text.HX711_SetCalibration,"ax",%progbits
+ 271              		.align	1
+ 272              		.global	HX711_SetCalibration
+ 273              		.syntax unified
+ 274              		.thumb
+ 275              		.thumb_func
+ 277              	HX711_SetCalibration:
+ 278              	.LVL29:
+ 279              	.LFB137:
+  83:rover/ECAL/Src/hx711.c **** 
+  84:rover/ECAL/Src/hx711.c **** void HX711_SetCalibration(int32_t tare, float knownOriginal, float knownHX711)
+  85:rover/ECAL/Src/hx711.c **** {
+ 280              		.loc 1 85 1 is_stmt 1 view -0
+ 281              		.cfi_startproc
+ 282              		@ args = 0, pretend = 0, frame = 0
+ 283              		@ frame_needed = 0, uses_anonymous_args = 0
+ 284              		@ link register save eliminated.
+  86:rover/ECAL/Src/hx711.c ****     hx711_tare = tare;
+ 285              		.loc 1 86 5 view .LVU59
+ 286              		.loc 1 86 16 is_stmt 0 view .LVU60
+ 287 0000 034B     		ldr	r3, .L23
+ 288 0002 1860     		str	r0, [r3]
+  87:rover/ECAL/Src/hx711.c ****     hx711_coefficient = knownOriginal / knownHX711;
+ 289              		.loc 1 87 5 is_stmt 1 view .LVU61
+ 290              		.loc 1 87 39 is_stmt 0 view .LVU62
+ 291 0004 C0EE207A 		vdiv.f32	s15, s0, s1
+ 292              		.loc 1 87 23 view .LVU63
+ 293 0008 024B     		ldr	r3, .L23+4
+ 294 000a C3ED007A 		vstr.32	s15, [r3]
+  88:rover/ECAL/Src/hx711.c **** }
+ 295              		.loc 1 88 1 view .LVU64
+ 296 000e 7047     		bx	lr
+ 297              	.L24:
+ 298              		.align	2
+ 299              	.L23:
+ 300 0010 00000000 		.word	hx711_tare
+ 301 0014 00000000 		.word	hx711_coefficient
+ 302              		.cfi_endproc
+ 303              	.LFE137:
+ 305              		.section	.text.HX711_GetWeight,"ax",%progbits
+ 306              		.align	1
+ 307              		.global	HX711_GetWeight
+ 308              		.syntax unified
+ 309              		.thumb
+ 310              		.thumb_func
+ 312              	HX711_GetWeight:
+ 313              	.LFB138:
+  89:rover/ECAL/Src/hx711.c **** 
+  90:rover/ECAL/Src/hx711.c **** int32_t HX711_GetWeight()
+  91:rover/ECAL/Src/hx711.c **** {
+ 314              		.loc 1 91 1 is_stmt 1 view -0
+ 315              		.cfi_startproc
+ 316              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccRxkUPf.s 			page 8
+
+
+ 317              		@ frame_needed = 0, uses_anonymous_args = 0
+ 318 0000 08B5     		push	{r3, lr}
+ 319              	.LCFI2:
+ 320              		.cfi_def_cfa_offset 8
+ 321              		.cfi_offset 3, -8
+ 322              		.cfi_offset 14, -4
+  92:rover/ECAL/Src/hx711.c **** //    int32_t total = 0;
+  93:rover/ECAL/Src/hx711.c **** //    const uint8_t samples = 1;
+  94:rover/ECAL/Src/hx711.c **** //
+  95:rover/ECAL/Src/hx711.c **** //    for(uint8_t i = 0; i < samples; i++)
+  96:rover/ECAL/Src/hx711.c **** //    {
+  97:rover/ECAL/Src/hx711.c **** //        total += HX711_ReadRaw();
+  98:rover/ECAL/Src/hx711.c **** //    }
+  99:rover/ECAL/Src/hx711.c **** //
+ 100:rover/ECAL/Src/hx711.c **** //    int32_t average = total / samples;
+ 101:rover/ECAL/Src/hx711.c **** int32_t reading = HX711_ReadRaw();
+ 323              		.loc 1 101 1 view .LVU66
+ 324              		.loc 1 101 19 is_stmt 0 view .LVU67
+ 325 0002 FFF7FEFF 		bl	HX711_ReadRaw
+ 326              	.LVL30:
+ 102:rover/ECAL/Src/hx711.c ****     return (int32_t)((reading - hx711_tare) * hx711_coefficient);
+ 327              		.loc 1 102 5 is_stmt 1 view .LVU68
+ 328              		.loc 1 102 31 is_stmt 0 view .LVU69
+ 329 0006 084B     		ldr	r3, .L27
+ 330 0008 1B68     		ldr	r3, [r3]
+ 331 000a C31A     		subs	r3, r0, r3
+ 332 000c 07EE903A 		vmov	s15, r3	@ int
+ 333              		.loc 1 102 45 view .LVU70
+ 334 0010 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 335 0014 054B     		ldr	r3, .L27+4
+ 336 0016 93ED007A 		vldr.32	s14, [r3]
+ 337 001a 67EE877A 		vmul.f32	s15, s15, s14
+ 103:rover/ECAL/Src/hx711.c **** }
+ 338              		.loc 1 103 1 view .LVU71
+ 339 001e FDEEE77A 		vcvt.s32.f32	s15, s15
+ 340 0022 17EE900A 		vmov	r0, s15	@ int
+ 341              	.LVL31:
+ 342              		.loc 1 103 1 view .LVU72
+ 343 0026 08BD     		pop	{r3, pc}
+ 344              	.L28:
+ 345              		.align	2
+ 346              	.L27:
+ 347 0028 00000000 		.word	hx711_tare
+ 348 002c 00000000 		.word	hx711_coefficient
+ 349              		.cfi_endproc
+ 350              	.LFE138:
+ 352              		.section	.data.hx711_coefficient,"aw"
+ 353              		.align	2
+ 356              	hx711_coefficient:
+ 357 0000 0000803F 		.word	1065353216
+ 358              		.section	.bss.hx711_tare,"aw",%nobits
+ 359              		.align	2
+ 362              	hx711_tare:
+ 363 0000 00000000 		.space	4
+ 364              		.section	.bss.hx711_tim,"aw",%nobits
+ 365              		.align	2
+ 368              	hx711_tim:
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccRxkUPf.s 			page 9
+
+
+ 369 0000 00000000 		.space	4
+ 370              		.text
+ 371              	.Letext0:
+ 372              		.file 2 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 373              		.file 3 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 374              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f412rx.h"
+ 375              		.file 5 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 376              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
+ 377              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 378              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
+ 379              		.file 9 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccRxkUPf.s 			page 10
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 hx711.c
+C:\Users\bavly\AppData\Local\Temp\ccRxkUPf.s:21     .text.HX711_DelayUs:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccRxkUPf.s:26     .text.HX711_DelayUs:00000000 HX711_DelayUs
+C:\Users\bavly\AppData\Local\Temp\ccRxkUPf.s:54     .text.HX711_DelayUs:00000014 $d
+C:\Users\bavly\AppData\Local\Temp\ccRxkUPf.s:368    .bss.hx711_tim:00000000 hx711_tim
+C:\Users\bavly\AppData\Local\Temp\ccRxkUPf.s:59     .text.HX711_ReadRaw:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccRxkUPf.s:64     .text.HX711_ReadRaw:00000000 HX711_ReadRaw
+C:\Users\bavly\AppData\Local\Temp\ccRxkUPf.s:208    .text.HX711_ReadRaw:00000098 $d
+C:\Users\bavly\AppData\Local\Temp\ccRxkUPf.s:213    .text.HX711_Init:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccRxkUPf.s:219    .text.HX711_Init:00000000 HX711_Init
+C:\Users\bavly\AppData\Local\Temp\ccRxkUPf.s:265    .text.HX711_Init:00000034 $d
+C:\Users\bavly\AppData\Local\Temp\ccRxkUPf.s:271    .text.HX711_SetCalibration:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccRxkUPf.s:277    .text.HX711_SetCalibration:00000000 HX711_SetCalibration
+C:\Users\bavly\AppData\Local\Temp\ccRxkUPf.s:300    .text.HX711_SetCalibration:00000010 $d
+C:\Users\bavly\AppData\Local\Temp\ccRxkUPf.s:362    .bss.hx711_tare:00000000 hx711_tare
+C:\Users\bavly\AppData\Local\Temp\ccRxkUPf.s:356    .data.hx711_coefficient:00000000 hx711_coefficient
+C:\Users\bavly\AppData\Local\Temp\ccRxkUPf.s:306    .text.HX711_GetWeight:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccRxkUPf.s:312    .text.HX711_GetWeight:00000000 HX711_GetWeight
+C:\Users\bavly\AppData\Local\Temp\ccRxkUPf.s:347    .text.HX711_GetWeight:00000028 $d
+C:\Users\bavly\AppData\Local\Temp\ccRxkUPf.s:353    .data.hx711_coefficient:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccRxkUPf.s:359    .bss.hx711_tare:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccRxkUPf.s:365    .bss.hx711_tim:00000000 $d
+
+UNDEFINED SYMBOLS
+HAL_GetTick
+HAL_GPIO_ReadPin
+HAL_GPIO_WritePin
+HAL_TIM_Base_Start
+HAL_Delay

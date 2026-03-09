@@ -1,0 +1,1258 @@
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"mission_motion.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "rover/Mission/Src/mission_motion.c"
+  20              		.section	.text.get_motor_info,"ax",%progbits
+  21              		.align	1
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	get_motor_info:
+  27              	.LVL0:
+  28              	.LFB137:
+   1:rover/Mission/Src/mission_motion.c **** /*
+   2:rover/Mission/Src/mission_motion.c ****  * mission_motion.c
+   3:rover/Mission/Src/mission_motion.c ****  *
+   4:rover/Mission/Src/mission_motion.c ****  *  Created on: April 27, 2025
+   5:rover/Mission/Src/mission_motion.c ****  *      Author: Bavly
+   6:rover/Mission/Src/mission_motion.c ****  */
+   7:rover/Mission/Src/mission_motion.c **** 
+   8:rover/Mission/Src/mission_motion.c **** #include "mission_motion.h"
+   9:rover/Mission/Src/mission_motion.c **** #include "motor_config.h"
+  10:rover/Mission/Src/mission_motion.c **** #include "roboclaw.h"
+  11:rover/Mission/Src/mission_motion.c **** #include "usart.h"
+  12:rover/Mission/Src/mission_motion.c **** #define ACTIVE_ROBOCLAWS 2
+  13:rover/Mission/Src/mission_motion.c **** // Private variables for all 3 RoboClaws
+  14:rover/Mission/Src/mission_motion.c **** #if ACTIVE_ROBOCLAWS >= 1
+  15:rover/Mission/Src/mission_motion.c ****     static SERIAL_HandleTypeDef *hserial_uart1;
+  16:rover/Mission/Src/mission_motion.c ****     static RoboClaw_HandleTypeDef hroboclaw1;
+  17:rover/Mission/Src/mission_motion.c **** #endif
+  18:rover/Mission/Src/mission_motion.c **** #if ACTIVE_ROBOCLAWS >= 2
+  19:rover/Mission/Src/mission_motion.c ****     static SERIAL_HandleTypeDef *hserial_uart2;
+  20:rover/Mission/Src/mission_motion.c ****     static RoboClaw_HandleTypeDef hroboclaw2;
+  21:rover/Mission/Src/mission_motion.c **** #endif
+  22:rover/Mission/Src/mission_motion.c **** #if ACTIVE_ROBOCLAWS >=3
+  23:rover/Mission/Src/mission_motion.c ****     static SERIAL_HandleTypeDef *hserial_uart3;
+  24:rover/Mission/Src/mission_motion.c ****     static RoboClaw_HandleTypeDef hroboclaw3;
+  25:rover/Mission/Src/mission_motion.c **** #endif
+  26:rover/Mission/Src/mission_motion.c **** 
+  27:rover/Mission/Src/mission_motion.c **** 
+  28:rover/Mission/Src/mission_motion.c **** 
+  29:rover/Mission/Src/mission_motion.c **** 
+  30:rover/Mission/Src/mission_motion.c **** // Target positions for all 6 motors
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s 			page 2
+
+
+  31:rover/Mission/Src/mission_motion.c **** static int32_t target_positions[6] = {0, 0, 0, 0, 0, 0};
+  32:rover/Mission/Src/mission_motion.c **** 
+  33:rover/Mission/Src/mission_motion.c **** // Motion active flags for all 6 motors
+  34:rover/Mission/Src/mission_motion.c **** static bool motor_active[6] = {false, false, false, false, false, false};
+  35:rover/Mission/Src/mission_motion.c **** 
+  36:rover/Mission/Src/mission_motion.c **** static void get_motor_info(uint8_t motor, RoboClaw_HandleTypeDef **roboclaw, uint8_t *is_m1) {
+  29              		.loc 1 36 94 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  37:rover/Mission/Src/mission_motion.c ****     switch(motor) {
+  34              		.loc 1 37 5 view .LVU1
+  35 0000 0138     		subs	r0, r0, #1
+  36              	.LVL1:
+  37              		.loc 1 37 5 is_stmt 0 view .LVU2
+  38 0002 0328     		cmp	r0, #3
+  39 0004 17D8     		bhi	.L2
+  40 0006 DFE800F0 		tbb	[pc, r0]
+  41              	.L4:
+  42 000a 02       		.byte	(.L7-.L4)/2
+  43 000b 07       		.byte	(.L6-.L4)/2
+  44 000c 0C       		.byte	(.L5-.L4)/2
+  45 000d 11       		.byte	(.L3-.L4)/2
+  46              		.p2align 1
+  47              	.L7:
+  38:rover/Mission/Src/mission_motion.c **** 
+  39:rover/Mission/Src/mission_motion.c **** #if ACTIVE_ROBOCLAWS >= 1
+  40:rover/Mission/Src/mission_motion.c ****     		case 1:
+  41:rover/Mission/Src/mission_motion.c ****                *roboclaw = &hroboclaw1;
+  48              		.loc 1 41 16 is_stmt 1 view .LVU3
+  49              		.loc 1 41 26 is_stmt 0 view .LVU4
+  50 000e 0C4B     		ldr	r3, .L9
+  51 0010 0B60     		str	r3, [r1]
+  42:rover/Mission/Src/mission_motion.c ****                *is_m1 = 1;
+  52              		.loc 1 42 16 is_stmt 1 view .LVU5
+  53              		.loc 1 42 23 is_stmt 0 view .LVU6
+  54 0012 0123     		movs	r3, #1
+  55 0014 1370     		strb	r3, [r2]
+  43:rover/Mission/Src/mission_motion.c ****                break;
+  56              		.loc 1 43 16 is_stmt 1 view .LVU7
+  57 0016 7047     		bx	lr
+  58              	.L6:
+  44:rover/Mission/Src/mission_motion.c ****            case 2:
+  45:rover/Mission/Src/mission_motion.c ****                *roboclaw = &hroboclaw1;
+  59              		.loc 1 45 16 view .LVU8
+  60              		.loc 1 45 26 is_stmt 0 view .LVU9
+  61 0018 094B     		ldr	r3, .L9
+  62 001a 0B60     		str	r3, [r1]
+  46:rover/Mission/Src/mission_motion.c ****                *is_m1 = 0;
+  63              		.loc 1 46 16 is_stmt 1 view .LVU10
+  64              		.loc 1 46 23 is_stmt 0 view .LVU11
+  65 001c 0023     		movs	r3, #0
+  66 001e 1370     		strb	r3, [r2]
+  47:rover/Mission/Src/mission_motion.c ****                break;
+  67              		.loc 1 47 16 is_stmt 1 view .LVU12
+  68 0020 7047     		bx	lr
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s 			page 3
+
+
+  69              	.L5:
+  48:rover/Mission/Src/mission_motion.c **** #endif
+  49:rover/Mission/Src/mission_motion.c **** #if ACTIVE_ROBOCLAWS >=2
+  50:rover/Mission/Src/mission_motion.c ****            case 3:
+  51:rover/Mission/Src/mission_motion.c ****                *roboclaw = &hroboclaw2;
+  70              		.loc 1 51 16 view .LVU13
+  71              		.loc 1 51 26 is_stmt 0 view .LVU14
+  72 0022 084B     		ldr	r3, .L9+4
+  73 0024 0B60     		str	r3, [r1]
+  52:rover/Mission/Src/mission_motion.c ****                *is_m1 = 1;
+  74              		.loc 1 52 16 is_stmt 1 view .LVU15
+  75              		.loc 1 52 23 is_stmt 0 view .LVU16
+  76 0026 0123     		movs	r3, #1
+  77 0028 1370     		strb	r3, [r2]
+  53:rover/Mission/Src/mission_motion.c ****               break;
+  78              		.loc 1 53 15 is_stmt 1 view .LVU17
+  79 002a 7047     		bx	lr
+  80              	.L3:
+  54:rover/Mission/Src/mission_motion.c ****            case 4:
+  55:rover/Mission/Src/mission_motion.c ****                *roboclaw = &hroboclaw2;
+  81              		.loc 1 55 16 view .LVU18
+  82              		.loc 1 55 26 is_stmt 0 view .LVU19
+  83 002c 054B     		ldr	r3, .L9+4
+  84 002e 0B60     		str	r3, [r1]
+  56:rover/Mission/Src/mission_motion.c ****                *is_m1 = 0;
+  85              		.loc 1 56 16 is_stmt 1 view .LVU20
+  86              		.loc 1 56 23 is_stmt 0 view .LVU21
+  87 0030 0023     		movs	r3, #0
+  88 0032 1370     		strb	r3, [r2]
+  57:rover/Mission/Src/mission_motion.c ****               break;
+  89              		.loc 1 57 15 is_stmt 1 view .LVU22
+  90 0034 7047     		bx	lr
+  91              	.L2:
+  58:rover/Mission/Src/mission_motion.c **** #endif
+  59:rover/Mission/Src/mission_motion.c **** #if ACTIVE_ROBOCLAWS >=3
+  60:rover/Mission/Src/mission_motion.c **** 
+  61:rover/Mission/Src/mission_motion.c ****            case 5:
+  62:rover/Mission/Src/mission_motion.c ****                *roboclaw = &hroboclaw3;
+  63:rover/Mission/Src/mission_motion.c ****                *is_m1 = 1;
+  64:rover/Mission/Src/mission_motion.c ****                break;
+  65:rover/Mission/Src/mission_motion.c ****            case 6:
+  66:rover/Mission/Src/mission_motion.c ****                *roboclaw = &hroboclaw3;
+  67:rover/Mission/Src/mission_motion.c ****                *is_m1 = 0;
+  68:rover/Mission/Src/mission_motion.c ****                break;
+  69:rover/Mission/Src/mission_motion.c **** #endif
+  70:rover/Mission/Src/mission_motion.c ****         default:
+  71:rover/Mission/Src/mission_motion.c ****             *roboclaw = NULL;
+  92              		.loc 1 71 13 view .LVU23
+  93              		.loc 1 71 23 is_stmt 0 view .LVU24
+  94 0036 0023     		movs	r3, #0
+  95 0038 0B60     		str	r3, [r1]
+  72:rover/Mission/Src/mission_motion.c ****             *is_m1 = 0;
+  96              		.loc 1 72 13 is_stmt 1 view .LVU25
+  97              		.loc 1 72 20 is_stmt 0 view .LVU26
+  98 003a 1370     		strb	r3, [r2]
+  73:rover/Mission/Src/mission_motion.c ****             break;
+  99              		.loc 1 73 13 is_stmt 1 view .LVU27
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s 			page 4
+
+
+  74:rover/Mission/Src/mission_motion.c ****     }
+  75:rover/Mission/Src/mission_motion.c **** }
+ 100              		.loc 1 75 1 is_stmt 0 view .LVU28
+ 101 003c 7047     		bx	lr
+ 102              	.L10:
+ 103 003e 00BF     		.align	2
+ 104              	.L9:
+ 105 0040 00000000 		.word	hroboclaw1
+ 106 0044 00000000 		.word	hroboclaw2
+ 107              		.cfi_endproc
+ 108              	.LFE137:
+ 110              		.section	.text.clamp_position,"ax",%progbits
+ 111              		.align	1
+ 112              		.syntax unified
+ 113              		.thumb
+ 114              		.thumb_func
+ 116              	clamp_position:
+ 117              	.LVL2:
+ 118              	.LFB138:
+  76:rover/Mission/Src/mission_motion.c **** 
+  77:rover/Mission/Src/mission_motion.c **** // Helper function to clamp position based on motor limits
+  78:rover/Mission/Src/mission_motion.c **** static int32_t clamp_position(uint8_t motor, int32_t position) {
+ 119              		.loc 1 78 64 is_stmt 1 view -0
+ 120              		.cfi_startproc
+ 121              		@ args = 0, pretend = 0, frame = 0
+ 122              		@ frame_needed = 0, uses_anonymous_args = 0
+ 123              		@ link register save eliminated.
+  79:rover/Mission/Src/mission_motion.c ****     switch(motor) {
+ 124              		.loc 1 79 5 view .LVU30
+ 125 0000 0138     		subs	r0, r0, #1
+ 126              	.LVL3:
+ 127              		.loc 1 79 5 is_stmt 0 view .LVU31
+ 128 0002 0528     		cmp	r0, #5
+ 129 0004 34D8     		bhi	.L20
+ 130 0006 DFE800F0 		tbb	[pc, r0]
+ 131              	.L14:
+ 132 000a 03       		.byte	(.L19-.L14)/2
+ 133 000b 0B       		.byte	(.L18-.L14)/2
+ 134 000c 13       		.byte	(.L17-.L14)/2
+ 135 000d 1B       		.byte	(.L16-.L14)/2
+ 136 000e 23       		.byte	(.L15-.L14)/2
+ 137 000f 2B       		.byte	(.L13-.L14)/2
+ 138              		.p2align 1
+ 139              	.L19:
+  80:rover/Mission/Src/mission_motion.c ****         case 1:
+  81:rover/Mission/Src/mission_motion.c ****             if (position < MOTOR1_MIN) return MOTOR1_MIN;
+ 140              		.loc 1 81 13 is_stmt 1 view .LVU32
+ 141              		.loc 1 81 16 is_stmt 0 view .LVU33
+ 142 0010 0029     		cmp	r1, #0
+ 143 0012 2FDB     		blt	.L21
+  82:rover/Mission/Src/mission_motion.c ****             if (position > MOTOR1_MAX) return MOTOR1_MAX;
+ 144              		.loc 1 82 13 is_stmt 1 view .LVU34
+ 145              		.loc 1 82 16 is_stmt 0 view .LVU35
+ 146 0014 41F2AA43 		movw	r3, #5290
+ 147 0018 9942     		cmp	r1, r3
+ 148 001a 2DDC     		bgt	.L22
+  83:rover/Mission/Src/mission_motion.c ****             break;
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s 			page 5
+
+
+  84:rover/Mission/Src/mission_motion.c ****         case 2:
+  85:rover/Mission/Src/mission_motion.c ****             if (position < MOTOR2_MIN) return MOTOR2_MIN;
+  86:rover/Mission/Src/mission_motion.c ****             if (position > MOTOR2_MAX) return MOTOR2_MAX;
+  87:rover/Mission/Src/mission_motion.c ****             break;
+  88:rover/Mission/Src/mission_motion.c ****         case 3:
+  89:rover/Mission/Src/mission_motion.c ****             if (position < MOTOR3_MIN) return MOTOR3_MIN;
+  90:rover/Mission/Src/mission_motion.c ****             if (position > MOTOR3_MAX) return MOTOR3_MAX;
+  91:rover/Mission/Src/mission_motion.c ****             break;
+  92:rover/Mission/Src/mission_motion.c ****         case 4:
+  93:rover/Mission/Src/mission_motion.c ****             if (position < MOTOR4_MIN) return MOTOR4_MIN;
+  94:rover/Mission/Src/mission_motion.c ****             if (position > MOTOR4_MAX) return MOTOR4_MAX;
+  95:rover/Mission/Src/mission_motion.c ****             break;
+  96:rover/Mission/Src/mission_motion.c ****         case 5:
+  97:rover/Mission/Src/mission_motion.c ****             if (position < MOTOR5_MIN) return MOTOR5_MIN;
+  98:rover/Mission/Src/mission_motion.c ****             if (position > MOTOR5_MAX) return MOTOR5_MAX;
+  99:rover/Mission/Src/mission_motion.c ****             break;
+ 100:rover/Mission/Src/mission_motion.c ****         case 6:
+ 101:rover/Mission/Src/mission_motion.c ****             if (position < MOTOR6_MIN) return MOTOR6_MIN;
+ 102:rover/Mission/Src/mission_motion.c ****             if (position > MOTOR6_MAX) return MOTOR6_MAX;
+ 103:rover/Mission/Src/mission_motion.c ****             break;
+ 104:rover/Mission/Src/mission_motion.c ****     }
+ 105:rover/Mission/Src/mission_motion.c ****     return position;
+ 149              		.loc 1 105 12 view .LVU36
+ 150 001c 0846     		mov	r0, r1
+ 151              	.LVL4:
+ 152              		.loc 1 105 12 view .LVU37
+ 153 001e 7047     		bx	lr
+ 154              	.L18:
+  85:rover/Mission/Src/mission_motion.c ****             if (position > MOTOR2_MAX) return MOTOR2_MAX;
+ 155              		.loc 1 85 13 is_stmt 1 view .LVU38
+  85:rover/Mission/Src/mission_motion.c ****             if (position > MOTOR2_MAX) return MOTOR2_MAX;
+ 156              		.loc 1 85 16 is_stmt 0 view .LVU39
+ 157 0020 0029     		cmp	r1, #0
+ 158 0022 2CDB     		blt	.L23
+  86:rover/Mission/Src/mission_motion.c ****             break;
+ 159              		.loc 1 86 13 is_stmt 1 view .LVU40
+  86:rover/Mission/Src/mission_motion.c ****             break;
+ 160              		.loc 1 86 16 is_stmt 0 view .LVU41
+ 161 0024 41F2AA43 		movw	r3, #5290
+ 162 0028 9942     		cmp	r1, r3
+ 163 002a 2ADC     		bgt	.L24
+ 164              		.loc 1 105 12 view .LVU42
+ 165 002c 0846     		mov	r0, r1
+ 166 002e 7047     		bx	lr
+ 167              	.L17:
+  89:rover/Mission/Src/mission_motion.c ****             if (position > MOTOR3_MAX) return MOTOR3_MAX;
+ 168              		.loc 1 89 13 is_stmt 1 view .LVU43
+  89:rover/Mission/Src/mission_motion.c ****             if (position > MOTOR3_MAX) return MOTOR3_MAX;
+ 169              		.loc 1 89 16 is_stmt 0 view .LVU44
+ 170 0030 0029     		cmp	r1, #0
+ 171 0032 29DB     		blt	.L25
+  90:rover/Mission/Src/mission_motion.c ****             break;
+ 172              		.loc 1 90 13 is_stmt 1 view .LVU45
+  90:rover/Mission/Src/mission_motion.c ****             break;
+ 173              		.loc 1 90 16 is_stmt 0 view .LVU46
+ 174 0034 41F2AA43 		movw	r3, #5290
+ 175 0038 9942     		cmp	r1, r3
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s 			page 6
+
+
+ 176 003a 27DC     		bgt	.L26
+ 177              		.loc 1 105 12 view .LVU47
+ 178 003c 0846     		mov	r0, r1
+ 179 003e 7047     		bx	lr
+ 180              	.L16:
+  93:rover/Mission/Src/mission_motion.c ****             if (position > MOTOR4_MAX) return MOTOR4_MAX;
+ 181              		.loc 1 93 13 is_stmt 1 view .LVU48
+  93:rover/Mission/Src/mission_motion.c ****             if (position > MOTOR4_MAX) return MOTOR4_MAX;
+ 182              		.loc 1 93 16 is_stmt 0 view .LVU49
+ 183 0040 0029     		cmp	r1, #0
+ 184 0042 26DB     		blt	.L27
+  94:rover/Mission/Src/mission_motion.c ****             break;
+ 185              		.loc 1 94 13 is_stmt 1 view .LVU50
+  94:rover/Mission/Src/mission_motion.c ****             break;
+ 186              		.loc 1 94 16 is_stmt 0 view .LVU51
+ 187 0044 41F2AA43 		movw	r3, #5290
+ 188 0048 9942     		cmp	r1, r3
+ 189 004a 24DC     		bgt	.L28
+ 190              		.loc 1 105 12 view .LVU52
+ 191 004c 0846     		mov	r0, r1
+ 192 004e 7047     		bx	lr
+ 193              	.L15:
+  97:rover/Mission/Src/mission_motion.c ****             if (position > MOTOR5_MAX) return MOTOR5_MAX;
+ 194              		.loc 1 97 13 is_stmt 1 view .LVU53
+  97:rover/Mission/Src/mission_motion.c ****             if (position > MOTOR5_MAX) return MOTOR5_MAX;
+ 195              		.loc 1 97 16 is_stmt 0 view .LVU54
+ 196 0050 0029     		cmp	r1, #0
+ 197 0052 23DB     		blt	.L29
+  98:rover/Mission/Src/mission_motion.c ****             break;
+ 198              		.loc 1 98 13 is_stmt 1 view .LVU55
+  98:rover/Mission/Src/mission_motion.c ****             break;
+ 199              		.loc 1 98 16 is_stmt 0 view .LVU56
+ 200 0054 41F2AA43 		movw	r3, #5290
+ 201 0058 9942     		cmp	r1, r3
+ 202 005a 21DC     		bgt	.L30
+ 203              		.loc 1 105 12 view .LVU57
+ 204 005c 0846     		mov	r0, r1
+ 205 005e 7047     		bx	lr
+ 206              	.L13:
+ 101:rover/Mission/Src/mission_motion.c ****             if (position > MOTOR6_MAX) return MOTOR6_MAX;
+ 207              		.loc 1 101 13 is_stmt 1 view .LVU58
+ 101:rover/Mission/Src/mission_motion.c ****             if (position > MOTOR6_MAX) return MOTOR6_MAX;
+ 208              		.loc 1 101 16 is_stmt 0 view .LVU59
+ 209 0060 0029     		cmp	r1, #0
+ 210 0062 20DB     		blt	.L31
+ 102:rover/Mission/Src/mission_motion.c ****             break;
+ 211              		.loc 1 102 13 is_stmt 1 view .LVU60
+ 102:rover/Mission/Src/mission_motion.c ****             break;
+ 212              		.loc 1 102 16 is_stmt 0 view .LVU61
+ 213 0064 41F2AA43 		movw	r3, #5290
+ 214 0068 9942     		cmp	r1, r3
+ 215 006a 1EDC     		bgt	.L32
+ 216              		.loc 1 105 12 view .LVU62
+ 217 006c 0846     		mov	r0, r1
+ 218 006e 7047     		bx	lr
+ 219              	.L20:
+  79:rover/Mission/Src/mission_motion.c ****         case 1:
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s 			page 7
+
+
+ 220              		.loc 1 79 5 view .LVU63
+ 221 0070 0846     		mov	r0, r1
+ 222 0072 7047     		bx	lr
+ 223              	.L21:
+  81:rover/Mission/Src/mission_motion.c ****             if (position > MOTOR1_MAX) return MOTOR1_MAX;
+ 224              		.loc 1 81 47 discriminator 1 view .LVU64
+ 225 0074 0020     		movs	r0, #0
+ 226 0076 7047     		bx	lr
+ 227              	.L22:
+  82:rover/Mission/Src/mission_motion.c ****             break;
+ 228              		.loc 1 82 47 discriminator 1 view .LVU65
+ 229 0078 41F2AA40 		movw	r0, #5290
+ 230 007c 7047     		bx	lr
+ 231              	.L23:
+  85:rover/Mission/Src/mission_motion.c ****             if (position > MOTOR2_MAX) return MOTOR2_MAX;
+ 232              		.loc 1 85 47 discriminator 1 view .LVU66
+ 233 007e 0020     		movs	r0, #0
+ 234 0080 7047     		bx	lr
+ 235              	.L24:
+  86:rover/Mission/Src/mission_motion.c ****             break;
+ 236              		.loc 1 86 47 discriminator 1 view .LVU67
+ 237 0082 41F2AA40 		movw	r0, #5290
+ 238 0086 7047     		bx	lr
+ 239              	.L25:
+  89:rover/Mission/Src/mission_motion.c ****             if (position > MOTOR3_MAX) return MOTOR3_MAX;
+ 240              		.loc 1 89 47 discriminator 1 view .LVU68
+ 241 0088 0020     		movs	r0, #0
+ 242 008a 7047     		bx	lr
+ 243              	.L26:
+  90:rover/Mission/Src/mission_motion.c ****             break;
+ 244              		.loc 1 90 47 discriminator 1 view .LVU69
+ 245 008c 41F2AA40 		movw	r0, #5290
+ 246 0090 7047     		bx	lr
+ 247              	.L27:
+  93:rover/Mission/Src/mission_motion.c ****             if (position > MOTOR4_MAX) return MOTOR4_MAX;
+ 248              		.loc 1 93 47 discriminator 1 view .LVU70
+ 249 0092 0020     		movs	r0, #0
+ 250 0094 7047     		bx	lr
+ 251              	.L28:
+  94:rover/Mission/Src/mission_motion.c ****             break;
+ 252              		.loc 1 94 47 discriminator 1 view .LVU71
+ 253 0096 41F2AA40 		movw	r0, #5290
+ 254 009a 7047     		bx	lr
+ 255              	.L29:
+  97:rover/Mission/Src/mission_motion.c ****             if (position > MOTOR5_MAX) return MOTOR5_MAX;
+ 256              		.loc 1 97 47 discriminator 1 view .LVU72
+ 257 009c 0020     		movs	r0, #0
+ 258 009e 7047     		bx	lr
+ 259              	.L30:
+  98:rover/Mission/Src/mission_motion.c ****             break;
+ 260              		.loc 1 98 47 discriminator 1 view .LVU73
+ 261 00a0 41F2AA40 		movw	r0, #5290
+ 262 00a4 7047     		bx	lr
+ 263              	.L31:
+ 101:rover/Mission/Src/mission_motion.c ****             if (position > MOTOR6_MAX) return MOTOR6_MAX;
+ 264              		.loc 1 101 47 discriminator 1 view .LVU74
+ 265 00a6 0020     		movs	r0, #0
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s 			page 8
+
+
+ 266 00a8 7047     		bx	lr
+ 267              	.L32:
+ 102:rover/Mission/Src/mission_motion.c ****             break;
+ 268              		.loc 1 102 47 discriminator 1 view .LVU75
+ 269 00aa 41F2AA40 		movw	r0, #5290
+ 106:rover/Mission/Src/mission_motion.c **** }
+ 270              		.loc 1 106 1 view .LVU76
+ 271 00ae 7047     		bx	lr
+ 272              		.cfi_endproc
+ 273              	.LFE138:
+ 275              		.section	.text.Mission_MoveSingleMotor,"ax",%progbits
+ 276              		.align	1
+ 277              		.global	Mission_MoveSingleMotor
+ 278              		.syntax unified
+ 279              		.thumb
+ 280              		.thumb_func
+ 282              	Mission_MoveSingleMotor:
+ 283              	.LVL5:
+ 284              	.LFB140:
+ 107:rover/Mission/Src/mission_motion.c **** 
+ 108:rover/Mission/Src/mission_motion.c **** // Public Functions
+ 109:rover/Mission/Src/mission_motion.c **** void Mission_ARM_Init(void) {
+ 110:rover/Mission/Src/mission_motion.c ****     // Initialize serial communication (assuming all on same UART)
+ 111:rover/Mission/Src/mission_motion.c **** 
+ 112:rover/Mission/Src/mission_motion.c **** #if ACTIVE_ROBOCLAWS >= 1
+ 113:rover/Mission/Src/mission_motion.c ****     // Configure RoboClaw 1
+ 114:rover/Mission/Src/mission_motion.c **** 	 hserial_uart1 = serial_init(ROBOCLAW1_UART);  // Adjust UART handle as needed
+ 115:rover/Mission/Src/mission_motion.c ****     hroboclaw1.hserial = hserial_uart1;
+ 116:rover/Mission/Src/mission_motion.c ****     hroboclaw1.packetserial_address = ROBOCLAW1_ADDR;
+ 117:rover/Mission/Src/mission_motion.c ****     hroboclaw1.timeout = ROBOCLAW_TIMEOUT;
+ 118:rover/Mission/Src/mission_motion.c ****    // roboClaw_init(&hroboclaw1);
+ 119:rover/Mission/Src/mission_motion.c **** #endif
+ 120:rover/Mission/Src/mission_motion.c **** #if ACTIVE_ROBOCLAWS >= 2
+ 121:rover/Mission/Src/mission_motion.c ****     // Configure RoboClaw 2
+ 122:rover/Mission/Src/mission_motion.c ****     hserial_uart2 = serial_init(ROBOCLAW2_UART);
+ 123:rover/Mission/Src/mission_motion.c ****     hroboclaw2.hserial = hserial_uart2;
+ 124:rover/Mission/Src/mission_motion.c ****     hroboclaw2.packetserial_address = ROBOCLAW2_ADDR;
+ 125:rover/Mission/Src/mission_motion.c ****     hroboclaw2.timeout = ROBOCLAW_TIMEOUT;
+ 126:rover/Mission/Src/mission_motion.c ****     //roboClaw_init(&hroboclaw2);
+ 127:rover/Mission/Src/mission_motion.c **** #endif
+ 128:rover/Mission/Src/mission_motion.c **** #if ACTIVE_ROBOCLAWS >=3
+ 129:rover/Mission/Src/mission_motion.c ****     // Configure RoboClaw 3
+ 130:rover/Mission/Src/mission_motion.c ****     hserial_uart3 = serial_init(ROBOCLAW3_UART);
+ 131:rover/Mission/Src/mission_motion.c ****     hroboclaw3.hserial = hserial_uart3;
+ 132:rover/Mission/Src/mission_motion.c ****     hroboclaw3.packetserial_address = ROBOCLAW3_ADDR;
+ 133:rover/Mission/Src/mission_motion.c ****     hroboclaw3.timeout = ROBOCLAW_TIMEOUT;
+ 134:rover/Mission/Src/mission_motion.c ****    // roboClaw_init(&hroboclaw3);
+ 135:rover/Mission/Src/mission_motion.c **** #endif
+ 136:rover/Mission/Src/mission_motion.c ****     // Reset all encoders to start from zero
+ 137:rover/Mission/Src/mission_motion.c ****     Mission_ResetAllEncoders();
+ 138:rover/Mission/Src/mission_motion.c **** }
+ 139:rover/Mission/Src/mission_motion.c **** 
+ 140:rover/Mission/Src/mission_motion.c **** Mission_Status_t Mission_MoveSingleMotor(uint8_t motor, int32_t position) {
+ 285              		.loc 1 140 75 is_stmt 1 view -0
+ 286              		.cfi_startproc
+ 287              		@ args = 0, pretend = 0, frame = 8
+ 288              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s 			page 9
+
+
+ 141:rover/Mission/Src/mission_motion.c ****     RoboClaw_HandleTypeDef *roboclaw;
+ 289              		.loc 1 141 5 view .LVU78
+ 142:rover/Mission/Src/mission_motion.c ****     uint8_t is_m1;
+ 290              		.loc 1 142 5 view .LVU79
+ 143:rover/Mission/Src/mission_motion.c **** 
+ 144:rover/Mission/Src/mission_motion.c ****     if (motor < 1 || motor > 6) {
+ 291              		.loc 1 144 5 view .LVU80
+ 292              		.loc 1 144 19 is_stmt 0 view .LVU81
+ 293 0000 431E     		subs	r3, r0, #1
+ 294 0002 DBB2     		uxtb	r3, r3
+ 295              		.loc 1 144 8 view .LVU82
+ 296 0004 052B     		cmp	r3, #5
+ 297 0006 32D8     		bhi	.L37
+ 140:rover/Mission/Src/mission_motion.c ****     RoboClaw_HandleTypeDef *roboclaw;
+ 298              		.loc 1 140 75 view .LVU83
+ 299 0008 70B5     		push	{r4, r5, r6, lr}
+ 300              	.LCFI0:
+ 301              		.cfi_def_cfa_offset 16
+ 302              		.cfi_offset 4, -16
+ 303              		.cfi_offset 5, -12
+ 304              		.cfi_offset 6, -8
+ 305              		.cfi_offset 14, -4
+ 306 000a 84B0     		sub	sp, sp, #16
+ 307              	.LCFI1:
+ 308              		.cfi_def_cfa_offset 32
+ 309 000c 0446     		mov	r4, r0
+ 310 000e 0D46     		mov	r5, r1
+ 145:rover/Mission/Src/mission_motion.c ****         return MISSION_INVALID_MOTOR;
+ 146:rover/Mission/Src/mission_motion.c ****     }
+ 147:rover/Mission/Src/mission_motion.c **** 
+ 148:rover/Mission/Src/mission_motion.c ****     // Get RoboClaw and channel info
+ 149:rover/Mission/Src/mission_motion.c ****     get_motor_info(motor, &roboclaw, &is_m1);
+ 311              		.loc 1 149 5 is_stmt 1 view .LVU84
+ 312 0010 0DF10B02 		add	r2, sp, #11
+ 313 0014 03A9     		add	r1, sp, #12
+ 314              	.LVL6:
+ 315              		.loc 1 149 5 is_stmt 0 view .LVU85
+ 316 0016 FFF7FEFF 		bl	get_motor_info
+ 317              	.LVL7:
+ 150:rover/Mission/Src/mission_motion.c **** 
+ 151:rover/Mission/Src/mission_motion.c ****     // Clamp position to safe limits
+ 152:rover/Mission/Src/mission_motion.c ****     target_positions[motor-1] = clamp_position(motor, position);
+ 318              		.loc 1 152 5 is_stmt 1 view .LVU86
+ 319              		.loc 1 152 27 is_stmt 0 view .LVU87
+ 320 001a 661E     		subs	r6, r4, #1
+ 321              		.loc 1 152 33 view .LVU88
+ 322 001c 2946     		mov	r1, r5
+ 323 001e 2046     		mov	r0, r4
+ 324 0020 FFF7FEFF 		bl	clamp_position
+ 325              	.LVL8:
+ 326              		.loc 1 152 31 discriminator 1 view .LVU89
+ 327 0024 134B     		ldr	r3, .L42
+ 328 0026 43F82600 		str	r0, [r3, r6, lsl #2]
+ 153:rover/Mission/Src/mission_motion.c **** 
+ 154:rover/Mission/Src/mission_motion.c ****     // Send command to appropriate motor
+ 155:rover/Mission/Src/mission_motion.c ****     if (is_m1) {
+ 329              		.loc 1 155 5 is_stmt 1 view .LVU90
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s 			page 10
+
+
+ 330              		.loc 1 155 9 is_stmt 0 view .LVU91
+ 331 002a 9DF80B30 		ldrb	r3, [sp, #11]	@ zero_extendqisi2
+ 332              		.loc 1 155 8 view .LVU92
+ 333 002e 8BB1     		cbz	r3, .L35
+ 156:rover/Mission/Src/mission_motion.c ****         SpeedAccelDeccelPositionM1(
+ 334              		.loc 1 156 9 is_stmt 1 view .LVU93
+ 335 0030 0123     		movs	r3, #1
+ 336 0032 0193     		str	r3, [sp, #4]
+ 337 0034 0090     		str	r0, [sp]
+ 338 0036 4FF47A73 		mov	r3, #1000
+ 339 003a 40F6B832 		movw	r2, #3000
+ 340 003e 4FF4FA61 		mov	r1, #2000
+ 341 0042 0398     		ldr	r0, [sp, #12]
+ 342 0044 FFF7FEFF 		bl	SpeedAccelDeccelPositionM1
+ 343              	.LVL9:
+ 344              	.L36:
+ 157:rover/Mission/Src/mission_motion.c ****             roboclaw,
+ 158:rover/Mission/Src/mission_motion.c ****             ACCEL_DEFAULT, SPEED_DEFAULT, DECCEL_DEFAULT,
+ 159:rover/Mission/Src/mission_motion.c ****             target_positions[motor-1],
+ 160:rover/Mission/Src/mission_motion.c ****             1  // absolute position
+ 161:rover/Mission/Src/mission_motion.c ****         );
+ 162:rover/Mission/Src/mission_motion.c ****     } else {
+ 163:rover/Mission/Src/mission_motion.c ****         SpeedAccelDeccelPositionM2(
+ 164:rover/Mission/Src/mission_motion.c ****             roboclaw,
+ 165:rover/Mission/Src/mission_motion.c ****             ACCEL_DEFAULT, SPEED_DEFAULT, DECCEL_DEFAULT,
+ 166:rover/Mission/Src/mission_motion.c ****             target_positions[motor-1],
+ 167:rover/Mission/Src/mission_motion.c ****             1  // absolute position
+ 168:rover/Mission/Src/mission_motion.c ****         );
+ 169:rover/Mission/Src/mission_motion.c ****     }
+ 170:rover/Mission/Src/mission_motion.c **** 
+ 171:rover/Mission/Src/mission_motion.c ****     motor_active[motor-1] = true;
+ 345              		.loc 1 171 5 view .LVU94
+ 346              		.loc 1 171 27 is_stmt 0 view .LVU95
+ 347 0048 0B4B     		ldr	r3, .L42+4
+ 348 004a 0122     		movs	r2, #1
+ 349 004c 9A55     		strb	r2, [r3, r6]
+ 172:rover/Mission/Src/mission_motion.c ****     return MISSION_OK;
+ 350              		.loc 1 172 5 is_stmt 1 view .LVU96
+ 351              		.loc 1 172 12 is_stmt 0 view .LVU97
+ 352 004e 0020     		movs	r0, #0
+ 173:rover/Mission/Src/mission_motion.c **** }
+ 353              		.loc 1 173 1 view .LVU98
+ 354 0050 04B0     		add	sp, sp, #16
+ 355              	.LCFI2:
+ 356              		.cfi_remember_state
+ 357              		.cfi_def_cfa_offset 16
+ 358              		@ sp needed
+ 359 0052 70BD     		pop	{r4, r5, r6, pc}
+ 360              	.LVL10:
+ 361              	.L35:
+ 362              	.LCFI3:
+ 363              		.cfi_restore_state
+ 163:rover/Mission/Src/mission_motion.c ****             roboclaw,
+ 364              		.loc 1 163 9 is_stmt 1 view .LVU99
+ 365 0054 0123     		movs	r3, #1
+ 366 0056 0193     		str	r3, [sp, #4]
+ 367 0058 0090     		str	r0, [sp]
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s 			page 11
+
+
+ 368 005a 4FF47A73 		mov	r3, #1000
+ 369 005e 40F6B832 		movw	r2, #3000
+ 370 0062 4FF4FA61 		mov	r1, #2000
+ 371 0066 0398     		ldr	r0, [sp, #12]
+ 372 0068 FFF7FEFF 		bl	SpeedAccelDeccelPositionM2
+ 373              	.LVL11:
+ 374 006c ECE7     		b	.L36
+ 375              	.LVL12:
+ 376              	.L37:
+ 377              	.LCFI4:
+ 378              		.cfi_def_cfa_offset 0
+ 379              		.cfi_restore 4
+ 380              		.cfi_restore 5
+ 381              		.cfi_restore 6
+ 382              		.cfi_restore 14
+ 145:rover/Mission/Src/mission_motion.c ****     }
+ 383              		.loc 1 145 16 is_stmt 0 view .LVU100
+ 384 006e 0320     		movs	r0, #3
+ 385              	.LVL13:
+ 386              		.loc 1 173 1 view .LVU101
+ 387 0070 7047     		bx	lr
+ 388              	.L43:
+ 389 0072 00BF     		.align	2
+ 390              	.L42:
+ 391 0074 00000000 		.word	target_positions
+ 392 0078 00000000 		.word	motor_active
+ 393              		.cfi_endproc
+ 394              	.LFE140:
+ 396              		.section	.text.Mission_MoveAllMotors,"ax",%progbits
+ 397              		.align	1
+ 398              		.global	Mission_MoveAllMotors
+ 399              		.syntax unified
+ 400              		.thumb
+ 401              		.thumb_func
+ 403              	Mission_MoveAllMotors:
+ 404              	.LVL14:
+ 405              	.LFB141:
+ 174:rover/Mission/Src/mission_motion.c **** 
+ 175:rover/Mission/Src/mission_motion.c **** Mission_Status_t Mission_MoveAllMotors(int32_t positions[6]) {
+ 406              		.loc 1 175 62 is_stmt 1 view -0
+ 407              		.cfi_startproc
+ 408              		@ args = 0, pretend = 0, frame = 0
+ 409              		@ frame_needed = 0, uses_anonymous_args = 0
+ 410              		.loc 1 175 62 is_stmt 0 view .LVU103
+ 411 0000 38B5     		push	{r3, r4, r5, lr}
+ 412              	.LCFI5:
+ 413              		.cfi_def_cfa_offset 16
+ 414              		.cfi_offset 3, -16
+ 415              		.cfi_offset 4, -12
+ 416              		.cfi_offset 5, -8
+ 417              		.cfi_offset 14, -4
+ 418 0002 0546     		mov	r5, r0
+ 176:rover/Mission/Src/mission_motion.c ****     Mission_Status_t status;
+ 419              		.loc 1 176 5 is_stmt 1 view .LVU104
+ 177:rover/Mission/Src/mission_motion.c **** 
+ 178:rover/Mission/Src/mission_motion.c ****     // Move each motor individually
+ 179:rover/Mission/Src/mission_motion.c ****     for (uint8_t i = 0; i < 6; i++) {
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s 			page 12
+
+
+ 420              		.loc 1 179 5 view .LVU105
+ 421              	.LBB2:
+ 422              		.loc 1 179 10 view .LVU106
+ 423              	.LVL15:
+ 424              		.loc 1 179 18 is_stmt 0 view .LVU107
+ 425 0004 0023     		movs	r3, #0
+ 426              	.LVL16:
+ 427              	.L45:
+ 428              		.loc 1 179 27 is_stmt 1 discriminator 1 view .LVU108
+ 429 0006 052B     		cmp	r3, #5
+ 430 0008 0AD8     		bhi	.L49
+ 180:rover/Mission/Src/mission_motion.c ****         status = Mission_MoveSingleMotor(i+1, positions[i]);
+ 431              		.loc 1 180 9 view .LVU109
+ 432              		.loc 1 180 18 is_stmt 0 view .LVU110
+ 433 000a 5C1C     		adds	r4, r3, #1
+ 434 000c E4B2     		uxtb	r4, r4
+ 435 000e 55F82310 		ldr	r1, [r5, r3, lsl #2]
+ 436 0012 2046     		mov	r0, r4
+ 437 0014 FFF7FEFF 		bl	Mission_MoveSingleMotor
+ 438              	.LVL17:
+ 181:rover/Mission/Src/mission_motion.c ****         if (status != MISSION_OK) {
+ 439              		.loc 1 181 9 is_stmt 1 view .LVU111
+ 440              		.loc 1 181 12 is_stmt 0 view .LVU112
+ 441 0018 0346     		mov	r3, r0
+ 442 001a 10B9     		cbnz	r0, .L46
+ 179:rover/Mission/Src/mission_motion.c ****         status = Mission_MoveSingleMotor(i+1, positions[i]);
+ 443              		.loc 1 179 33 discriminator 2 view .LVU113
+ 444 001c 2346     		mov	r3, r4
+ 445 001e F2E7     		b	.L45
+ 446              	.LVL18:
+ 447              	.L49:
+ 179:rover/Mission/Src/mission_motion.c ****         status = Mission_MoveSingleMotor(i+1, positions[i]);
+ 448              		.loc 1 179 33 discriminator 2 view .LVU114
+ 449              	.LBE2:
+ 182:rover/Mission/Src/mission_motion.c ****             return status;
+ 183:rover/Mission/Src/mission_motion.c ****         }
+ 184:rover/Mission/Src/mission_motion.c ****     }
+ 185:rover/Mission/Src/mission_motion.c **** 
+ 186:rover/Mission/Src/mission_motion.c ****     return MISSION_OK;
+ 450              		.loc 1 186 12 view .LVU115
+ 451 0020 0023     		movs	r3, #0
+ 452              	.LVL19:
+ 453              	.L46:
+ 187:rover/Mission/Src/mission_motion.c **** }
+ 454              		.loc 1 187 1 view .LVU116
+ 455 0022 1846     		mov	r0, r3
+ 456 0024 38BD     		pop	{r3, r4, r5, pc}
+ 457              		.loc 1 187 1 view .LVU117
+ 458              		.cfi_endproc
+ 459              	.LFE141:
+ 461              		.section	.text.Mission_MoveMotorPair,"ax",%progbits
+ 462              		.align	1
+ 463              		.global	Mission_MoveMotorPair
+ 464              		.syntax unified
+ 465              		.thumb
+ 466              		.thumb_func
+ 468              	Mission_MoveMotorPair:
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s 			page 13
+
+
+ 469              	.LVL20:
+ 470              	.LFB142:
+ 188:rover/Mission/Src/mission_motion.c **** 
+ 189:rover/Mission/Src/mission_motion.c **** Mission_Status_t Mission_MoveMotorPair(uint8_t motor1, int32_t pos1,
+ 190:rover/Mission/Src/mission_motion.c ****                                        uint8_t motor2, int32_t pos2) {
+ 471              		.loc 1 190 70 is_stmt 1 view -0
+ 472              		.cfi_startproc
+ 473              		@ args = 0, pretend = 0, frame = 16
+ 474              		@ frame_needed = 0, uses_anonymous_args = 0
+ 475              		.loc 1 190 70 is_stmt 0 view .LVU119
+ 476 0000 2DE9F043 		push	{r4, r5, r6, r7, r8, r9, lr}
+ 477              	.LCFI6:
+ 478              		.cfi_def_cfa_offset 28
+ 479              		.cfi_offset 4, -28
+ 480              		.cfi_offset 5, -24
+ 481              		.cfi_offset 6, -20
+ 482              		.cfi_offset 7, -16
+ 483              		.cfi_offset 8, -12
+ 484              		.cfi_offset 9, -8
+ 485              		.cfi_offset 14, -4
+ 486 0004 8BB0     		sub	sp, sp, #44
+ 487              	.LCFI7:
+ 488              		.cfi_def_cfa_offset 72
+ 489 0006 1446     		mov	r4, r2
+ 191:rover/Mission/Src/mission_motion.c ****     RoboClaw_HandleTypeDef *roboclaw1, *roboclaw2;
+ 490              		.loc 1 191 5 is_stmt 1 view .LVU120
+ 192:rover/Mission/Src/mission_motion.c ****     uint8_t is_m1_1, is_m1_2;
+ 491              		.loc 1 192 5 view .LVU121
+ 193:rover/Mission/Src/mission_motion.c **** 
+ 194:rover/Mission/Src/mission_motion.c ****     if (motor1 < 1 || motor1 > 6 || motor2 < 1 || motor2 > 6) {
+ 492              		.loc 1 194 5 view .LVU122
+ 493              		.loc 1 194 20 is_stmt 0 view .LVU123
+ 494 0008 421E     		subs	r2, r0, #1
+ 495              	.LVL21:
+ 496              		.loc 1 194 20 view .LVU124
+ 497 000a D2B2     		uxtb	r2, r2
+ 498              		.loc 1 194 8 view .LVU125
+ 499 000c 052A     		cmp	r2, #5
+ 500 000e 4AD8     		bhi	.L53
+ 501 0010 0646     		mov	r6, r0
+ 502 0012 0F46     		mov	r7, r1
+ 503 0014 1D46     		mov	r5, r3
+ 504              		.loc 1 194 34 discriminator 1 view .LVU126
+ 505 0016 002C     		cmp	r4, #0
+ 506 0018 47D0     		beq	.L54
+ 507              		.loc 1 194 48 discriminator 2 view .LVU127
+ 508 001a 062C     		cmp	r4, #6
+ 509 001c 47D8     		bhi	.L55
+ 195:rover/Mission/Src/mission_motion.c ****         return MISSION_INVALID_MOTOR;
+ 196:rover/Mission/Src/mission_motion.c ****     }
+ 197:rover/Mission/Src/mission_motion.c **** 
+ 198:rover/Mission/Src/mission_motion.c ****     // Get info for both motors
+ 199:rover/Mission/Src/mission_motion.c ****     get_motor_info(motor1, &roboclaw1, &is_m1_1);
+ 510              		.loc 1 199 5 is_stmt 1 view .LVU128
+ 511 001e 0DF11F02 		add	r2, sp, #31
+ 512 0022 09A9     		add	r1, sp, #36
+ 513              	.LVL22:
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s 			page 14
+
+
+ 514              		.loc 1 199 5 is_stmt 0 view .LVU129
+ 515 0024 FFF7FEFF 		bl	get_motor_info
+ 516              	.LVL23:
+ 200:rover/Mission/Src/mission_motion.c ****     get_motor_info(motor2, &roboclaw2, &is_m1_2);
+ 517              		.loc 1 200 5 is_stmt 1 view .LVU130
+ 518 0028 0DF11E02 		add	r2, sp, #30
+ 519 002c 08A9     		add	r1, sp, #32
+ 520 002e 2046     		mov	r0, r4
+ 521 0030 FFF7FEFF 		bl	get_motor_info
+ 522              	.LVL24:
+ 201:rover/Mission/Src/mission_motion.c **** 
+ 202:rover/Mission/Src/mission_motion.c ****     // Check if they're on the same RoboClaw
+ 203:rover/Mission/Src/mission_motion.c ****     if (roboclaw1 != roboclaw2) {
+ 523              		.loc 1 203 5 view .LVU131
+ 524              		.loc 1 203 19 is_stmt 0 view .LVU132
+ 525 0034 DDF82480 		ldr	r8, [sp, #36]
+ 526 0038 089B     		ldr	r3, [sp, #32]
+ 527              		.loc 1 203 8 view .LVU133
+ 528 003a 9845     		cmp	r8, r3
+ 529 003c 0BD0     		beq	.L52
+ 204:rover/Mission/Src/mission_motion.c ****         // If not, move them individually
+ 205:rover/Mission/Src/mission_motion.c ****         Mission_MoveSingleMotor(motor1, pos1);
+ 530              		.loc 1 205 9 is_stmt 1 view .LVU134
+ 531 003e 3946     		mov	r1, r7
+ 532 0040 3046     		mov	r0, r6
+ 533 0042 FFF7FEFF 		bl	Mission_MoveSingleMotor
+ 534              	.LVL25:
+ 206:rover/Mission/Src/mission_motion.c ****         Mission_MoveSingleMotor(motor2, pos2);
+ 535              		.loc 1 206 9 view .LVU135
+ 536 0046 2946     		mov	r1, r5
+ 537 0048 2046     		mov	r0, r4
+ 538 004a FFF7FEFF 		bl	Mission_MoveSingleMotor
+ 539              	.LVL26:
+ 207:rover/Mission/Src/mission_motion.c ****     } else {
+ 208:rover/Mission/Src/mission_motion.c ****         // If on same RoboClaw, clamp and store positions
+ 209:rover/Mission/Src/mission_motion.c ****         target_positions[motor1-1] = clamp_position(motor1, pos1);
+ 210:rover/Mission/Src/mission_motion.c ****         target_positions[motor2-1] = clamp_position(motor2, pos2);
+ 211:rover/Mission/Src/mission_motion.c **** 
+ 212:rover/Mission/Src/mission_motion.c ****         // Use synchronized movement if available
+ 213:rover/Mission/Src/mission_motion.c ****         // This assumes motor1 is M1 and motor2 is M2 on the same RoboClaw
+ 214:rover/Mission/Src/mission_motion.c ****         SpeedAccelDeccelPositionM1M2(
+ 215:rover/Mission/Src/mission_motion.c ****             roboclaw1,
+ 216:rover/Mission/Src/mission_motion.c ****             ACCEL_DEFAULT, SPEED_DEFAULT, DECCEL_DEFAULT, target_positions[motor1-1],
+ 217:rover/Mission/Src/mission_motion.c ****             ACCEL_DEFAULT, SPEED_DEFAULT, DECCEL_DEFAULT, target_positions[motor2-1],
+ 218:rover/Mission/Src/mission_motion.c ****             1  // absolute position
+ 219:rover/Mission/Src/mission_motion.c ****         );
+ 220:rover/Mission/Src/mission_motion.c **** 
+ 221:rover/Mission/Src/mission_motion.c ****         motor_active[motor1-1] = true;
+ 222:rover/Mission/Src/mission_motion.c ****         motor_active[motor2-1] = true;
+ 223:rover/Mission/Src/mission_motion.c ****     }
+ 224:rover/Mission/Src/mission_motion.c **** 
+ 225:rover/Mission/Src/mission_motion.c ****     return MISSION_OK;
+ 540              		.loc 1 225 12 is_stmt 0 view .LVU136
+ 541 004e 0020     		movs	r0, #0
+ 542              	.LVL27:
+ 543              	.L51:
+ 226:rover/Mission/Src/mission_motion.c **** }
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s 			page 15
+
+
+ 544              		.loc 1 226 1 view .LVU137
+ 545 0050 0BB0     		add	sp, sp, #44
+ 546              	.LCFI8:
+ 547              		.cfi_remember_state
+ 548              		.cfi_def_cfa_offset 28
+ 549              		@ sp needed
+ 550 0052 BDE8F083 		pop	{r4, r5, r6, r7, r8, r9, pc}
+ 551              	.LVL28:
+ 552              	.L52:
+ 553              	.LCFI9:
+ 554              		.cfi_restore_state
+ 209:rover/Mission/Src/mission_motion.c ****         target_positions[motor2-1] = clamp_position(motor2, pos2);
+ 555              		.loc 1 209 9 is_stmt 1 view .LVU138
+ 209:rover/Mission/Src/mission_motion.c ****         target_positions[motor2-1] = clamp_position(motor2, pos2);
+ 556              		.loc 1 209 32 is_stmt 0 view .LVU139
+ 557 0056 06F1FF39 		add	r9, r6, #-1
+ 209:rover/Mission/Src/mission_motion.c ****         target_positions[motor2-1] = clamp_position(motor2, pos2);
+ 558              		.loc 1 209 38 view .LVU140
+ 559 005a 3946     		mov	r1, r7
+ 560 005c 3046     		mov	r0, r6
+ 561 005e FFF7FEFF 		bl	clamp_position
+ 562              	.LVL29:
+ 209:rover/Mission/Src/mission_motion.c ****         target_positions[motor2-1] = clamp_position(motor2, pos2);
+ 563              		.loc 1 209 36 discriminator 1 view .LVU141
+ 564 0062 144F     		ldr	r7, .L57
+ 565              	.LVL30:
+ 209:rover/Mission/Src/mission_motion.c ****         target_positions[motor2-1] = clamp_position(motor2, pos2);
+ 566              		.loc 1 209 36 discriminator 1 view .LVU142
+ 567 0064 47F82900 		str	r0, [r7, r9, lsl #2]
+ 210:rover/Mission/Src/mission_motion.c **** 
+ 568              		.loc 1 210 9 is_stmt 1 view .LVU143
+ 210:rover/Mission/Src/mission_motion.c **** 
+ 569              		.loc 1 210 32 is_stmt 0 view .LVU144
+ 570 0068 661E     		subs	r6, r4, #1
+ 210:rover/Mission/Src/mission_motion.c **** 
+ 571              		.loc 1 210 38 view .LVU145
+ 572 006a 2946     		mov	r1, r5
+ 573 006c 2046     		mov	r0, r4
+ 574 006e FFF7FEFF 		bl	clamp_position
+ 575              	.LVL31:
+ 210:rover/Mission/Src/mission_motion.c **** 
+ 576              		.loc 1 210 36 discriminator 1 view .LVU146
+ 577 0072 47F82600 		str	r0, [r7, r6, lsl #2]
+ 214:rover/Mission/Src/mission_motion.c ****             roboclaw1,
+ 578              		.loc 1 214 9 is_stmt 1 view .LVU147
+ 216:rover/Mission/Src/mission_motion.c ****             ACCEL_DEFAULT, SPEED_DEFAULT, DECCEL_DEFAULT, target_positions[motor2-1],
+ 579              		.loc 1 216 75 is_stmt 0 view .LVU148
+ 580 0076 57F82950 		ldr	r5, [r7, r9, lsl #2]
+ 581              	.LVL32:
+ 214:rover/Mission/Src/mission_motion.c ****             roboclaw1,
+ 582              		.loc 1 214 9 view .LVU149
+ 583 007a 0124     		movs	r4, #1
+ 584 007c 0594     		str	r4, [sp, #20]
+ 585 007e 0490     		str	r0, [sp, #16]
+ 586 0080 4FF47A73 		mov	r3, #1000
+ 587 0084 0393     		str	r3, [sp, #12]
+ 588 0086 40F6B832 		movw	r2, #3000
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s 			page 16
+
+
+ 589 008a 0292     		str	r2, [sp, #8]
+ 590 008c 4FF4FA61 		mov	r1, #2000
+ 591 0090 0191     		str	r1, [sp, #4]
+ 592 0092 0095     		str	r5, [sp]
+ 593 0094 4046     		mov	r0, r8
+ 594 0096 FFF7FEFF 		bl	SpeedAccelDeccelPositionM1M2
+ 595              	.LVL33:
+ 221:rover/Mission/Src/mission_motion.c ****         motor_active[motor2-1] = true;
+ 596              		.loc 1 221 9 is_stmt 1 view .LVU150
+ 221:rover/Mission/Src/mission_motion.c ****         motor_active[motor2-1] = true;
+ 597              		.loc 1 221 32 is_stmt 0 view .LVU151
+ 598 009a 074B     		ldr	r3, .L57+4
+ 599 009c 03F80940 		strb	r4, [r3, r9]
+ 222:rover/Mission/Src/mission_motion.c ****     }
+ 600              		.loc 1 222 9 is_stmt 1 view .LVU152
+ 222:rover/Mission/Src/mission_motion.c ****     }
+ 601              		.loc 1 222 32 is_stmt 0 view .LVU153
+ 602 00a0 9C55     		strb	r4, [r3, r6]
+ 225:rover/Mission/Src/mission_motion.c **** }
+ 603              		.loc 1 225 12 view .LVU154
+ 604 00a2 0020     		movs	r0, #0
+ 605 00a4 D4E7     		b	.L51
+ 606              	.LVL34:
+ 607              	.L53:
+ 195:rover/Mission/Src/mission_motion.c ****     }
+ 608              		.loc 1 195 16 view .LVU155
+ 609 00a6 0320     		movs	r0, #3
+ 610              	.LVL35:
+ 195:rover/Mission/Src/mission_motion.c ****     }
+ 611              		.loc 1 195 16 view .LVU156
+ 612 00a8 D2E7     		b	.L51
+ 613              	.LVL36:
+ 614              	.L54:
+ 195:rover/Mission/Src/mission_motion.c ****     }
+ 615              		.loc 1 195 16 view .LVU157
+ 616 00aa 0320     		movs	r0, #3
+ 617              	.LVL37:
+ 195:rover/Mission/Src/mission_motion.c ****     }
+ 618              		.loc 1 195 16 view .LVU158
+ 619 00ac D0E7     		b	.L51
+ 620              	.LVL38:
+ 621              	.L55:
+ 195:rover/Mission/Src/mission_motion.c ****     }
+ 622              		.loc 1 195 16 view .LVU159
+ 623 00ae 0320     		movs	r0, #3
+ 624              	.LVL39:
+ 195:rover/Mission/Src/mission_motion.c ****     }
+ 625              		.loc 1 195 16 view .LVU160
+ 626 00b0 CEE7     		b	.L51
+ 627              	.L58:
+ 628 00b2 00BF     		.align	2
+ 629              	.L57:
+ 630 00b4 00000000 		.word	target_positions
+ 631 00b8 00000000 		.word	motor_active
+ 632              		.cfi_endproc
+ 633              	.LFE142:
+ 635              		.section	.text.Mission_ResetAllEncoders,"ax",%progbits
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s 			page 17
+
+
+ 636              		.align	1
+ 637              		.global	Mission_ResetAllEncoders
+ 638              		.syntax unified
+ 639              		.thumb
+ 640              		.thumb_func
+ 642              	Mission_ResetAllEncoders:
+ 643              	.LFB143:
+ 227:rover/Mission/Src/mission_motion.c **** 
+ 228:rover/Mission/Src/mission_motion.c **** 
+ 229:rover/Mission/Src/mission_motion.c **** 
+ 230:rover/Mission/Src/mission_motion.c **** void Mission_ResetAllEncoders(void) {
+ 644              		.loc 1 230 37 is_stmt 1 view -0
+ 645              		.cfi_startproc
+ 646              		@ args = 0, pretend = 0, frame = 0
+ 647              		@ frame_needed = 0, uses_anonymous_args = 0
+ 648 0000 08B5     		push	{r3, lr}
+ 649              	.LCFI10:
+ 650              		.cfi_def_cfa_offset 8
+ 651              		.cfi_offset 3, -8
+ 652              		.cfi_offset 14, -4
+ 231:rover/Mission/Src/mission_motion.c **** #if ACTIVE_ROBOCLAWS >= 1
+ 232:rover/Mission/Src/mission_motion.c **** 	ResetEncoders(&hroboclaw1);
+ 653              		.loc 1 232 2 view .LVU162
+ 654 0002 0948     		ldr	r0, .L63
+ 655 0004 FFF7FEFF 		bl	ResetEncoders
+ 656              	.LVL40:
+ 233:rover/Mission/Src/mission_motion.c **** #endif
+ 234:rover/Mission/Src/mission_motion.c **** #if ACTIVE_ROBOCLAWS >= 2
+ 235:rover/Mission/Src/mission_motion.c **** 	 ResetEncoders(&hroboclaw2);
+ 657              		.loc 1 235 3 view .LVU163
+ 658 0008 0848     		ldr	r0, .L63+4
+ 659 000a FFF7FEFF 		bl	ResetEncoders
+ 660              	.LVL41:
+ 236:rover/Mission/Src/mission_motion.c **** #endif
+ 237:rover/Mission/Src/mission_motion.c **** #if ACTIVE_ROBOCLAWS >=3
+ 238:rover/Mission/Src/mission_motion.c **** 	 ResetEncoders(&hroboclaw3);
+ 239:rover/Mission/Src/mission_motion.c **** #endif
+ 240:rover/Mission/Src/mission_motion.c **** 
+ 241:rover/Mission/Src/mission_motion.c **** 
+ 242:rover/Mission/Src/mission_motion.c **** 
+ 243:rover/Mission/Src/mission_motion.c **** 
+ 244:rover/Mission/Src/mission_motion.c ****     // Reset target positions and active flags
+ 245:rover/Mission/Src/mission_motion.c ****     for (uint8_t i = 0; i < 6; i++) {
+ 661              		.loc 1 245 5 view .LVU164
+ 662              	.LBB3:
+ 663              		.loc 1 245 10 view .LVU165
+ 664              		.loc 1 245 18 is_stmt 0 view .LVU166
+ 665 000e 0023     		movs	r3, #0
+ 666              		.loc 1 245 5 view .LVU167
+ 667 0010 07E0     		b	.L60
+ 668              	.LVL42:
+ 669              	.L61:
+ 246:rover/Mission/Src/mission_motion.c ****         target_positions[i] = 0;
+ 670              		.loc 1 246 9 is_stmt 1 view .LVU168
+ 671              		.loc 1 246 29 is_stmt 0 view .LVU169
+ 672 0012 0022     		movs	r2, #0
+ 673 0014 0649     		ldr	r1, .L63+8
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s 			page 18
+
+
+ 674 0016 41F82320 		str	r2, [r1, r3, lsl #2]
+ 247:rover/Mission/Src/mission_motion.c ****         motor_active[i] = false;
+ 675              		.loc 1 247 9 is_stmt 1 view .LVU170
+ 676              		.loc 1 247 25 is_stmt 0 view .LVU171
+ 677 001a 0649     		ldr	r1, .L63+12
+ 678 001c CA54     		strb	r2, [r1, r3]
+ 245:rover/Mission/Src/mission_motion.c ****         target_positions[i] = 0;
+ 679              		.loc 1 245 33 is_stmt 1 discriminator 3 view .LVU172
+ 680 001e 0133     		adds	r3, r3, #1
+ 681              	.LVL43:
+ 245:rover/Mission/Src/mission_motion.c ****         target_positions[i] = 0;
+ 682              		.loc 1 245 33 is_stmt 0 discriminator 3 view .LVU173
+ 683 0020 DBB2     		uxtb	r3, r3
+ 684              	.LVL44:
+ 685              	.L60:
+ 245:rover/Mission/Src/mission_motion.c ****         target_positions[i] = 0;
+ 686              		.loc 1 245 27 is_stmt 1 discriminator 1 view .LVU174
+ 687 0022 052B     		cmp	r3, #5
+ 688 0024 F5D9     		bls	.L61
+ 689              	.LBE3:
+ 248:rover/Mission/Src/mission_motion.c ****     }
+ 249:rover/Mission/Src/mission_motion.c **** }
+ 690              		.loc 1 249 1 is_stmt 0 view .LVU175
+ 691 0026 08BD     		pop	{r3, pc}
+ 692              	.LVL45:
+ 693              	.L64:
+ 694              		.loc 1 249 1 view .LVU176
+ 695              		.align	2
+ 696              	.L63:
+ 697 0028 00000000 		.word	hroboclaw1
+ 698 002c 00000000 		.word	hroboclaw2
+ 699 0030 00000000 		.word	target_positions
+ 700 0034 00000000 		.word	motor_active
+ 701              		.cfi_endproc
+ 702              	.LFE143:
+ 704              		.section	.text.Mission_ARM_Init,"ax",%progbits
+ 705              		.align	1
+ 706              		.global	Mission_ARM_Init
+ 707              		.syntax unified
+ 708              		.thumb
+ 709              		.thumb_func
+ 711              	Mission_ARM_Init:
+ 712              	.LFB139:
+ 109:rover/Mission/Src/mission_motion.c ****     // Initialize serial communication (assuming all on same UART)
+ 713              		.loc 1 109 29 is_stmt 1 view -0
+ 714              		.cfi_startproc
+ 715              		@ args = 0, pretend = 0, frame = 0
+ 716              		@ frame_needed = 0, uses_anonymous_args = 0
+ 717 0000 10B5     		push	{r4, lr}
+ 718              	.LCFI11:
+ 719              		.cfi_def_cfa_offset 8
+ 720              		.cfi_offset 4, -8
+ 721              		.cfi_offset 14, -4
+ 114:rover/Mission/Src/mission_motion.c ****     hroboclaw1.hserial = hserial_uart1;
+ 722              		.loc 1 114 3 view .LVU178
+ 114:rover/Mission/Src/mission_motion.c ****     hroboclaw1.hserial = hserial_uart1;
+ 723              		.loc 1 114 19 is_stmt 0 view .LVU179
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s 			page 19
+
+
+ 724 0002 0C48     		ldr	r0, .L67
+ 725 0004 FFF7FEFF 		bl	serial_init
+ 726              	.LVL46:
+ 114:rover/Mission/Src/mission_motion.c ****     hroboclaw1.hserial = hserial_uart1;
+ 727              		.loc 1 114 17 discriminator 1 view .LVU180
+ 728 0008 0B4B     		ldr	r3, .L67+4
+ 729 000a 1860     		str	r0, [r3]
+ 115:rover/Mission/Src/mission_motion.c ****     hroboclaw1.packetserial_address = ROBOCLAW1_ADDR;
+ 730              		.loc 1 115 5 is_stmt 1 view .LVU181
+ 115:rover/Mission/Src/mission_motion.c ****     hroboclaw1.packetserial_address = ROBOCLAW1_ADDR;
+ 731              		.loc 1 115 24 is_stmt 0 view .LVU182
+ 732 000c 0B4B     		ldr	r3, .L67+8
+ 733 000e 9860     		str	r0, [r3, #8]
+ 116:rover/Mission/Src/mission_motion.c ****     hroboclaw1.timeout = ROBOCLAW_TIMEOUT;
+ 734              		.loc 1 116 5 is_stmt 1 view .LVU183
+ 116:rover/Mission/Src/mission_motion.c ****     hroboclaw1.timeout = ROBOCLAW_TIMEOUT;
+ 735              		.loc 1 116 37 is_stmt 0 view .LVU184
+ 736 0010 8222     		movs	r2, #130
+ 737 0012 1A73     		strb	r2, [r3, #12]
+ 117:rover/Mission/Src/mission_motion.c ****    // roboClaw_init(&hroboclaw1);
+ 738              		.loc 1 117 5 is_stmt 1 view .LVU185
+ 117:rover/Mission/Src/mission_motion.c ****    // roboClaw_init(&hroboclaw1);
+ 739              		.loc 1 117 24 is_stmt 0 view .LVU186
+ 740 0014 C824     		movs	r4, #200
+ 741 0016 5C60     		str	r4, [r3, #4]
+ 122:rover/Mission/Src/mission_motion.c ****     hroboclaw2.hserial = hserial_uart2;
+ 742              		.loc 1 122 5 is_stmt 1 view .LVU187
+ 122:rover/Mission/Src/mission_motion.c ****     hroboclaw2.hserial = hserial_uart2;
+ 743              		.loc 1 122 21 is_stmt 0 view .LVU188
+ 744 0018 0948     		ldr	r0, .L67+12
+ 745 001a FFF7FEFF 		bl	serial_init
+ 746              	.LVL47:
+ 122:rover/Mission/Src/mission_motion.c ****     hroboclaw2.hserial = hserial_uart2;
+ 747              		.loc 1 122 19 discriminator 1 view .LVU189
+ 748 001e 094B     		ldr	r3, .L67+16
+ 749 0020 1860     		str	r0, [r3]
+ 123:rover/Mission/Src/mission_motion.c ****     hroboclaw2.packetserial_address = ROBOCLAW2_ADDR;
+ 750              		.loc 1 123 5 is_stmt 1 view .LVU190
+ 123:rover/Mission/Src/mission_motion.c ****     hroboclaw2.packetserial_address = ROBOCLAW2_ADDR;
+ 751              		.loc 1 123 24 is_stmt 0 view .LVU191
+ 752 0022 094B     		ldr	r3, .L67+20
+ 753 0024 9860     		str	r0, [r3, #8]
+ 124:rover/Mission/Src/mission_motion.c ****     hroboclaw2.timeout = ROBOCLAW_TIMEOUT;
+ 754              		.loc 1 124 5 is_stmt 1 view .LVU192
+ 124:rover/Mission/Src/mission_motion.c ****     hroboclaw2.timeout = ROBOCLAW_TIMEOUT;
+ 755              		.loc 1 124 37 is_stmt 0 view .LVU193
+ 756 0026 8022     		movs	r2, #128
+ 757 0028 1A73     		strb	r2, [r3, #12]
+ 125:rover/Mission/Src/mission_motion.c ****     //roboClaw_init(&hroboclaw2);
+ 758              		.loc 1 125 5 is_stmt 1 view .LVU194
+ 125:rover/Mission/Src/mission_motion.c ****     //roboClaw_init(&hroboclaw2);
+ 759              		.loc 1 125 24 is_stmt 0 view .LVU195
+ 760 002a 5C60     		str	r4, [r3, #4]
+ 137:rover/Mission/Src/mission_motion.c **** }
+ 761              		.loc 1 137 5 is_stmt 1 view .LVU196
+ 762 002c FFF7FEFF 		bl	Mission_ResetAllEncoders
+ 763              	.LVL48:
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s 			page 20
+
+
+ 138:rover/Mission/Src/mission_motion.c **** 
+ 764              		.loc 1 138 1 is_stmt 0 view .LVU197
+ 765 0030 10BD     		pop	{r4, pc}
+ 766              	.L68:
+ 767 0032 00BF     		.align	2
+ 768              	.L67:
+ 769 0034 00000000 		.word	huart1
+ 770 0038 00000000 		.word	hserial_uart1
+ 771 003c 00000000 		.word	hroboclaw1
+ 772 0040 00000000 		.word	huart6
+ 773 0044 00000000 		.word	hserial_uart2
+ 774 0048 00000000 		.word	hroboclaw2
+ 775              		.cfi_endproc
+ 776              	.LFE139:
+ 778              		.section	.bss.motor_active,"aw",%nobits
+ 779              		.align	2
+ 782              	motor_active:
+ 783 0000 00000000 		.space	6
+ 783      0000
+ 784              		.section	.bss.target_positions,"aw",%nobits
+ 785              		.align	2
+ 788              	target_positions:
+ 789 0000 00000000 		.space	24
+ 789      00000000 
+ 789      00000000 
+ 789      00000000 
+ 789      00000000 
+ 790              		.section	.bss.hroboclaw2,"aw",%nobits
+ 791              		.align	2
+ 794              	hroboclaw2:
+ 795 0000 00000000 		.space	16
+ 795      00000000 
+ 795      00000000 
+ 795      00000000 
+ 796              		.section	.bss.hserial_uart2,"aw",%nobits
+ 797              		.align	2
+ 800              	hserial_uart2:
+ 801 0000 00000000 		.space	4
+ 802              		.section	.bss.hroboclaw1,"aw",%nobits
+ 803              		.align	2
+ 806              	hroboclaw1:
+ 807 0000 00000000 		.space	16
+ 807      00000000 
+ 807      00000000 
+ 807      00000000 
+ 808              		.section	.bss.hserial_uart1,"aw",%nobits
+ 809              		.align	2
+ 812              	hserial_uart1:
+ 813 0000 00000000 		.space	4
+ 814              		.text
+ 815              	.Letext0:
+ 816              		.file 2 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 817              		.file 3 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 818              		.file 4 "rover/Mission/Inc/mission_motion.h"
+ 819              		.file 5 "rover/ECAL/Inc/ringbuffer.h"
+ 820              		.file 6 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f412rx.h"
+ 821              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s 			page 21
+
+
+ 822              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 823              		.file 9 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
+ 824              		.file 10 "rover/ECAL/Inc/base_serial.h"
+ 825              		.file 11 "rover/ECAL/Inc/roboclaw.h"
+ 826              		.file 12 "Core/Inc/usart.h"
+ 827              		.file 13 "rover/ECAL/Inc/Serial.h"
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s 			page 22
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 mission_motion.c
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:21     .text.get_motor_info:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:26     .text.get_motor_info:00000000 get_motor_info
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:42     .text.get_motor_info:0000000a $d
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:46     .text.get_motor_info:0000000e $t
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:105    .text.get_motor_info:00000040 $d
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:806    .bss.hroboclaw1:00000000 hroboclaw1
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:794    .bss.hroboclaw2:00000000 hroboclaw2
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:111    .text.clamp_position:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:116    .text.clamp_position:00000000 clamp_position
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:132    .text.clamp_position:0000000a $d
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:138    .text.clamp_position:00000010 $t
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:276    .text.Mission_MoveSingleMotor:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:282    .text.Mission_MoveSingleMotor:00000000 Mission_MoveSingleMotor
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:391    .text.Mission_MoveSingleMotor:00000074 $d
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:788    .bss.target_positions:00000000 target_positions
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:782    .bss.motor_active:00000000 motor_active
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:397    .text.Mission_MoveAllMotors:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:403    .text.Mission_MoveAllMotors:00000000 Mission_MoveAllMotors
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:462    .text.Mission_MoveMotorPair:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:468    .text.Mission_MoveMotorPair:00000000 Mission_MoveMotorPair
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:630    .text.Mission_MoveMotorPair:000000b4 $d
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:636    .text.Mission_ResetAllEncoders:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:642    .text.Mission_ResetAllEncoders:00000000 Mission_ResetAllEncoders
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:697    .text.Mission_ResetAllEncoders:00000028 $d
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:705    .text.Mission_ARM_Init:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:711    .text.Mission_ARM_Init:00000000 Mission_ARM_Init
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:769    .text.Mission_ARM_Init:00000034 $d
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:812    .bss.hserial_uart1:00000000 hserial_uart1
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:800    .bss.hserial_uart2:00000000 hserial_uart2
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:779    .bss.motor_active:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:785    .bss.target_positions:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:791    .bss.hroboclaw2:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:797    .bss.hserial_uart2:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:803    .bss.hroboclaw1:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\cc5FfKb9.s:809    .bss.hserial_uart1:00000000 $d
+
+UNDEFINED SYMBOLS
+SpeedAccelDeccelPositionM1
+SpeedAccelDeccelPositionM2
+SpeedAccelDeccelPositionM1M2
+ResetEncoders
+serial_init
+huart1
+huart6

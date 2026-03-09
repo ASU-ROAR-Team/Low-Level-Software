@@ -1,0 +1,387 @@
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccQufgSz.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"app_tasks.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "rover/App/Src/app_tasks.c"
+  20              		.section	.text.Arm_Control_Task,"ax",%progbits
+  21              		.align	1
+  22              		.global	Arm_Control_Task
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	Arm_Control_Task:
+  28              	.LVL0:
+  29              	.LFB139:
+   1:rover/App/Src/app_tasks.c **** #include "app_tasks.h"
+   2:rover/App/Src/app_tasks.c **** #include "FreeRTOS.h"
+   3:rover/App/Src/app_tasks.c **** #include "task.h"
+   4:rover/App/Src/app_tasks.c **** #include "mission_motion.h"
+   5:rover/App/Src/app_tasks.c **** #include "hx711.h"
+   6:rover/App/Src/app_tasks.c **** QueueHandle_t MotorQueue;
+   7:rover/App/Src/app_tasks.c **** void App_Tasks_Create(void)
+   8:rover/App/Src/app_tasks.c **** {
+   9:rover/App/Src/app_tasks.c **** //	defaultTaskHandle = osThreadNew(Arm_Control_Task, NULL, &defaultTask_attributes);
+  10:rover/App/Src/app_tasks.c **** //    xTaskCreate(App_Button_Task,
+  11:rover/App/Src/app_tasks.c **** //                "Button",
+  12:rover/App/Src/app_tasks.c **** //                128,
+  13:rover/App/Src/app_tasks.c **** //                NULL,
+  14:rover/App/Src/app_tasks.c **** //                2,
+  15:rover/App/Src/app_tasks.c **** //                NULL);
+  16:rover/App/Src/app_tasks.c **** 
+  17:rover/App/Src/app_tasks.c **** 	MotorQueue = xQueueCreate(10, sizeof(MotorCommand_t));
+  18:rover/App/Src/app_tasks.c **** 
+  19:rover/App/Src/app_tasks.c **** 	    if (MotorQueue == NULL) {
+  20:rover/App/Src/app_tasks.c **** 	        // Queue creation failed!
+  21:rover/App/Src/app_tasks.c **** 	    }
+  22:rover/App/Src/app_tasks.c ****     xTaskCreate(Arm_Control_Task,
+  23:rover/App/Src/app_tasks.c ****                 "ARM",
+  24:rover/App/Src/app_tasks.c ****                 128,
+  25:rover/App/Src/app_tasks.c ****                 NULL,
+  26:rover/App/Src/app_tasks.c ****                 2,
+  27:rover/App/Src/app_tasks.c ****                 NULL);
+  28:rover/App/Src/app_tasks.c **** 
+  29:rover/App/Src/app_tasks.c **** //    xTaskCreate(App_LED2_Task,
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccQufgSz.s 			page 2
+
+
+  30:rover/App/Src/app_tasks.c **** //				"LED2",
+  31:rover/App/Src/app_tasks.c **** //				128,
+  32:rover/App/Src/app_tasks.c **** //				NULL,
+  33:rover/App/Src/app_tasks.c **** //				2,
+  34:rover/App/Src/app_tasks.c **** //				NULL);
+  35:rover/App/Src/app_tasks.c **** }
+  36:rover/App/Src/app_tasks.c **** 
+  37:rover/App/Src/app_tasks.c **** /* ---------------- TASKS ---------------- */
+  38:rover/App/Src/app_tasks.c **** 
+  39:rover/App/Src/app_tasks.c **** void Arm_Control_Task(void *argument){
+  30              		.loc 1 39 38 view -0
+  31              		.cfi_startproc
+  32              		@ Volatile: function does not return.
+  33              		@ args = 0, pretend = 0, frame = 24
+  34              		@ frame_needed = 0, uses_anonymous_args = 0
+  35              		.loc 1 39 38 is_stmt 0 view .LVU1
+  36 0000 00B5     		push	{lr}
+  37              	.LCFI0:
+  38              		.cfi_def_cfa_offset 4
+  39              		.cfi_offset 14, -4
+  40 0002 87B0     		sub	sp, sp, #28
+  41              	.LCFI1:
+  42              		.cfi_def_cfa_offset 32
+  40:rover/App/Src/app_tasks.c **** 	Mission_ARM_Init();
+  43              		.loc 1 40 2 is_stmt 1 view .LVU2
+  44 0004 FFF7FEFF 		bl	Mission_ARM_Init
+  45              	.LVL1:
+  46              	.L2:
+  41:rover/App/Src/app_tasks.c **** 	MotorCommand_t current_cmd;
+  47              		.loc 1 41 2 view .LVU3
+  42:rover/App/Src/app_tasks.c **** 	while(1)
+  48              		.loc 1 42 2 view .LVU4
+  43:rover/App/Src/app_tasks.c **** 	{
+  44:rover/App/Src/app_tasks.c **** 		if (xQueueReceive(MotorQueue, &current_cmd, portMAX_DELAY) == pdPASS) {
+  49              		.loc 1 44 3 view .LVU5
+  50              		.loc 1 44 7 is_stmt 0 view .LVU6
+  51 0008 4FF0FF32 		mov	r2, #-1
+  52 000c 6946     		mov	r1, sp
+  53 000e 0B4B     		ldr	r3, .L5
+  54 0010 1868     		ldr	r0, [r3]
+  55 0012 FFF7FEFF 		bl	xQueueReceive
+  56              	.LVL2:
+  57              		.loc 1 44 6 discriminator 1 view .LVU7
+  58 0016 0128     		cmp	r0, #1
+  59 0018 F6D1     		bne	.L2
+  45:rover/App/Src/app_tasks.c **** 		            Mission_MoveSingleMotor(1, current_cmd.angles[0]);
+  60              		.loc 1 45 15 is_stmt 1 view .LVU8
+  61 001a 0099     		ldr	r1, [sp]
+  62 001c FFF7FEFF 		bl	Mission_MoveSingleMotor
+  63              	.LVL3:
+  46:rover/App/Src/app_tasks.c **** 		            Mission_MoveSingleMotor(2, current_cmd.angles[1]);
+  64              		.loc 1 46 15 view .LVU9
+  65 0020 0199     		ldr	r1, [sp, #4]
+  66 0022 0220     		movs	r0, #2
+  67 0024 FFF7FEFF 		bl	Mission_MoveSingleMotor
+  68              	.LVL4:
+  47:rover/App/Src/app_tasks.c **** 		            Mission_MoveSingleMotor(3, current_cmd.angles[2]);
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccQufgSz.s 			page 3
+
+
+  69              		.loc 1 47 15 view .LVU10
+  70 0028 0299     		ldr	r1, [sp, #8]
+  71 002a 0320     		movs	r0, #3
+  72 002c FFF7FEFF 		bl	Mission_MoveSingleMotor
+  73              	.LVL5:
+  48:rover/App/Src/app_tasks.c **** 		            Mission_MoveSingleMotor(4, current_cmd.angles[3]);
+  74              		.loc 1 48 15 view .LVU11
+  75 0030 0399     		ldr	r1, [sp, #12]
+  76 0032 0420     		movs	r0, #4
+  77 0034 FFF7FEFF 		bl	Mission_MoveSingleMotor
+  78              	.LVL6:
+  79 0038 E6E7     		b	.L2
+  80              	.L6:
+  81 003a 00BF     		.align	2
+  82              	.L5:
+  83 003c 00000000 		.word	MotorQueue
+  84              		.cfi_endproc
+  85              	.LFE139:
+  87              		.section	.rodata.App_Tasks_Create.str1.4,"aMS",%progbits,1
+  88              		.align	2
+  89              	.LC0:
+  90 0000 41524D00 		.ascii	"ARM\000"
+  91              		.section	.text.App_Tasks_Create,"ax",%progbits
+  92              		.align	1
+  93              		.global	App_Tasks_Create
+  94              		.syntax unified
+  95              		.thumb
+  96              		.thumb_func
+  98              	App_Tasks_Create:
+  99              	.LFB138:
+   8:rover/App/Src/app_tasks.c **** //	defaultTaskHandle = osThreadNew(Arm_Control_Task, NULL, &defaultTask_attributes);
+ 100              		.loc 1 8 1 view -0
+ 101              		.cfi_startproc
+ 102              		@ args = 0, pretend = 0, frame = 0
+ 103              		@ frame_needed = 0, uses_anonymous_args = 0
+ 104 0000 00B5     		push	{lr}
+ 105              	.LCFI2:
+ 106              		.cfi_def_cfa_offset 4
+ 107              		.cfi_offset 14, -4
+ 108 0002 83B0     		sub	sp, sp, #12
+ 109              	.LCFI3:
+ 110              		.cfi_def_cfa_offset 16
+  17:rover/App/Src/app_tasks.c **** 
+ 111              		.loc 1 17 2 view .LVU13
+  17:rover/App/Src/app_tasks.c **** 
+ 112              		.loc 1 17 15 is_stmt 0 view .LVU14
+ 113 0004 0022     		movs	r2, #0
+ 114 0006 1821     		movs	r1, #24
+ 115 0008 0A20     		movs	r0, #10
+ 116 000a FFF7FEFF 		bl	xQueueGenericCreate
+ 117              	.LVL7:
+  17:rover/App/Src/app_tasks.c **** 
+ 118              		.loc 1 17 13 discriminator 1 view .LVU15
+ 119 000e 074B     		ldr	r3, .L9
+ 120 0010 1860     		str	r0, [r3]
+  19:rover/App/Src/app_tasks.c **** 	        // Queue creation failed!
+ 121              		.loc 1 19 6 is_stmt 1 view .LVU16
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccQufgSz.s 			page 4
+
+
+  21:rover/App/Src/app_tasks.c ****     xTaskCreate(Arm_Control_Task,
+ 122              		.loc 1 21 6 view .LVU17
+  22:rover/App/Src/app_tasks.c ****                 "ARM",
+ 123              		.loc 1 22 5 view .LVU18
+ 124 0012 0023     		movs	r3, #0
+ 125 0014 0193     		str	r3, [sp, #4]
+ 126 0016 0222     		movs	r2, #2
+ 127 0018 0092     		str	r2, [sp]
+ 128 001a 8022     		movs	r2, #128
+ 129 001c 0449     		ldr	r1, .L9+4
+ 130 001e 0548     		ldr	r0, .L9+8
+ 131 0020 FFF7FEFF 		bl	xTaskCreate
+ 132              	.LVL8:
+  35:rover/App/Src/app_tasks.c **** 
+ 133              		.loc 1 35 1 is_stmt 0 view .LVU19
+ 134 0024 03B0     		add	sp, sp, #12
+ 135              	.LCFI4:
+ 136              		.cfi_def_cfa_offset 4
+ 137              		@ sp needed
+ 138 0026 5DF804FB 		ldr	pc, [sp], #4
+ 139              	.L10:
+ 140 002a 00BF     		.align	2
+ 141              	.L9:
+ 142 002c 00000000 		.word	MotorQueue
+ 143 0030 00000000 		.word	.LC0
+ 144 0034 00000000 		.word	Arm_Control_Task
+ 145              		.cfi_endproc
+ 146              	.LFE138:
+ 148              		.section	.text.App_Button_Task,"ax",%progbits
+ 149              		.align	1
+ 150              		.global	App_Button_Task
+ 151              		.syntax unified
+ 152              		.thumb
+ 153              		.thumb_func
+ 155              	App_Button_Task:
+ 156              	.LFB140:
+  49:rover/App/Src/app_tasks.c **** 
+  50:rover/App/Src/app_tasks.c **** 		        }
+  51:rover/App/Src/app_tasks.c **** 	}
+  52:rover/App/Src/app_tasks.c **** }
+  53:rover/App/Src/app_tasks.c **** void App_Button_Task(void *argument)
+  54:rover/App/Src/app_tasks.c **** {
+ 157              		.loc 1 54 1 is_stmt 1 view -0
+ 158              		.cfi_startproc
+ 159              		@ Volatile: function does not return.
+ 160              		@ args = 0, pretend = 0, frame = 0
+ 161              		@ frame_needed = 0, uses_anonymous_args = 0
+ 162              		@ link register save eliminated.
+ 163              	.LVL9:
+ 164              	.L12:
+  55:rover/App/Src/app_tasks.c ****     while (1)
+ 165              		.loc 1 55 5 view .LVU21
+  56:rover/App/Src/app_tasks.c ****     {
+  57:rover/App/Src/app_tasks.c **** 
+  58:rover/App/Src/app_tasks.c ****     }
+ 166              		.loc 1 58 5 view .LVU22
+  55:rover/App/Src/app_tasks.c ****     while (1)
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccQufgSz.s 			page 5
+
+
+ 167              		.loc 1 55 11 view .LVU23
+ 168 0000 FEE7     		b	.L12
+ 169              		.cfi_endproc
+ 170              	.LFE140:
+ 172              		.section	.text.App_LED_Task,"ax",%progbits
+ 173              		.align	1
+ 174              		.global	App_LED_Task
+ 175              		.syntax unified
+ 176              		.thumb
+ 177              		.thumb_func
+ 179              	App_LED_Task:
+ 180              	.LFB141:
+  59:rover/App/Src/app_tasks.c **** }
+  60:rover/App/Src/app_tasks.c **** 
+  61:rover/App/Src/app_tasks.c **** void App_LED_Task(void *argument)
+  62:rover/App/Src/app_tasks.c **** {
+ 181              		.loc 1 62 1 view -0
+ 182              		.cfi_startproc
+ 183              		@ Volatile: function does not return.
+ 184              		@ args = 0, pretend = 0, frame = 0
+ 185              		@ frame_needed = 0, uses_anonymous_args = 0
+ 186              		@ link register save eliminated.
+ 187              	.LVL10:
+ 188              	.L14:
+  63:rover/App/Src/app_tasks.c ****     while (1)
+ 189              		.loc 1 63 5 view .LVU25
+  64:rover/App/Src/app_tasks.c ****     {
+  65:rover/App/Src/app_tasks.c **** 
+  66:rover/App/Src/app_tasks.c ****     }
+ 190              		.loc 1 66 5 view .LVU26
+  63:rover/App/Src/app_tasks.c ****     while (1)
+ 191              		.loc 1 63 11 view .LVU27
+ 192 0000 FEE7     		b	.L14
+ 193              		.cfi_endproc
+ 194              	.LFE141:
+ 196              		.section	.text.App_LED2_Task,"ax",%progbits
+ 197              		.align	1
+ 198              		.global	App_LED2_Task
+ 199              		.syntax unified
+ 200              		.thumb
+ 201              		.thumb_func
+ 203              	App_LED2_Task:
+ 204              	.LFB142:
+  67:rover/App/Src/app_tasks.c **** }
+  68:rover/App/Src/app_tasks.c **** 
+  69:rover/App/Src/app_tasks.c **** void App_LED2_Task(void *argument)
+  70:rover/App/Src/app_tasks.c **** {
+ 205              		.loc 1 70 1 view -0
+ 206              		.cfi_startproc
+ 207              		@ Volatile: function does not return.
+ 208              		@ args = 0, pretend = 0, frame = 0
+ 209              		@ frame_needed = 0, uses_anonymous_args = 0
+ 210              		@ link register save eliminated.
+ 211              	.LVL11:
+ 212              	.L16:
+  71:rover/App/Src/app_tasks.c ****     while (1)
+ 213              		.loc 1 71 5 view .LVU29
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccQufgSz.s 			page 6
+
+
+  72:rover/App/Src/app_tasks.c ****     {
+  73:rover/App/Src/app_tasks.c **** 
+  74:rover/App/Src/app_tasks.c ****     }
+ 214              		.loc 1 74 5 view .LVU30
+  71:rover/App/Src/app_tasks.c ****     while (1)
+ 215              		.loc 1 71 11 view .LVU31
+ 216 0000 FEE7     		b	.L16
+ 217              		.cfi_endproc
+ 218              	.LFE142:
+ 220              		.section	.text.App_LoadCell_Task,"ax",%progbits
+ 221              		.align	1
+ 222              		.global	App_LoadCell_Task
+ 223              		.syntax unified
+ 224              		.thumb
+ 225              		.thumb_func
+ 227              	App_LoadCell_Task:
+ 228              	.LFB143:
+  75:rover/App/Src/app_tasks.c **** }
+  76:rover/App/Src/app_tasks.c **** void App_LoadCell_Task(void *argument){
+ 229              		.loc 1 76 39 view -0
+ 230              		.cfi_startproc
+ 231              		@ Volatile: function does not return.
+ 232              		@ args = 0, pretend = 0, frame = 0
+ 233              		@ frame_needed = 0, uses_anonymous_args = 0
+ 234              		@ link register save eliminated.
+ 235              	.LVL12:
+ 236              	.L18:
+  77:rover/App/Src/app_tasks.c **** 
+  78:rover/App/Src/app_tasks.c **** 
+  79:rover/App/Src/app_tasks.c **** 	while(1)
+ 237              		.loc 1 79 2 view .LVU33
+  80:rover/App/Src/app_tasks.c **** 	{
+  81:rover/App/Src/app_tasks.c **** 
+  82:rover/App/Src/app_tasks.c **** 	}
+ 238              		.loc 1 82 2 view .LVU34
+  79:rover/App/Src/app_tasks.c **** 	{
+ 239              		.loc 1 79 7 view .LVU35
+ 240 0000 FEE7     		b	.L18
+ 241              		.cfi_endproc
+ 242              	.LFE143:
+ 244              		.global	MotorQueue
+ 245              		.section	.bss.MotorQueue,"aw",%nobits
+ 246              		.align	2
+ 249              	MotorQueue:
+ 250 0000 00000000 		.space	4
+ 251              		.text
+ 252              	.Letext0:
+ 253              		.file 2 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 254              		.file 3 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+ 255              		.file 4 "Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h"
+ 256              		.file 5 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h"
+ 257              		.file 6 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
+ 258              		.file 7 "Middlewares/Third_Party/FreeRTOS/Source/include/queue.h"
+ 259              		.file 8 "rover/App/Inc/app_tasks.h"
+ 260              		.file 9 "rover/Mission/Inc/mission_motion.h"
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccQufgSz.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 app_tasks.c
+C:\Users\bavly\AppData\Local\Temp\ccQufgSz.s:21     .text.Arm_Control_Task:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccQufgSz.s:27     .text.Arm_Control_Task:00000000 Arm_Control_Task
+C:\Users\bavly\AppData\Local\Temp\ccQufgSz.s:83     .text.Arm_Control_Task:0000003c $d
+C:\Users\bavly\AppData\Local\Temp\ccQufgSz.s:249    .bss.MotorQueue:00000000 MotorQueue
+C:\Users\bavly\AppData\Local\Temp\ccQufgSz.s:88     .rodata.App_Tasks_Create.str1.4:00000000 $d
+C:\Users\bavly\AppData\Local\Temp\ccQufgSz.s:92     .text.App_Tasks_Create:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccQufgSz.s:98     .text.App_Tasks_Create:00000000 App_Tasks_Create
+C:\Users\bavly\AppData\Local\Temp\ccQufgSz.s:142    .text.App_Tasks_Create:0000002c $d
+C:\Users\bavly\AppData\Local\Temp\ccQufgSz.s:149    .text.App_Button_Task:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccQufgSz.s:155    .text.App_Button_Task:00000000 App_Button_Task
+C:\Users\bavly\AppData\Local\Temp\ccQufgSz.s:173    .text.App_LED_Task:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccQufgSz.s:179    .text.App_LED_Task:00000000 App_LED_Task
+C:\Users\bavly\AppData\Local\Temp\ccQufgSz.s:197    .text.App_LED2_Task:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccQufgSz.s:203    .text.App_LED2_Task:00000000 App_LED2_Task
+C:\Users\bavly\AppData\Local\Temp\ccQufgSz.s:221    .text.App_LoadCell_Task:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccQufgSz.s:227    .text.App_LoadCell_Task:00000000 App_LoadCell_Task
+C:\Users\bavly\AppData\Local\Temp\ccQufgSz.s:246    .bss.MotorQueue:00000000 $d
+
+UNDEFINED SYMBOLS
+Mission_ARM_Init
+xQueueReceive
+Mission_MoveSingleMotor
+xQueueGenericCreate
+xTaskCreate

@@ -1,0 +1,86 @@
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccsEpEYh.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"app_main.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "rover/App/Src/app_main.c"
+  20              		.section	.text.App_Main_Init,"ax",%progbits
+  21              		.align	1
+  22              		.global	App_Main_Init
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	App_Main_Init:
+  28              	.LFB142:
+   1:rover/App/Src/app_main.c **** #include "app_main.h"
+   2:rover/App/Src/app_main.c **** #include "FreeRTOS.h"
+   3:rover/App/Src/app_main.c **** #include "task.h"
+   4:rover/App/Src/app_main.c **** #include "app_tasks.h"
+   5:rover/App/Src/app_main.c **** #include "microros.h"
+   6:rover/App/Src/app_main.c **** 
+   7:rover/App/Src/app_main.c **** void App_Main_Init(void)
+   8:rover/App/Src/app_main.c **** {
+  29              		.loc 1 8 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 08B5     		push	{r3, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 3, -8
+  37              		.cfi_offset 14, -4
+   9:rover/App/Src/app_main.c **** 
+  10:rover/App/Src/app_main.c **** 	App_microROS_Task_Create();
+  38              		.loc 1 10 2 view .LVU1
+  39 0002 FFF7FEFF 		bl	App_microROS_Task_Create
+  40              	.LVL0:
+  11:rover/App/Src/app_main.c ****     App_Tasks_Create();
+  41              		.loc 1 11 5 view .LVU2
+  42 0006 FFF7FEFF 		bl	App_Tasks_Create
+  43              	.LVL1:
+  12:rover/App/Src/app_main.c **** }
+  44              		.loc 1 12 1 is_stmt 0 view .LVU3
+  45 000a 08BD     		pop	{r3, pc}
+  46              		.cfi_endproc
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccsEpEYh.s 			page 2
+
+
+  47              	.LFE142:
+  49              		.text
+  50              	.Letext0:
+  51              		.file 2 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+  52              		.file 3 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+  53              		.file 4 "C:\\ST\\STM32CubeIDE_1.19.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltool
+  54              		.file 5 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rmw/type
+  55              		.file 6 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rmw/time
+  56              		.file 7 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rmw/qos_
+  57              		.file 8 "micro_ros_stm32cubemx_utils/microros_static_library/libmicroros/microros_include/rcl_acti
+  58              		.file 9 "rover/App/Inc/app_tasks.h"
+  59              		.file 10 "rover/App/Inc/microros.h"
+ARM GAS  C:\Users\bavly\AppData\Local\Temp\ccsEpEYh.s 			page 3
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 app_main.c
+C:\Users\bavly\AppData\Local\Temp\ccsEpEYh.s:21     .text.App_Main_Init:00000000 $t
+C:\Users\bavly\AppData\Local\Temp\ccsEpEYh.s:27     .text.App_Main_Init:00000000 App_Main_Init
+
+UNDEFINED SYMBOLS
+App_microROS_Task_Create
+App_Tasks_Create
